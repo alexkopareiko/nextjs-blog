@@ -22,7 +22,14 @@ export default function Home({ allPostsData, children, home }) {
       <Head {...children}>
         <title>{siteTitle}</title>
       </Head>
-      <section className={utilStyles.headingMd}>
+      
+
+
+
+
+      
+      {/*
+            <section className={utilStyles.headingMd}>
         <ul>
           <li><Link href='/a'><a>a</a></Link></li>
           <li><Link href='/b'><a>b</a></Link></li>
@@ -34,6 +41,7 @@ export default function Home({ allPostsData, children, home }) {
         </p>
       </section>
       <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
+
         <h2 className={utilStyles.headingLg}>Blog</h2>
         <ul className={utilStyles.list}>
           {allPostsData.map(({ id, date, title }) => (
@@ -49,6 +57,10 @@ export default function Home({ allPostsData, children, home }) {
           ))}
         </ul>
       </section>
+    
+      */}
+
+   
     </Layout>
   )
 }
