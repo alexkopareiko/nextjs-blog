@@ -3,12 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "node server.js",
     "build": "next build",
-    "start": "next start"
+    "start": "cross-env NODE_ENV=production node server.js"
   },
   "dependencies": {
+    "cross-env": "^7.0.3",
     "date-fns": "^2.23.0",
+    "express": "^4.17.1",
     "gray-matter": "^4.0.3",
     "next": "^11.0.0",
     "react": "17.0.2",

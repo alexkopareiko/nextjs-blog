@@ -12,7 +12,8 @@ export async function getStaticPaths() {
     }
 }
 
-export default function Post({ postData }) {
+export default function Post({ postData, params }) {
+    //console.log(params)    //{id: "ssg-ssr"}
     return (
         <Layout>
             <Head>
