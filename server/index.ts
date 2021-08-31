@@ -14,7 +14,8 @@ const port = process.env.PORT || 3000;
     const server = express();
     
     server.get('/a', (req: Request, res: Response) => {
-      return app.render(req, res, '/a', req.body)
+       // @ts-ignore 
+      return app.render(req, res, '/a', req.query)
     })
 
     server.get('/b', (req: Request, res: Response) => {
