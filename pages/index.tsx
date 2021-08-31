@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import Layout, { siteTitle } from '../components/layout'
-import utilStyles from '../styles/utils.module.css'
+import utilStyles from '../styles/utils.module.css' 
+
 import Link from 'next/link'
 import Date from '../components/date'
 import { getSortedPostsData } from '../lib/posts'
@@ -14,13 +15,18 @@ export async function getStaticProps() {
   }
 }
 
-export default function Home({ allPostsData }) {
+
+export default function Home({ allPostsData, children, home }) {
   return (
-    <Layout home>
-      <Head>
+    <Layout {...home}>
+      <Head {...children}>
         <title>{siteTitle}</title>
       </Head>
       <section className={utilStyles.headingMd}>
+        <ul>
+          <li><Link href='/a'><a>a</a></Link></li>
+          <li><Link href='/b'><a>b</a></Link></li>
+        </ul>
         <p>Hi, that's my <a href="https://en.wikipedia.org/wiki/Aleksandar_Makedonski">Bio!</a></p>
         <p>
           (This is a sample website - you’ll be building a site like this on{' '}
