@@ -1,3 +1,4 @@
+const { white } = require('./colors')
 const colors = require('./colors')
 
 module.exports = {
@@ -804,6 +805,37 @@ module.exports = {
       40: '40',
       50: '50',
     },
+    customForms: (theme) => ({
+      default:{
+        'input, textarea, multiselect, select': {
+          lineHeight:theme('lineHeight.snug'),
+          borderColor:'transparent',
+          borderRadius:theme('borderRadius.lg'),
+          backgroundColor:theme('colors.gray.700'), 
+          iconColor: theme('colors.white'),
+        },
+        select: {
+          borderRadius: theme('borderRadius.lg'),
+          boxShadow: theme('boxShadow.default'),
+          iconColor: theme('colors.white'),
+        },
+        checkbox: {
+          width: theme('spacing.5'),
+          height: theme('spacing.5'),
+          size: theme('1.5em'),
+          color: theme('colors.indigo.500'),
+          borderRadius: theme('borderRadius.sm'),
+          backgroundColor:theme('colors.gray.900'), 
+        },
+        radio: {
+          width: theme('spacing.5'),
+          height: theme('spacing.5'),
+          color: theme('colors.indigo.500'),
+          backgroundColor:theme('colors.gray.900'), 
+        }
+      }  
+
+    })
   },
   variantOrder: [
     'first',
@@ -968,5 +1000,7 @@ module.exports = {
     wordBreak: ['responsive'],
     zIndex: ['responsive', 'focus-within', 'focus'],
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/custom-forms')
+  ],
 }

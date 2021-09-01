@@ -1,5 +1,6 @@
 import Head from "next/head";
 import Header from "./header";
+import SearchFilters from "./searchFilters";
 import Image from "next/image";
 import styles from "./layout.module.css";
 import utilStyles from "../styles/utils.module.css";
@@ -13,34 +14,7 @@ export default function Layout({ children, home }) {
     <div className={"min-h-screen bg-gray-200 antialiased"}>
 
       <Header />
-      <section className="flex justify-between bg-gray-800 px-4 py-3">
-        <div className="relative">
-          <div className="absolute inset-y-0 left-0 flex items-center pl-3">
-            <svg
-              className="h-6 w-6 fill-current text-gray-500"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
-            >
-              <path d="M14.32 12.906l1.096 1.096c.412-.023.83.123 1.145.437l3 3a1.5 1.5 0 01-2.122 2.122l-3-3a1.497 1.497 0 01-.437-1.145l-1.096-1.096a8 8 0 111.414-1.414zM8 14A6 6 0 108 2a6 6 0 000 12z" />
-            </svg>
-          </div>
-          <input
-            className="bg-gray-900 focus:outline-none focus:bg-white focus:text-gray-900 text-white rounded-lg pl-10 pr-2 py-2 w-11/12"
-            placeholder="Search by keywords"
-          />
-        </div>
-
-        <button className="inline-flex items-center  bg-gray-700 hover:bg-gray-600 focus:bg-gray-600 focus:outline-none focus:shadow-outline  rounded-lg shadow pl-3 pr-4">
-          <svg
-            className="h-6 w-6 fill-current text-gray-500"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-          >
-            <path d="M3 6a1 1 0 011-1h16a1 1 0 110 2H4a1 1 0 01-1-1zm3 6a1 1 0 011-1h10a1 1 0 110 2H7a1 1 0 01-1-1zm4 5a1 1 0 100 2h4a1 1 0 100-2h-4z" />
-          </svg>
-          <span className="ml-1 font-medium text-white">Filters</span>
-        </button>
-      </section>
+      <SearchFilters />
       <main className="px-4 py-6">
         <h3 className="text-gray-900 text-xl">Los Angeles</h3>
         <p className="text-gray-600">
