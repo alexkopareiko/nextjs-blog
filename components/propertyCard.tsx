@@ -1,0 +1,80 @@
+import { GetStaticProps } from "next";
+import { useState } from "react";
+
+// export const getStaticProps: GetStaticProps = async (context) => {
+
+// }
+
+
+export default function PropertyCard({ house }) {
+
+    return (
+
+        <div className="mt-9 sm:mt-6 sm:px-2">
+            <div className="relative pb-5/6" >
+                <img
+                    className="rounded-lg shadow-md inset-0 w-full object-cover sm:h-64"
+                    src={house.img}
+                    alt=""
+                />
+            </div>
+            <div className="relative px-4 -mt-16">
+                <div className="bg-white rounded-lg px-4 py-4 shadow-lg">
+                    <div className="flex items-center">
+                        <span className="inline-block px-2 py-1 leading-none bg-teal-200 text-teal-800 rounded-full font-medium uppercase tracking-wide text-xs">
+                            Plus
+                        </span>
+                        <div className="ml-2 text-xs text-gray-600 font-medium uppercase tracking-wide">
+                            {house.beds} beds &bull; {house.baths} baths
+                        </div>
+                    </div>
+                    <h4 className="mt-1 text-gray-900 font-medium text-lg">
+                        {house.title}
+                    </h4>
+                    <div className="mt-1">
+                        <span className="text-gray-900">{house.price}</span>
+                        <span className="ml-1 text-sm text-gray-600">/wk</span>
+                    </div>
+                    <div className="flex items-center mt-2 text-sm text-gray-600">
+                        <svg
+                            className="h-4 w-4 fill-current text-teal-500"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 12 12"
+                        >
+                            <path d="M3.283 10.93a1 1 0 01-1.451-1.054l.472-2.754-2-1.951a1 1 0 01.553-1.706l2.766-.402L4.86.557a1 1 0 011.793 0L7.89 3.063l2.766.402a1 1 0 01.554 1.706l-2.002 1.95.473 2.755A1 1 0 018.23 10.93l-2.474-1.3-2.473 1.3z" />
+                        </svg>
+                        <svg
+                            className="h-4 w-4 fill-current text-teal-500"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 12 12"
+                        >
+                            <path d="M3.283 10.93a1 1 0 01-1.451-1.054l.472-2.754-2-1.951a1 1 0 01.553-1.706l2.766-.402L4.86.557a1 1 0 011.793 0L7.89 3.063l2.766.402a1 1 0 01.554 1.706l-2.002 1.95.473 2.755A1 1 0 018.23 10.93l-2.474-1.3-2.473 1.3z" />
+                        </svg>
+                        <svg
+                            className="h-4 w-4 fill-current text-teal-500"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 12 12"
+                        >
+                            <path d="M3.283 10.93a1 1 0 01-1.451-1.054l.472-2.754-2-1.951a1 1 0 01.553-1.706l2.766-.402L4.86.557a1 1 0 011.793 0L7.89 3.063l2.766.402a1 1 0 01.554 1.706l-2.002 1.95.473 2.755A1 1 0 018.23 10.93l-2.474-1.3-2.473 1.3z" />
+                        </svg>
+                        <svg
+                            className="h-4 w-4 fill-current text-teal-500"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 12 12"
+                        >
+                            <path d="M3.283 10.93a1 1 0 01-1.451-1.054l.472-2.754-2-1.951a1 1 0 01.553-1.706l2.766-.402L4.86.557a1 1 0 011.793 0L7.89 3.063l2.766.402a1 1 0 01.554 1.706l-2.002 1.95.473 2.755A1 1 0 018.23 10.93l-2.474-1.3-2.473 1.3z" />
+                        </svg>
+                        <svg className="h-4 w-4 fill-current text-teal-500"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 12 12"
+                        >
+                            <path d="M3.283 10.93a1 1 0 01-1.451-1.054l.472-2.754-2-1.951a1 1 0 01.553-1.706l2.766-.402L4.86.557a1 1 0 011.793 0L7.89 3.063l2.766.402a1 1 0 01.554 1.706l-2.002 1.95.473 2.755A1 1 0 018.23 10.93l-2.474-1.3-2.473 1.3z" />
+                        </svg>
+                        <span className="ml-2">{house.reviews} reviews</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    );
+}

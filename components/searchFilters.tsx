@@ -9,8 +9,8 @@ import { useState } from "react";
 export default function SearchFilters() {
     const [isOpen, setIsOpen] = useState(false);
     return (
-        <section className="bg-gray-800">
-            <div className="flex justify-between px-4 py-3">
+        <section className="bg-gray-800 xl:w-72">
+            <div className="flex justify-between px-4 py-3 xl:hidden">
                 <div className="relative max-w-xs w-full">
                     <div className="absolute inset-y-0 left-0 flex items-center pl-3">
                         <svg
@@ -38,11 +38,11 @@ export default function SearchFilters() {
                     <span className="ml-1 font-medium text-white">Filters</span>
                 </button>
             </div>
-            <form className={`${!isOpen ? 'hidden' : ''} `}>
-                <div className="lg:flex">
-                    <div className="px-4 py-4 border-t border-gray-900 sm:flex sm:-mx-2 lg:block lg:w-1/3">
+            <form className={`${isOpen ? 'hidden' : ''} xl:h-full xl:flex xl:flex-col xl:justify-between`}>
+                <div className="lg:flex xl:block xl:overflow-y-auto">
+                    <div className="px-4 py-4 border-t border-gray-900 sm:flex sm:-mx-2 lg:block lg:w-1/3 xl:border-t-0 xl:w-full">
                         <div className="flex -mx-2 sm:w-1/2 sm:mx-0 lg:w-full">
-                            <label className="block w-1/2 px-2 sm:w-1/2 lg:w-1/2">
+                            <label className="block w-1/2 px-2 sm:w-1/2 lg:w-1/2 xl:w-full">
                                 <span className="text-sm font-medium text-gray-500">Bedrooms</span>
                                 <select className="mt-1 form-select block w-full text-white shadow">
                                     <option>4</option>
@@ -53,7 +53,7 @@ export default function SearchFilters() {
                             </label>
 
 
-                            <label className="block w-1/2 px-2 sm:w-1/2 lg:w-1/2">
+                            <label className="block w-1/2 px-2 sm:w-1/2 lg:w-1/2 xl:w-full">
                                 <span className="text-sm font-medium text-gray-500">Bathrooms</span>
                                 <select className="mt-1 form-select block w-full text-white shadow">
                                     <option>2</option>
@@ -75,9 +75,9 @@ export default function SearchFilters() {
                             </label>
                         </div>
                     </div>
-                    <div className="px-4 py-4 border-t border-gray-900 lg:w-1/3">
+                    <div className="px-4 py-4 border-t border-gray-900 lg:w-1/3 lg:border-l xl:w-full">
                         <span className="text-sm font-medium text-gray-400">Property Type</span>
-                        <div className="sm:flex sm:-mx-2 lg:block lg:mx-0">
+                        <div className="sm:flex lg:block lg:mx-0">
                             <label className="mt-3 sm:w-1/4 flex items-center lg:w-full lg:px-0">
                                 <input className="form-radio" type="radio" name="propertyType" value="house" />
                                 <span className="ml-2 text-white">House</span>
@@ -96,34 +96,34 @@ export default function SearchFilters() {
                             </label>
                         </div>
                     </div>
-                    <div className="px-4 py-4 border-t border-gray-900 lg:w-1/3 border-l">
+                    <div className="px-4 py-4 border-t border-gray-900 lg:border-l lg:w-1/3 xl:w-full">
                         <span className="text-sm font-medium text-gray-400">Amenities</span>
-                        <div className="sm:flex sm:-mx-2 sm:flex-wrap">
-                            <label className="mt-3 sm:w-1/4 flex items-center lg:w-1/2">
+                        <div className="sm:flex sm:flex-wrap">
+                            <label className="mt-3 sm:w-1/4 flex items-center lg:w-1/2 xl:w-full">
                                 <input className="form-checkbox" type="checkbox" name="balcony" />
                                 <span className="ml-2 text-white">Balcony</span>
                             </label>
-                            <label className="mt-3 sm:w-1/4 flex items-center lg:w-1/2">
+                            <label className="mt-3 sm:w-1/4 flex items-center lg:w-1/2 xl:w-full">
                                 <input className="form-checkbox" type="checkbox" name="airConditioning" />
                                 <span className="ml-2 text-white">Air conditioning</span>
                             </label>
-                            <label className="mt-3 sm:w-1/4 flex items-center lg:w-1/2">
+                            <label className="mt-3 sm:w-1/4 flex items-center lg:w-1/2 xl:w-full">
                                 <input className="form-checkbox" type="checkbox" name="pool" />
                                 <span className="ml-2 text-white">Pool</span>
                             </label>
-                            <label className="mt-3 sm:w-1/4 flex items-center lg:w-1/2">
+                            <label className="mt-3 sm:w-1/4 flex items-center lg:w-1/2 xl:w-full">
                                 <input className="form-checkbox" type="checkbox" name="beach" />
                                 <span className="ml-2 text-white">Beach</span>
                             </label>
-                            <label className="mt-3 sm:w-1/4 flex items-center lg:w-1/2">
+                            <label className="mt-3 sm:w-1/4 flex items-center lg:w-1/2 xl:w-full">
                                 <input className="form-checkbox" type="checkbox" name="petFriendly" />
                                 <span className="ml-2 text-white">Pet friendly</span>
                             </label>
-                            <label className="mt-3 sm:w-1/4 flex items-center lg:w-1/2">
+                            <label className="mt-3 sm:w-1/4 flex items-center lg:w-1/2 xl:w-full">
                                 <input className="form-checkbox" type="checkbox" name="kidFriendly" />
                                 <span className="ml-2 text-white">Kid friendly</span>
                             </label>
-                            <label className="mt-3 sm:w-1/4 flex items-center lg:w-1/2">
+                            <label className="mt-3 sm:w-1/4 flex items-center lg:w-1/2 xl:w-full">
                                 <input className="form-checkbox" type="checkbox" name="parking" />
                                 <span className="ml-2 text-white">Parking</span>
                             </label>
@@ -132,7 +132,7 @@ export default function SearchFilters() {
 
                 </div>
                 <div className="bg-gray-900 px-4 py-4 sm:text-right">
-                    <button className="block w-full sm:w-auto sm:inline-block  bg-indigo-500 hover:bg-indigo-400 font-medium text-white px-4 py-2 rounded-lg">Update results</button>
+                    <button className="block w-full sm:w-auto sm:inline-block  bg-indigo-500 hover:bg-indigo-400 font-medium text-white px-4 py-2 rounded-lg xl:block xl:w-full">Update results</button>
                 </div>
             </form>
         </section >

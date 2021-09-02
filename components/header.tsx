@@ -9,8 +9,8 @@ import { useState } from "react";
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   return (
-    <header className="bg-gray-900 sm:flex sm:items-center sm:justify-between">
-      <div className="flex justify-between py-4 px-3">
+    <header className="bg-gray-900 sm:flex sm:items-center sm:justify-between xl:bg-white">
+      <div className="flex justify-between py-4 px-3 xl:w-72 xl:bg-gray-900 xl:justify-center xl:py-5">
         <div>
           <svg className="h-8 w-auto" width="185" height="32" xmlns="http://www.w3.org/2000/svg"
           >
@@ -22,8 +22,8 @@ export default function Header() {
             />
           </svg>
         </div>
-        <div className="flex">
-          <button type="button" className="px-2 sm:hidden" onClick={() => { setIsOpen(!isOpen) }}>
+        <div className="flex sm:hidden">
+          <button type="button" className="px-2" onClick={() => { setIsOpen(!isOpen) }}>
             <svg className="h-5 w-5 fill-current text-gray-500 hover:text-white focus:outline-none focus:text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 14"
             >
               {
@@ -36,21 +36,41 @@ export default function Header() {
           </button>
         </div>
       </div>
-      <nav className={`${!isOpen ? 'hidden' : 'block'} sm:flex sm:items-center`}>
-        <div className="px-2 pt-2 pb-5 border-b border-gray-800 sm:flex sm:border-b-0 sm:py-0">
-          <a href="" className="block px-3 py-1 hover:bg-gray-700 rounded font-medium text-white sm:text-sm sm:px-2">List your property</a>
-          <a href="" className="block px-3 py-1 mt-1 hover:bg-gray-700 rounded font-medium text-white sm:mt-0 sm:text-sm sm:px-2 sm:ml-2">Trip</a>
-          <a href="" className="block px-3 py-1 mt-1 hover:bg-gray-700 rounded font-medium text-white sm:mt-0 sm:text-sm sm:px-2 sm:ml-2">Messages</a>
-        </div>
-        <div className="px-5 py-5 sm:py-0">
-          <div className="flex items-center">
-            <img className="h-10 w-10 object-cover rounded-full border-2 border-gray-600 sm:w-8 sm:h-8" src="https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" alt="" />
-            <span className="ml-4 font-medium text-gray-200 sm:hidden">Isla Sugar</span>
+      <nav className={`${!isOpen ? 'hidden' : 'block'} sm:flex sm:items-center xl:flex-1 xl:justify-between`}>
+        <div className="hidden xl:block xl:px-5">
+          <div className="relative max-w-xs w-full ">
+            <div className="absolute inset-y-0 left-0 flex items-center pl-3">
+              <svg
+                className="h-6 w-6 fill-current text-gray-500"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+              >
+                <path d="M14.32 12.906l1.096 1.096c.412-.023.83.123 1.145.437l3 3a1.5 1.5 0 01-2.122 2.122l-3-3a1.497 1.497 0 01-.437-1.145l-1.096-1.096a8 8 0 111.414-1.414zM8 14A6 6 0 108 2a6 6 0 000 12z" />
+              </svg>
+            </div>
+            <input
+              className="block w-full bg-gray-200 border border:transparent focus:outline-none focus:bg-white focus:text-gray-900 text-gray-900 rounded-lg pl-10 pr-2 py-2 focus:border-gray-700"
+              placeholder="Search by keywords"
+            />
           </div>
-          <div className="mt-5 sm:hidden">
-            <a href="" className="block text-gray-400 hover:text-white">Account settings</a>
-            <a href="" className="mt-3 block text-gray-400 hover:text-white">Support</a>
-            <a href="" className="mt-3 block text-gray-400 hover:text-white">Sign Out</a>
+        </div>
+
+        <div className="sm:flex sm:items-center">
+          <div className="px-2 pt-2 pb-5 border-b border-gray-800 sm:flex sm:border-b-0 sm:py-0">
+            <a href="" className="block px-3 py-1 hover:bg-gray-700 rounded font-medium text-white sm:text-sm sm:px-2 xl:text-gray-900  xl:hover:bg-gray-200 ">List your property</a>
+            <a href="" className="block px-3 py-1 mt-1 hover:bg-gray-700 rounded font-medium text-white sm:mt-0 sm:text-sm sm:px-2 sm:ml-2 xl:text-gray-900 xl:hover:bg-gray-200 ">Trip</a>
+            <a href="" className="block px-3 py-1 mt-1 hover:bg-gray-700 rounded font-medium text-white sm:mt-0 sm:text-sm sm:px-2 sm:ml-2 xl:text-gray-900 xl:hover:bg-gray-200 ">Messages</a>
+          </div>
+          <div className="px-5 py-5 sm:py-0">
+            <div className="flex items-center">
+              <img className="h-10 w-10 object-cover rounded-full border-2 border-gray-600 sm:w-8 sm:h-8 xl:border-gray-200 " src="https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" alt="" />
+              <span className="ml-4 font-medium text-gray-200 sm:hidden">Isla Sugar</span>
+            </div>
+            <div className="mt-5 sm:hidden">
+              <a href="" className="block text-gray-400 hover:text-white">Account settings</a>
+              <a href="" className="mt-3 block text-gray-400 hover:text-white">Support</a>
+              <a href="" className="mt-3 block text-gray-400 hover:text-white">Sign Out</a>
+            </div>
           </div>
         </div>
       </nav>

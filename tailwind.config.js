@@ -839,8 +839,9 @@ module.exports = {
         }
       },
       extend:{
-        spaceing:{
-          '80':'20rem'
+        spacing:{
+          '72':'18em',
+          '80':'20rem',
         },
         padding:{
           '5/6':'83.333333%'
