@@ -9,7 +9,7 @@ import { useState } from "react";
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   return (
-    <header className="bg-gray-900">
+    <header className="bg-gray-900 sm:flex sm:items-center sm:justify-between">
       <div className="flex justify-between py-4 px-3">
         <div>
           <svg className="h-8 w-auto" width="185" height="32" xmlns="http://www.w3.org/2000/svg"
@@ -23,7 +23,7 @@ export default function Header() {
           </svg>
         </div>
         <div className="flex">
-          <button type="button" className="px-2" onClick={() => { setIsOpen(!isOpen) }}>
+          <button type="button" className="px-2 sm:hidden" onClick={() => { setIsOpen(!isOpen) }}>
             <svg className="h-5 w-5 fill-current text-gray-500 hover:text-white focus:outline-none focus:text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 14"
             >
               {
@@ -36,18 +36,18 @@ export default function Header() {
           </button>
         </div>
       </div>
-      <nav className={!isOpen ? 'hidden' : ''}>
-        <div className="px-2 pt-2 pb-5 border-b border-gray-800">
-          <a href="" className="block px-3 py-1 hover:bg-gray-700 rounded font-medium text-white">List your property</a>
-          <a href="" className="block px-3 py-1 mt-1 hover:bg-gray-700 rounded font-medium text-white">Trip</a>
-          <a href="" className="block px-3 py-1 mt-1 hover:bg-gray-700 rounded font-medium text-white">Messages</a>
+      <nav className={`${!isOpen ? 'hidden' : 'block'} sm:flex sm:items-center`}>
+        <div className="px-2 pt-2 pb-5 border-b border-gray-800 sm:flex sm:border-b-0 sm:py-0">
+          <a href="" className="block px-3 py-1 hover:bg-gray-700 rounded font-medium text-white sm:text-sm sm:px-2">List your property</a>
+          <a href="" className="block px-3 py-1 mt-1 hover:bg-gray-700 rounded font-medium text-white sm:mt-0 sm:text-sm sm:px-2 sm:ml-2">Trip</a>
+          <a href="" className="block px-3 py-1 mt-1 hover:bg-gray-700 rounded font-medium text-white sm:mt-0 sm:text-sm sm:px-2 sm:ml-2">Messages</a>
         </div>
-        <div className="px-5 py-5">
+        <div className="px-5 py-5 sm:py-0">
           <div className="flex items-center">
-            <img className="h-10 w-10 object-cover rounded-full border-2 border-gray-600" src="https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" alt="" />
-            <span className="ml-4 font-medium text-gray-200 ">Isla Sugar</span>
+            <img className="h-10 w-10 object-cover rounded-full border-2 border-gray-600 sm:w-8 sm:h-8" src="https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" alt="" />
+            <span className="ml-4 font-medium text-gray-200 sm:hidden">Isla Sugar</span>
           </div>
-          <div className="mt-5">
+          <div className="mt-5 sm:hidden">
             <a href="" className="block text-gray-400 hover:text-white">Account settings</a>
             <a href="" className="mt-3 block text-gray-400 hover:text-white">Support</a>
             <a href="" className="mt-3 block text-gray-400 hover:text-white">Sign Out</a>

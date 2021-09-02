@@ -837,9 +837,15 @@ module.exports = {
           color: theme('colors.indigo.500'),
           backgroundColor:theme('colors.gray.900'), 
         }
-      }  
+      },
+      extend:{
+        padding:{
+          '5/6':'83.333333%'
+        }
+      }, 
 
     })
+
   },
   variantOrder: [
     'first',
