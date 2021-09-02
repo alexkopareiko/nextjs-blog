@@ -7,6 +7,7 @@ import { useState } from "react";
 
 
 export default function SearchFilters() {
+    const [isOpen, setIsOpen] = useState(false);
     return (
         <section className="bg-gray-800">
             <div className="flex justify-between px-4 py-3">
@@ -26,7 +27,7 @@ export default function SearchFilters() {
                     />
                 </div>
 
-                <button className="inline-flex items-center  bg-gray-700 hover:bg-gray-600 focus:bg-gray-600 focus:outline-none focus:shadow-outline  rounded-lg shadow pl-3 pr-4">
+                <button onClick={() => { setIsOpen(!isOpen) }} className={`${!isOpen ? 'bg-gray-700' : 'bg-gray-600 '} inline-flex items-center   hover:bg-gray-600  focus:outline-none focus:shadow-outline  rounded-lg shadow pl-3 pr-4`}>
                     <svg
                         className="h-6 w-6 fill-current text-gray-500"
                         xmlns="http://www.w3.org/2000/svg"
@@ -37,7 +38,7 @@ export default function SearchFilters() {
                     <span className="ml-1 font-medium text-white">Filters</span>
                 </button>
             </div>
-            <form>
+            <form className={!isOpen ? 'hidden' : ''}>
                 <fieldset className="px-4 py-4 border-t border-gray-900">
                     <div className="flex -mx-2">
                         <label className="block w-1/2 px-2">
@@ -132,7 +133,7 @@ export default function SearchFilters() {
                     </label>
                 </fieldset>
                 <div className="bg-gray-900 px-4 py-4">
-                    <button >Update results</button>
+                    <button className="block w-full bg-indigo-500 hover:bg-indigo-400 font-medium text-white px-4 py-2 rounded-lg">Update results</button>
                 </div>
             </form>
         </section >

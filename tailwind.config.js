@@ -813,6 +813,10 @@ module.exports = {
           borderRadius:theme('borderRadius.lg'),
           backgroundColor:theme('colors.gray.700'), 
           iconColor: theme('colors.white'),
+          '&:focus': {
+            borderColor: 'transparent',
+          },
+          focusShadow: 'none',
         },
         select: {
           borderRadius: theme('borderRadius.lg'),
@@ -825,7 +829,7 @@ module.exports = {
           size: theme('1.5em'),
           color: theme('colors.indigo.500'),
           borderRadius: theme('borderRadius.sm'),
-          backgroundColor:theme('colors.gray.900'), 
+          backgroundColor:theme('colors.gray.900'),
         },
         radio: {
           width: theme('spacing.5'),
