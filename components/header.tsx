@@ -7,7 +7,8 @@ import { useState } from "react";
 
 
 export default function Header() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpenSandwich, setIsOpenSandwich] = useState(false);
+  const [isOpenProfile, setIsOpenProfile] = useState(false);
   return (
     <header className="bg-gray-900 sm:flex sm:items-center sm:justify-between xl:bg-white">
       <div className="flex justify-between py-4 px-3 xl:w-72 xl:bg-gray-900 xl:justify-center xl:py-5">
@@ -23,11 +24,11 @@ export default function Header() {
           </svg>
         </div>
         <div className="flex sm:hidden">
-          <button type="button" className="px-2" onClick={() => { setIsOpen(!isOpen) }}>
+          <button type="button" className="px-2" onClick={() => { setIsOpenSandwich(!isOpenSandwich) }}>
             <svg className="h-5 w-5 fill-current text-gray-500 hover:text-white focus:outline-none focus:text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 14"
             >
               {
-                isOpen ?
+                isOpenSandwich ?
                   <path d="M12.778 11.364a1 1 0 01-1.414 1.414L6.536 7.95l-4.829 4.828a1 1 0 01-1.414-1.414L5.12 6.536.293 1.707A1 1 0 011.707.293L6.536 5.12 11.364.293a1 1 0 111.414 1.414L7.95 6.536l4.828 4.828z" />
                   :
                   <path d="M0 1a1 1 0 011-1h16a1 1 0 110 2H1a1 1 0 01-1-1zm0 6a1 1 0 011-1h16a1 1 0 110 2H1a1 1 0 01-1-1zm1 5a1 1 0 100 2h16a1 1 0 100-2H1z" />
@@ -36,7 +37,7 @@ export default function Header() {
           </button>
         </div>
       </div>
-      <nav className={`${!isOpen ? 'hidden' : 'block'} sm:flex sm:items-center xl:flex-1 xl:justify-between`}>
+      <nav className={`${!isOpenSandwich ? 'hidden' : 'block'} sm:flex sm:items-center xl:flex-1 xl:justify-between`}>
         <div className="hidden xl:block xl:px-5">
           <div className="relative max-w-xs w-full ">
             <div className="absolute inset-y-0 left-0 flex items-center pl-3">
@@ -61,15 +62,17 @@ export default function Header() {
             <a href="" className="block px-3 py-1 mt-1 hover:bg-gray-700 rounded font-medium text-white sm:mt-0 sm:text-sm sm:px-2 sm:ml-2 xl:text-gray-900 xl:hover:bg-gray-200 ">Trip</a>
             <a href="" className="block px-3 py-1 mt-1 hover:bg-gray-700 rounded font-medium text-white sm:mt-0 sm:text-sm sm:px-2 sm:ml-2 xl:text-gray-900 xl:hover:bg-gray-200 ">Messages</a>
           </div>
-          <div className="px-5 py-5 sm:py-0">
-            <div className="flex items-center">
-              <img className="h-10 w-10 object-cover rounded-full border-2 border-gray-600 sm:w-8 sm:h-8 xl:border-gray-200 " src="https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" alt="" />
+          <div className="relative px-5 py-5 sm:py-0">
+            <div onClick={() => { setIsOpenProfile(!isOpenProfile) }} className="flex items-center">
+              <img className="h-10 w-10 object-cover rounded-full border-2 border-gray-600 cursor-pointer sm:w-8 sm:h-8 xl:border-gray-200 " src="https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" alt="" />
               <span className="ml-4 font-medium text-gray-200 sm:hidden">Isla Sugar</span>
             </div>
-            <div className="mt-5 sm:hidden">
-              <a href="" className="block text-gray-400 hover:text-white">Account settings</a>
-              <a href="" className="mt-3 block text-gray-400 hover:text-white">Support</a>
-              <a href="" className="mt-3 block text-gray-400 hover:text-white">Sign Out</a>
+            <div className={`${!isOpenProfile ? 'sm:hidden' : 'block'} mt-5 sm:bg-white sm:rounded-lg sm:absolute sm:mt-4 sm:right-0 sm:w-48 sm:py-2 sm:shadow-xl sm:mx-3`}>
+              <a href="" className="block text-gray-400 hover:text-white sm:text-gray-800 sm:px-4 sm:mt-0 sm:py-2 sm:hover:bg-indigo-500">Account settings</a>
+              <a href="" className="mt-3 block text-gray-400 hover:text-white sm:text-gray-800 sm:px-4 sm:mt-0 sm:py-2 sm:hover:bg-indigo-500">Support</a>
+              <a href="" className="mt-3 block text-gray-400 hover:text-white sm:text-gray-800 sm:px-4 sm:mt-0 sm:py-2 sm:hover:bg-indigo-500">Sign Out</a>
+              {/* <button type="button" onClick={() => { setIsOpenProfile(!isOpenProfile) }} className="fixed opacity-1 inset-0 w-full h-full"></button> */}
+
             </div>
           </div>
         </div>

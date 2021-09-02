@@ -38,7 +38,7 @@ export default function SearchFilters() {
                     <span className="ml-1 font-medium text-white">Filters</span>
                 </button>
             </div>
-            <form className={`${isOpen ? 'hidden' : ''} xl:h-full xl:flex xl:flex-col xl:justify-between`}>
+            <form className={`${!isOpen ? 'hidden' : ''} xl:h-full xl:flex xl:flex-col xl:justify-between`}>
                 <div className="lg:flex xl:block xl:overflow-y-auto">
                     <div className="px-4 py-4 border-t border-gray-900 sm:flex sm:-mx-2 lg:block lg:w-1/3 xl:border-t-0 xl:w-full">
                         <div className="flex -mx-2 sm:w-1/2 sm:mx-0 lg:w-full">

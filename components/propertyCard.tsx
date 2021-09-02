@@ -13,7 +13,7 @@ export default function PropertyCard({ house }) {
         <div className="mt-9 sm:mt-6 sm:px-2">
             <div className="relative pb-5/6" >
                 <img
-                    className="rounded-lg shadow-md inset-0 w-full object-cover sm:h-64"
+                    className="rounded-lg shadow-md inset-0 w-full object-cover h-64"
                     src={house.img}
                     alt=""
                 />
