@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "next_js",
+    "password": "next_js123",
+    "database": "next_js",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "test": {
+    "username": "next_js",
+    "password": "next_js123",
+    "database": "next_js",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "next_js",
+    "password": "next_js123",
+    "database": "next_js",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  }
+}
