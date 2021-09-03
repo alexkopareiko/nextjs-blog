@@ -14,7 +14,28 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Product.init({
-    test: DataTypes.STRING
+    prodId: {primaryKey: true, type: DataTypes.INTEGER, allowNull: false,autoIncrement: true},
+    prodTitle:{type: DataTypes.STRING(100), allowNull: false},
+    prodDesc:{type: DataTypes.TEXT},
+    catId:{
+      type:DataTypes.INTEGER, defaultValue: NULL,
+      references: {
+        model: Category,
+        key: 'catId',
+      }   
+    },
+    userId:{
+      type:DataTypes.INTEGER, allowNull: false,
+      references: {
+        model: User,
+        key: 'userId',
+      } 
+    },
+    prodPrice:{type:DataTypes.INTEGER, defaultValue: NULL},
+    prodYear:{type:DataTypes.INTEGER, defaultValue: NULL},
+    prodImg:{type: DataTypes.STRING(300), defaultValue: NULL},
+    createdAt : {type: DataTypes.BIGINT, defaultValue: NULL},
+    updatedAt : {type: DataTypes.BIGINT, defaultValue: NULL},
   }, {
     sequelize,
     modelName: 'Product',

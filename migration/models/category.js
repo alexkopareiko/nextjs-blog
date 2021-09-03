@@ -14,7 +14,8 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Category.init({
-    test: DataTypes.STRING
+    prodId: {primaryKey: true, type: DataTypes.INTEGER, allowNull: false,autoIncrement: true},
+    catName: {type: DataTypes.STRING(45), allowNull: false},
   }, {
     sequelize,
     modelName: 'Category',

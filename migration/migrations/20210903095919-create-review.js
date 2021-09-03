@@ -8,7 +8,7 @@ module.exports = {
       revFeedback text,
       prodUserId int DEFAULT NULL,
       ownerUserId int DEFAULT NULL,
-      revRating enum('1','2','3','4','5') DEFAULT NULL,
+      revRating enum('1','2','3','4','5') DEFAULT 5,
       prodId int DEFAULT NULL,
       createdAt bigint DEFAULT NULL,
       updatedAt bigint DEFAULT NULL,

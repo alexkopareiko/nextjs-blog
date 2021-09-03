@@ -14,7 +14,16 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   User.init({
-    test: DataTypes.STRING
+    userId: {primaryKey: true, type: DataTypes.INTEGER, allowNull: false,autoIncrement: true},
+    userEmail: {type: DataTypes.STRING(45), allowNull: false},
+    userPasswd: {type: DataTypes.STRING(45), allowNull: false},
+    userRole: {type: DataTypes.STRING(45), allowNull: false, defaultValue: 'guest'},
+    userImg: {type: DataTypes.STRING(300), defaultValue: NULL},
+    userPhone: {type: DataTypes.STRING(45), defaultValue: NULL},
+    userFirstName: {type: DataTypes.STRING(45), defaultValue: NULL},
+    userLastName: {type: DataTypes.STRING(45), defaultValue: NULL},
+    createdAt : {type: DataTypes.BIGINT, defaultValue: NULL},
+    updatedAt : {type: DataTypes.BIGINT, defaultValue: NULL},
   }, {
     sequelize,
     modelName: 'User',

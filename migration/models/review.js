@@ -14,7 +14,32 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Review.init({
-    test: DataTypes.STRING
+    revId: {primaryKey: true, type: DataTypes.INTEGER, allowNull: false,autoIncrement: true},
+    revFeedback:{type: DataTypes.TEXT},
+    ownerUserId:{
+      type:DataTypes.INTEGER, defaultValue: NULL,
+      references: {
+        model: User,
+        key: 'userId',
+      } 
+    },
+    prodUserId:{
+      type:DataTypes.INTEGER, defaultValue: NULL,
+      references: {
+        model: User,
+        key: 'userId',
+      } 
+    },
+    revRating:{type:DataTypes.INTEGER, defaultValue: '5'},
+    prodId:{
+      type:DataTypes.INTEGER, defaultValue: NULL,
+      references: {
+        model: Product,
+        key: 'prodId',
+      } 
+    },
+    createdAt : {type: DataTypes.BIGINT, defaultValue: NULL},
+    updatedAt : {type: DataTypes.BIGINT, defaultValue: NULL},
   }, {
     sequelize,
     modelName: 'Review',
