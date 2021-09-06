@@ -11,7 +11,7 @@ router.use(function timeLog(req, res, next) {
 });
 // define the home page route
 
-router.get("/list", products.findAll);
+router.get("/list", products.getAllProducts);
 router.get("/:id", products.findOne);
 
 

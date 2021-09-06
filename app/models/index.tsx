@@ -24,4 +24,10 @@ db.products = require("./product.model.tsx").default(sequelize, Sequelize);
 db.categories = require("./category.model.tsx").default(sequelize, Sequelize);
 db.reviews = require("./review.model.tsx").default(sequelize, Sequelize);
 
+//const { users, products, categories } = db.models;
+
+db.users.hasMany(db.products, { as: 'author', foreignKey: 'userId' });
+db.products.belongsTo(db.users, { as: 'author', foreignKey: 'userId' });
+
+
 export default db;
