@@ -5,7 +5,7 @@ const Op = db.Sequelize.Op;
 
 // Retrieve all Users from the database.
 export const findAll = (req, res) => {
-    console.log()
+  console.log()
   User.findAll()
     .then(data => {
       res.send(data);
