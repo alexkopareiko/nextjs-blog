@@ -24,4 +24,4 @@ db.products = require("./product.model.js").default(sequelize, Sequelize);
 db.categories = require("./category.model.js").default(sequelize, Sequelize);
 db.reviews = require("./review.model.js").default(sequelize, Sequelize);
 
-export default db;
+export default db; 
