@@ -3,7 +3,7 @@ import useSWR from 'swr'
 import { getSortedPostsData } from '../lib/posts'
 import PropertyCard from "../components/propertyCard";
 
-const fetcher = (url) => fetch(url).then((res) => res.json())
+// const fetcher = (url) => fetch(url).then((res) => res.json())
 
 export async function getStaticProps() {
   const allPostsData = getSortedPostsData()
@@ -16,15 +16,15 @@ export async function getStaticProps() {
 
 
 export default function Home({ allPostsData, children, home }) {
-  const { data, error } = useSWR('/api/houses', fetcher)
-  if (error) return <div>Failed to load</div>
-  if (!data) return <div>Loading...</div>
-  console.log(data)
+  // const { data, error } = useSWR('/api/houses', fetcher)
+  // if (error) return <div>Failed to load</div>
+  // if (!data) return <div>Loading...</div>
   return (
     <Layout {...home}>
-      {data.map((h, i) => (
-        <PropertyCard house={h} key={h.id} />
-      ))}
+      {/* {data.map((h, i) => (
+         <PropertyCard house={h} key={h.id} />
+       
+      ))} */}
     </Layout>
   )
 }

@@ -6,6 +6,8 @@ module.exports = {
     CREATE TABLE Categories (
       catId int NOT NULL AUTO_INCREMENT,
       catName varchar(45) NOT NULL,
+      createdAt bigint DEFAULT NULL,
+      updatedAt bigint DEFAULT NULL,
       PRIMARY KEY (catId),
       KEY idx_cat_name (catName)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

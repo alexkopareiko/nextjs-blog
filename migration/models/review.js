@@ -17,14 +17,14 @@ module.exports = (sequelize, DataTypes) => {
     revId: {primaryKey: true, type: DataTypes.INTEGER, allowNull: false,autoIncrement: true},
     revFeedback:{type: DataTypes.TEXT},
     ownerUserId:{
-      type:DataTypes.INTEGER, defaultValue: NULL,
+      type:DataTypes.INTEGER,
       references: {
         model: User,
         key: 'userId',
       } 
     },
     prodUserId:{
-      type:DataTypes.INTEGER, defaultValue: NULL,
+      type:DataTypes.INTEGER,
       references: {
         model: User,
         key: 'userId',
@@ -32,14 +32,14 @@ module.exports = (sequelize, DataTypes) => {
     },
     revRating:{type:DataTypes.INTEGER, defaultValue: '5'},
     prodId:{
-      type:DataTypes.INTEGER, defaultValue: NULL,
+      type:DataTypes.INTEGER,
       references: {
         model: Product,
         key: 'prodId',
       } 
     },
-    createdAt : {type: DataTypes.BIGINT, defaultValue: NULL},
-    updatedAt : {type: DataTypes.BIGINT, defaultValue: NULL},
+    createdAt : {type: DataTypes.BIGINT},
+    updatedAt : {type: DataTypes.BIGINT},
   }, {
     sequelize,
     modelName: 'Review',

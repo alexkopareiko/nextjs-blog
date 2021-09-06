@@ -12,6 +12,8 @@ module.exports = {
       times(5).map(i => {
         const item = {
           catName: cats[i],
+          createdAt : Date.now()-Math.floor(Math.random()*4),
+          updatedAt : Date.now()-Math.floor(Math.random()*4),
         };
         items.push(item);
       })
