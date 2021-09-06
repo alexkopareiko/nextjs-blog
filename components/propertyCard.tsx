@@ -9,7 +9,6 @@ import { useState } from "react";
 export default function PropertyCard({ product }) {
 
     return (
-
         <div className="mt-9 sm:mt-6 sm:px-2">
             <div className="relative pb-5/6" >
                 <img
@@ -22,10 +21,10 @@ export default function PropertyCard({ product }) {
                 <div className="bg-white rounded-lg px-4 py-4 shadow-lg">
                     <div className="flex items-center">
                         <span className="inline-block px-2 py-1 leading-none bg-teal-200 text-teal-800 rounded-full font-medium uppercase tracking-wide text-xs">
-                            Plus
+                            {product.category.catName}
                         </span>
                         <div className="ml-2 text-xs text-gray-600 font-medium uppercase tracking-wide">
-                            {/* {house.beds} beds &bull; {house.baths} baths */}
+                            ({product.prodYear})
                         </div>
                     </div>
                     <h4 className="mt-1 text-gray-900 font-medium text-lg">

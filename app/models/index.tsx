@@ -1,5 +1,5 @@
 import { DB, USER, PASSWORD, HOST, dialect as _dialect, pool as _pool } from "../config/db.config.js";
-
+import { applyExtraSetup } from './extra-setup'
 import { Sequelize } from 'sequelize';
 
 const sequelize = new Sequelize(DB, USER, PASSWORD, {
@@ -24,10 +24,6 @@ db.products = require("./product.model.tsx").default(sequelize, Sequelize);
 db.categories = require("./category.model.tsx").default(sequelize, Sequelize);
 db.reviews = require("./review.model.tsx").default(sequelize, Sequelize);
 
-//const { users, products, categories } = db.models;
-
-db.users.hasMany(db.products, { as: 'author', foreignKey: 'userId' });
-db.products.belongsTo(db.users, { as: 'author', foreignKey: 'userId' });
-
+applyExtraSetup(db);
 
 export default db;

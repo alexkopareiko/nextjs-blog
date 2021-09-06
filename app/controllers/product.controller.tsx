@@ -1,6 +1,7 @@
 const db = require("../models").default;
 const Product = db.products;
 const Category = db.categories;
+const Review = db.reviews;
 
 const User = db.users;
 const Op = db.Sequelize.Op;
@@ -8,7 +9,6 @@ const Op = db.Sequelize.Op;
 
 // Retrieve all Products from the database.
 export const findAll = (req, res) => {
-  console.log()
   Product.findAll()
     .then(data => {
       res.send(data);
@@ -25,14 +25,19 @@ export const getAllProducts = async (req, res) => {
   try {
     const products = await Product.findAll({
       include: [
-        // {
-        //   model: Category,
-        //   as: 'category'
-        // },
+        {
+          model: Category,
+          as: 'category'
+        },
         {
           model: User,
           as: 'author'
-        }
+        },
+        {
+          model: Review,
+          as: 'reviews'
+        },
+
       ]
     });
     return res.status(200).send(products);

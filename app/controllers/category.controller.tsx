@@ -5,8 +5,7 @@ const Op = db.Sequelize.Op;
 
 // Retrieve all Categories from the database.
 export const findAll = (req, res) => {
-    console.log()
-    Category.findAll()
+  Category.findAll()
     .then(data => {
       res.send(data);
     })
