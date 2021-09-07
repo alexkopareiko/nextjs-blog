@@ -6,7 +6,10 @@ export const applyExtraSetup = (db: any) => {
     categories.hasMany(products, { as: 'category', foreignKey: 'catId' });
     products.belongsTo(categories, { as: 'category', foreignKey: 'catId' });
 
-    reviews.hasMany(products, { as: 'reviews', foreignKey: 'prodId', onDelete: 'cascade' });
-    products.belongsTo(reviews, { as: 'reviews', foreignKey: 'prodId', onDelete: 'cascade' });
+    // reviews.hasMany(products, { as: 'reviews', foreignKey: 'prodId', onDelete: 'cascade' });
+    // products.belongsTo(reviews, { as: 'reviews', foreignKey: 'prodId', onDelete: 'cascade' });
+
+    products.hasMany(reviews, { as: 'reviews', foreignKey: 'prodId', onDelete: 'cascade' });
+    reviews.belongsTo(products, { as: 'reviews', foreignKey: 'prodId', onDelete: 'cascade' });
 
 }

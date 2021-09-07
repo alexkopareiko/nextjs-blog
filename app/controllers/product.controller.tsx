@@ -1,3 +1,5 @@
+import { json, Sequelize } from 'sequelize';
+
 const db = require("../models").default;
 const Product = db.products;
 const Category = db.categories;
@@ -22,29 +24,52 @@ export const findAll = (req, res) => {
 };
 
 export const getAllProducts = async (req, res) => {
-  try {
-    const products = await Product.findAll({
-      include: [
-        {
-          model: Category,
-          as: 'category'
-        },
-        {
-          model: User,
-          as: 'author'
-        },
-        {
-          model: Review,
-          as: 'reviews'
-        },
 
-      ]
-    });
-    return res.status(200).send(products);
-  } catch (error: any) {
-    console.log(error)
-    return res.status(500).send(error.message);
-  }
+  let products = await Product.findAll({
+    include: [
+      {
+        model: Category,
+        as: 'category'
+      },
+      {
+        model: User,
+        as: 'author'
+      },
+      // {
+      //   model: Review,
+      //   as: 'reviews'
+      // },
+      {
+        model: Review,
+        as: 'reviews',
+        // attributes: [
+        //   [Sequelize.fn('AVG', Sequelize.col('reviews.revRating')), 'avgRating'],
+        // ],
+        // group: ['Product.prodId', 'reviews.prodId'],
+        // raw: true,
+      },
+    ],
+    group: ['Product.prodId', 'reviews.revId'],
+    //raw: true,
+  });
+
+  products = await JSON.parse(JSON.stringify(products))
+  const list = [];
+  await products.map(product => {
+    let sum = 0;
+    product.reviews.map(review => {
+      sum += Number(review.revRating);
+    })
+    list.push({
+      ...product,
+      rating: Math.ceil(sum / product.reviews.length),
+    })
+  })
+  //console.log(JSON.stringify(products))
+
+  return res.status(200).send(JSON.stringify(list));
+  // return res.status(200).send(products);
+
 }
 
 // Find a single Product with an id
