@@ -5,7 +5,7 @@ import Link from 'next/link'
 import ReviewCard from 'components/reviewCard'
 
 export default function Product({ product, home, query }) {
-    console.log(product)
+    //console.log(product)
     return (
         <Layout {...home}>
             <Head>
@@ -78,7 +78,7 @@ export default function Product({ product, home, query }) {
                     {
                         product.reviews.length === 0 ? '' :
                             product.reviews.map((r) => (
-                                <ReviewCard review={r} key={r.revId} />
+                                <ReviewCard key={r.revId} productId={product.prodId} />
                             ))
                     }
 

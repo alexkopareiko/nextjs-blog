@@ -39,13 +39,20 @@ export const findReviewsByProductId = (req, res) => {
   const id = req.params.id;
 
   Review.findAll({
-    // include: [
-    //   {
-    //     model: Product,
-    //     as: 'product'
-    //   },
-    // ],
-    // group: ['Review.revId'],
+    include: [
+      // {
+      //   model: Product,
+      //   as: 'product'
+      // },
+      {
+        model: User,
+        as: 'prodUser'
+      },
+    ],
+    where: {
+      prodId: id
+    },
+    //group: ['Review.revId'],
   })
     .then(review => {
       res.send({
