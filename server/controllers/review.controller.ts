@@ -1,11 +1,12 @@
 const db = require("../models").default;
 const Review = db.reviews;
 const Op = db.Sequelize.Op;
-
+const User = db.users;
+const Product = db.products;
 
 // Retrieve all Reviews from the database.
 export const findAll = (req, res) => {
-    Review.findAll()
+  Review.findAll()
     .then(data => {
       res.send(data);
     })
@@ -28,6 +29,32 @@ export const findOne = (req, res) => {
     .catch(err => {
       res.status(500).send({
         message: "Error retrieving Review with id=" + id
+      });
+    });
+};
+
+
+// Find a single Product with an id
+export const findReviewsByProductId = (req, res) => {
+  const id = req.params.id;
+
+  Review.findAll({
+    // include: [
+    //   {
+    //     model: Product,
+    //     as: 'product'
+    //   },
+    // ],
+    // group: ['Review.revId'],
+  })
+    .then(review => {
+      res.send({
+        review
+      });
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Error retrieving Reviews with prodId=" + id
       });
     });
 };

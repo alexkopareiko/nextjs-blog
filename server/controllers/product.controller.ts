@@ -35,10 +35,6 @@ export const getAllProducts = async (req, res) => {
         model: User,
         as: 'author'
       },
-      // {
-      //   model: Review,
-      //   as: 'reviews'
-      // },
       {
         model: Review,
         as: 'reviews',
@@ -65,10 +61,8 @@ export const getAllProducts = async (req, res) => {
       rating: Math.ceil(sum / product.reviews.length),
     })
   })
-  //console.log(JSON.stringify(products))
 
   return res.status(200).send(JSON.stringify(list));
-  // return res.status(200).send(products);
 
 }
 
@@ -76,9 +70,33 @@ export const getAllProducts = async (req, res) => {
 export const findOne = (req, res) => {
   const id = req.params.id;
 
-  Product.findByPk(id)
-    .then(data => {
-      res.send(data);
+  Product.findByPk(id, {
+    include: [
+      {
+        model: Category,
+        as: 'category'
+      },
+      {
+        model: User,
+        as: 'author'
+      },
+      {
+        model: Review,
+        as: 'reviews',
+      },
+    ],
+    group: ['Product.prodId', 'reviews.revId'],
+  })
+    .then(product => {
+      product = JSON.parse(JSON.stringify(product))
+      let sum = 0;
+      product.reviews.map(review => {
+        sum += Number(review.revRating);
+      })
+      res.send({
+        ...product,
+        rating: Math.ceil(sum / (product.reviews.length === 0 ? 1 : product.reviews.length))
+      });
     })
     .catch(err => {
       res.status(500).send({

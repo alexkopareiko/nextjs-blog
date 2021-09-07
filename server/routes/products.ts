@@ -2,7 +2,7 @@ import express from "express";
 
 const router = express.Router();
 
-const products = require("../../app/controllers/product.controller");
+const products = require("../controllers/product.controller");
 
 // middleware that is specific to this router
 router.use(function timeLog(req, res, next) {

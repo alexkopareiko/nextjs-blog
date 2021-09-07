@@ -19,10 +19,10 @@ const db: any = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.users = require("./user.model.tsx").default(sequelize, Sequelize);
-db.products = require("./product.model.tsx").default(sequelize, Sequelize);
-db.categories = require("./category.model.tsx").default(sequelize, Sequelize);
-db.reviews = require("./review.model.tsx").default(sequelize, Sequelize);
+db.users = require("./user.model.ts").default(sequelize, Sequelize);
+db.products = require("./product.model.ts").default(sequelize, Sequelize);
+db.categories = require("./category.model.ts").default(sequelize, Sequelize);
+db.reviews = require("./review.model.ts").default(sequelize, Sequelize);
 
 applyExtraSetup(db);
 

@@ -17,10 +17,10 @@ const port = process.env.PORT || 3000;
 
     server.use("/api", apiRouter);
 
-    // server.get('/a', (req: Request, res: Response) => {
-    //    // @ts-ignore
-    //   return app.render(req, res, '/a', req.query)
-    // })
+    server.get('/product/:id', (req: Request, res: Response) => {
+      // @ts-ignore
+      return app.render(req, res, '/product/', { id: req.params.id })
+    })
 
     // server.get('/b', (req: Request, res: Response) => {
     //   return app.render(req, res, '/b', req.body)

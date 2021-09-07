@@ -1,10 +1,6 @@
 import { GetStaticProps } from "next";
 import { useState } from "react";
 
-// export const getStaticProps: GetStaticProps = async (context) => {
-
-// }
-
 
 export default function PropertyCard({ product }) {
 
@@ -44,7 +40,7 @@ export default function PropertyCard({ product }) {
                             >
                                 <path d="M3.283 10.93a1 1 0 01-1.451-1.054l.472-2.754-2-1.951a1 1 0 01.553-1.706l2.766-.402L4.86.557a1 1 0 011.793 0L7.89 3.063l2.766.402a1 1 0 01.554 1.706l-2.002 1.95.473 2.755A1 1 0 018.23 10.93l-2.474-1.3-2.473 1.3z" />
                             </svg>) : ''}
-                        <span className="ml-2">{product.reviews.length} reviews</span>)
+                        <span className="ml-2">{product.reviews.length} reviews</span>
                     </div>
                 </div>
             </div>
