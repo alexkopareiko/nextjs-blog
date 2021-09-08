@@ -1,4 +1,4 @@
-import { users, products, categories, reviews } from '../models';
+//import { users, products, categories, reviews } from '../models';
 
 // Retrieve all Products from the database.
 export const findAll = (req, res) => {
