@@ -66,12 +66,19 @@ export const findOne = (req, res) => {
       {
         model: users,
         as: 'author',
-        // include: [
-        //   {
-        //     model: reviews,
-        //     as: 'reviews',
-        //   }
-        // ]
+        include: [
+          {
+            model: reviews,
+            as: 'reviewsForOwner',
+            include: [
+              {
+                model: users,
+                as: 'prodUser'
+              },
+            ],
+          }
+        ],
+        //group: ['author.reviewsForOwner.revId'],
       },
       {
         model: reviews,
@@ -84,7 +91,7 @@ export const findOne = (req, res) => {
         ],
       },
     ],
-    group: ['Product.prodId', 'reviews.revId'],
+    group: ['Product.prodId', 'reviews.revId', 'author.reviewsForOwner.revId'],
   })
     .then(product => {
       product = JSON.parse(JSON.stringify(product))
@@ -98,6 +105,8 @@ export const findOne = (req, res) => {
       });
     })
     .catch(err => {
+      console.log(err)
+
       res.status(500).send({
         message: "Error retrieving Product with id=" + id
       });

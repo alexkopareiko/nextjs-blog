@@ -17,8 +17,12 @@ export const reviews = reviewsModel(sequelize, Sequelize);
 
 categories.hasMany(products, { as: 'category', foreignKey: 'catId' });
 
+//prodUser - who leaves review
+//prodOwner - who sells product
+
 users.hasMany(products, { as: 'author', foreignKey: 'userId', onDelete: 'cascade' });
 users.hasMany(reviews, { as: 'prodUser', foreignKey: 'prodUserId', onDelete: 'SET NULL' });
+users.hasMany(reviews, { as: 'reviewsForOwner', foreignKey: 'ownerUserId', onDelete: '' });
 
 products.belongsTo(users, { as: 'author', foreignKey: 'userId', onDelete: 'cascade' });
 products.belongsTo(categories, { as: 'category', foreignKey: 'catId' });
@@ -28,4 +32,5 @@ products.hasMany(reviews, { as: 'reviews', foreignKey: 'prodId', onDelete: 'casc
 reviews.belongsTo(products, { as: 'reviews', foreignKey: 'prodId', onDelete: 'cascade' });
 reviews.hasMany(products, { as: 'product', foreignKey: 'prodId', onDelete: 'cascade' });
 reviews.belongsTo(users, { as: 'prodUser', foreignKey: 'prodUserId', onDelete: 'SET NULL' });
+reviews.belongsTo(users, { as: 'reviewsForOwner', foreignKey: 'ownerUserId', onDelete: '' });
 

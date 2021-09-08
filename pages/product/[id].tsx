@@ -83,12 +83,12 @@ export default function Product({ product, home, query }) {
                             ))
                     }
                     {
-                        product.reviews.length === 0 ? '' :
+                        product.author.reviewsForOwner.length === 0 ? '' :
                             (<p className="text-2xl px-3 mt-3">Reviews for {product.author.userFirstName}&nbsp;{product.author.userLastName}:</p>)
                     }
                     {
-                        product.reviews.length === 0 ? '' :
-                            product.reviews.map((r) => (
+                        product.author.reviewsForOwner === 0 ? '' :
+                            product.author.reviewsForOwner.map((r) => (
                                 <ReviewCard key={r.revId} review={r} />
                             ))
                     }
