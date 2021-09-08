@@ -1,29 +1,31 @@
-import { DB, USER, PASSWORD, HOST, dialect as _dialect, pool as _pool } from "../config/db.config.js";
-import { applyExtraSetup } from './extra-setup'
 import { Sequelize } from 'sequelize';
 
-const sequelize = new Sequelize(DB, USER, PASSWORD, {
-  host: HOST,
-  dialect: _dialect,
+import usersModel from './user.model';
+import productsModel from './product.model';
+import categoriesModel from './category.model';
+import reviewsModel from './review.model';
 
-  pool: {
-    max: _pool.max,
-    min: _pool.min,
-    acquire: _pool.acquire,
-    idle: _pool.idle
-  }
-});
+import config from '../../config.js';
+const { database, username, password, host, dialect } = config.db;
 
-const db: any = {};
+const sequelize = new Sequelize(database, username, password, { host, dialect });
 
-db.Sequelize = Sequelize;
-db.sequelize = sequelize;
+export const users = usersModel(sequelize, Sequelize);
+export const products = productsModel(sequelize, Sequelize);
+export const categories = categoriesModel(sequelize, Sequelize);
+export const reviews = reviewsModel(sequelize, Sequelize);
 
-db.users = require("./user.model.ts").default(sequelize, Sequelize);
-db.products = require("./product.model.ts").default(sequelize, Sequelize);
-db.categories = require("./category.model.ts").default(sequelize, Sequelize);
-db.reviews = require("./review.model.ts").default(sequelize, Sequelize);
+categories.hasMany(products, { as: 'category', foreignKey: 'catId' });
 
-applyExtraSetup(db);
+users.hasMany(products, { as: 'author', foreignKey: 'userId', onDelete: 'cascade' });
+users.hasMany(reviews, { as: 'prodUser', foreignKey: 'prodUserId', onDelete: 'SET NULL' });
 
-export default db;
+products.belongsTo(users, { as: 'author', foreignKey: 'userId', onDelete: 'cascade' });
+products.belongsTo(categories, { as: 'category', foreignKey: 'catId' });
+products.belongsTo(reviews, { as: 'product', foreignKey: 'prodId', onDelete: 'cascade' });
+products.hasMany(reviews, { as: 'reviews', foreignKey: 'prodId', onDelete: 'cascade' });
+
+reviews.belongsTo(products, { as: 'reviews', foreignKey: 'prodId', onDelete: 'cascade' });
+reviews.hasMany(products, { as: 'product', foreignKey: 'prodId', onDelete: 'cascade' });
+reviews.belongsTo(users, { as: 'prodUser', foreignKey: 'prodUserId', onDelete: 'SET NULL' });
+

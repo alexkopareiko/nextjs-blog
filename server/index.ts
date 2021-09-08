@@ -18,8 +18,9 @@ const port = process.env.PORT || 3000;
     server.use("/api", apiRouter);
 
     server.get('/product/:id', (req: Request, res: Response) => {
+      console.log('/product/:id', req.params)
       // @ts-ignore
-      return app.render(req, res, '/product/', { id: req.params.id })
+      return app.render(req, res, '/product/[id]', { id: req.params.id })
     })
 
     // server.get('/b', (req: Request, res: Response) => {

@@ -1,12 +1,8 @@
-const db = require("../models").default;
-const Review = db.reviews;
-const Op = db.Sequelize.Op;
-const User = db.users;
-const Product = db.products;
+import { users, reviews } from '../models';
 
 // Retrieve all Reviews from the database.
 export const findAll = (req, res) => {
-  Review.findAll()
+  reviews.findAll()
     .then(data => {
       res.send(data);
     })
@@ -22,7 +18,7 @@ export const findAll = (req, res) => {
 export const findOne = (req, res) => {
   const id = req.params.id;
 
-  Review.findByPk(id)
+  reviews.findByPk(id)
     .then(data => {
       res.send(data);
     })
@@ -38,14 +34,14 @@ export const findOne = (req, res) => {
 export const findReviewsByProductId = (req, res) => {
   const id = req.params.id;
 
-  Review.findAll({
+  reviews.findAll({
     include: [
       // {
       //   model: Product,
       //   as: 'product'
       // },
       {
-        model: User,
+        model: users,
         as: 'prodUser'
       },
     ],

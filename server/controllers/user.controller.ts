@@ -1,12 +1,9 @@
-const db = require("../models").default;
-const User = db.users;
-const Op = db.Sequelize.Op;
-
+import { users, products, categories, reviews } from '../models';
 
 // Retrieve all Users from the database.
 export const findAll = (req, res) => {
   console.log()
-  User.findAll()
+  users.findAll()
     .then(data => {
       res.send(data);
     })
@@ -22,7 +19,7 @@ export const findAll = (req, res) => {
 export const findOne = (req, res) => {
   const id = req.params.id;
 
-  User.findByPk(id)
+  users.findByPk(id)
     .then(data => {
       res.send(data);
     })

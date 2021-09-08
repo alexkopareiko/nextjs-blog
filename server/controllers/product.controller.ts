@@ -1,17 +1,8 @@
-import { json, Sequelize } from 'sequelize';
-
-const db = require("../models").default;
-const Product = db.products;
-const Category = db.categories;
-const Review = db.reviews;
-
-const User = db.users;
-const Op = db.Sequelize.Op;
-
+import { users, products, categories, reviews } from '../models';
 
 // Retrieve all Products from the database.
 export const findAll = (req, res) => {
-  Product.findAll()
+  products.findAll()
     .then(data => {
       res.send(data);
     })
@@ -25,33 +16,29 @@ export const findAll = (req, res) => {
 
 export const getAllProducts = async (req, res) => {
 
-  let products = await Product.findAll({
+  let products_loc = await products.findAll({
     include: [
       {
-        model: Category,
+        model: categories,
         as: 'category'
       },
       {
-        model: User,
+        model: users,
         as: 'author'
       },
       {
-        model: Review,
+        model: reviews,
         as: 'reviews',
-        // attributes: [
-        //   [Sequelize.fn('AVG', Sequelize.col('reviews.revRating')), 'avgRating'],
-        // ],
-        // group: ['Product.prodId', 'reviews.prodId'],
-        // raw: true,
       },
     ],
     group: ['Product.prodId', 'reviews.revId'],
     //raw: true,
   });
 
-  products = await JSON.parse(JSON.stringify(products))
+  //console.log(JSON.stringify(products_loc))
+  products_loc = await JSON.parse(JSON.stringify(products_loc))
   const list = [];
-  await products.map(product => {
+  await products_loc.map(product => {
     let sum = 0;
     product.reviews.map(review => {
       sum += Number(review.revRating);
@@ -70,19 +57,31 @@ export const getAllProducts = async (req, res) => {
 export const findOne = (req, res) => {
   const id = req.params.id;
 
-  Product.findByPk(id, {
+  products.findByPk(id, {
     include: [
       {
-        model: Category,
+        model: categories,
         as: 'category'
       },
       {
-        model: User,
-        as: 'author'
+        model: users,
+        as: 'author',
+        // include: [
+        //   {
+        //     model: reviews,
+        //     as: 'reviews',
+        //   }
+        // ]
       },
       {
-        model: Review,
+        model: reviews,
         as: 'reviews',
+        include: [
+          {
+            model: users,
+            as: 'prodUser'
+          },
+        ],
       },
     ],
     group: ['Product.prodId', 'reviews.revId'],

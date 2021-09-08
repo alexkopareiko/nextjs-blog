@@ -5,17 +5,18 @@ import Link from 'next/link'
 import ReviewCard from 'components/reviewCard'
 
 export default function Product({ product, home, query }) {
-    //console.log(product)
+    console.log(product)
     return (
         <Layout {...home}>
             <Head>
                 <title></title>
             </Head>
+            <Link href={"/"} >
+                <a className="fixed z-10"><span className="px-3 py-2 bg-indigo-300 rounded-xl mx-3 hover:bg-indigo-200">Back</span></a>
+            </Link>
             <article>
-                <Link href={"/"}>
-                    <a><span className="px-3 py-2 bg-indigo-300 rounded-xl mx-3 hover:bg-indigo-200">Back</span></a>
-                </Link>
-                <h1 className="text-gray-900 text-xl px-3 mt-3">{product.prodTitle}</h1>
+
+                <h1 className="text-gray-900 text-2xl px-3 mt-3">{product.prodTitle}</h1>
                 <div className="flex shadow-md relative flex-col">
                     <div className="pt-5">
                         <img src={product.prodImg} className="inset-0 w-full" />
@@ -73,12 +74,22 @@ export default function Product({ product, home, query }) {
                     </div>
                     {
                         product.reviews.length === 0 ? '' :
-                            (<p className="text-2xl px-3 mt-3">Reviews:</p>)
+                            (<p className="text-2xl px-3 mt-3">Reviews for {product.prodTitle}:</p>)
                     }
                     {
                         product.reviews.length === 0 ? '' :
                             product.reviews.map((r) => (
-                                <ReviewCard key={r.revId} productId={product.prodId} />
+                                <ReviewCard key={r.revId} review={r} />
+                            ))
+                    }
+                    {
+                        product.reviews.length === 0 ? '' :
+                            (<p className="text-2xl px-3 mt-3">Reviews for {product.author.userFirstName}&nbsp;{product.author.userLastName}:</p>)
+                    }
+                    {
+                        product.reviews.length === 0 ? '' :
+                            product.reviews.map((r) => (
+                                <ReviewCard key={r.revId} review={r} />
                             ))
                     }
 
@@ -89,7 +100,7 @@ export default function Product({ product, home, query }) {
 }
 
 Product.getInitialProps = async (ctx) => {
-    // console.log(ctx.query)
+    console.log('Hello Max 1!!!');
     const res = await fetch("http://localhost:3000/api/products/" + ctx.query.id);
     const product = await res.json();
     return {

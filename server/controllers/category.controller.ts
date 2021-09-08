@@ -1,11 +1,8 @@
-const db = require("../models").default;
-const Category = db.categories;
-const Op = db.Sequelize.Op;
-
+import { categories } from '../models';
 
 // Retrieve all Categories from the database.
 export const findAll = (req, res) => {
-  Category.findAll()
+  categories.findAll()
     .then(data => {
       res.send(data);
     })
@@ -21,7 +18,7 @@ export const findAll = (req, res) => {
 export const findOne = (req, res) => {
   const id = req.params.id;
 
-  Category.findByPk(id)
+  categories.findByPk(id)
     .then(data => {
       res.send(data);
     })
