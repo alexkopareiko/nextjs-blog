@@ -2,7 +2,6 @@ import express, { Request, Response } from "express";
 import { parse } from "url";
 import next from "next";
 
-import apiRouter from "./routes/index";
 import { loadControllers, scopePerRequest } from "awilix-express";
 import { asValue, createContainer } from "awilix";
 
@@ -11,7 +10,7 @@ const app = next({ dev });
 const handle = app.getRequestHandler();
 const port = process.env.PORT || 3000;
 
-import { users, products, categories, reviews } from './models';
+import { users, products, categories, reviews, initModels } from './models';
 
 const container = createContainer();
 container.register({
@@ -20,6 +19,8 @@ container.register({
   Category: asValue(categories),
   Review: asValue(reviews),
 });
+
+initModels();
 
 (async () => {
   try {
@@ -30,19 +31,11 @@ container.register({
     server.use(scopePerRequest(container))
     server.use(loadControllers('./controllers/*.ts', { cwd: __dirname }))
 
-
-    // server.use("/api", apiRouter);
-
-    // server.get('/product/:id', (req: Request, res: Response) => {
-    //   console.log('/product/:id', req.params)
-    //   // @ts-ignore
-    //   return app.render(req, res, '/product/[id]', { id: req.params.id })
-    // })
-
-    // // server.get('/b', (req: Request, res: Response) => {
-    // //   return app.render(req, res, '/b', req.body)
-    // // })
-
+    server.get('/product/:id', (req: Request, res: Response) => {
+      console.log('/product/:id', req.params)
+      // @ts-ignore
+      return app.render(req, res, '/product/[id]', { id: req.params.id })
+    })
 
     server.all("*", (req: Request, res: Response) => {
       return handle(req, res);

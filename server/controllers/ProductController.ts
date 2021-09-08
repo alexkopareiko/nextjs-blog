@@ -1,26 +1,15 @@
-import { categories, users, reviews } from './../models/index';
-import bodyParser from 'body-parser'
 import { route, GET, POST, before } from 'awilix-express' // or `awilix-router-core`
-import { asClass } from 'awilix';
+import BaseContext from '../BaseContext'
 
+@route('/api/product')
+export default class ProductController extends BaseContext {
 
-@route('/product')
-export default class ProductController {
-    products
-    categories
-    users
-    reviews
-    constructor({ Product, Category, User, Review }) {
-        this.products = Product;
-        this.categories = Category;
-        this.users = User;
-        this.reviews = Review;
-    }
-
-    @route('/list')
+    @route('/list') //Get all products
     @GET()
     getAllProducts(req, res) {
-        this.products.findAll(
+        const { Product, User } = this.di;
+
+        Product.findAll(
             {
                 include: [
                     {
@@ -28,7 +17,7 @@ export default class ProductController {
                         as: 'category'
                     },
                     {
-                        model: this.users,
+                        model: User,
                         as: 'author'
                     },
                     {
@@ -63,4 +52,65 @@ export default class ProductController {
             });
     }
 
+
+    @route('/:id')     // Find a single Product with an id
+    @GET()
+    findOne(req, res) {
+        const id = req.params.id;
+        this.products.findByPk(id, {
+            include: [
+                {
+                    model: this.categories,
+                    as: 'category'
+                },
+                {
+                    model: this.users,
+                    as: 'author',
+                    include: [
+                        {
+                            model: this.reviews,
+                            as: 'reviewsForOwner',
+                            include: [
+                                {
+                                    model: this.users,
+                                    as: 'prodUser'
+                                },
+                            ],
+                        }
+                    ],
+                },
+                {
+                    model: this.reviews,
+                    as: 'reviews',
+                    include: [
+                        {
+                            model: this.users,
+                            as: 'prodUser'
+                        },
+                    ],
+                },
+            ],
+            group: ['Product.prodId', 'reviews.revId', 'author.reviewsForOwner.revId'],
+        })
+            .then(product => {
+                product = JSON.parse(JSON.stringify(product))
+                let sum = 0;
+                product.reviews.map(review => {
+                    sum += Number(review.revRating);
+                })
+                let rating = product.reviews.length === 0 ? 0 : Math.ceil(sum / product.reviews.length);
+                res.send({
+                    ...product,
+                    rating
+                });
+            })
+            .catch(err => {
+                console.log(err)
+                res.status(500).send({
+                    message: "Error retrieving Product with id=" + id
+                });
+            });
+    };
+
 }
+
