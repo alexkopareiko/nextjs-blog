@@ -1,11 +1,11 @@
 import { Sequelize } from 'sequelize';
-import awilix from 'awilix';
 import { asFunction, asValue, createContainer, InjectionMode } from 'awilix';
 import mysql2 from "mysql2";
 import coreConfig from '../config';
 import modelContainer, { IModelContainer } from './models';
+import serviceContainer, { IServiceContainer } from './services';
 
-export interface IContextContainer extends IModelContainer {
+export interface IContextContainer extends IModelContainer, IServiceContainer {
     config: any;
     db: Sequelize;
 }
@@ -28,6 +28,7 @@ const createDB = (ctx: IContextContainer) => {
 
 container.register({
     ...modelContainer,
+    ...serviceContainer,
     config: asValue(coreConfig),
     db: asFunction(createDB).singleton(),
 });

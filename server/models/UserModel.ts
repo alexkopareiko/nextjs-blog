@@ -2,17 +2,15 @@ import { Model, DataTypes, BuildOptions } from 'sequelize';
 
 import { IContextContainer } from '../container';
 
-
-interface IUser extends Model {
+export interface IUser extends Model {
   userId: number;
-  userFirstName: string;
-  userLasstName: string;
   userEmail: string;
-  password: string;
-  companyId: number;
-  role: string;
-  photo: string;
-  resetPasswordLink: string;
+  userPasswd: string;
+  userRole: string;
+  userPhone: string;
+  userFirstName: string;
+  userLastName: string;
+  userImg: string;
   createdAt: number;
   updatedAt: number;
 }

@@ -1,11 +1,75 @@
 import Layout from '../../components/layout'
 import Head from 'next/head'
-import utilStyles from '../../styles/utils.module.css'
 import Link from 'next/link'
 import ReviewCard from 'components/reviewCard'
 
-export default function Product({ product, home, query }) {
-    console.log(product)
+export interface IUser {
+    userId: number;
+    userEmail: string;
+    userPasswd: string;
+    userRole: string;
+    userPhone: string;
+    userFirstName: string;
+    userLastName: string;
+    userImg: string;
+    createdAt: number;
+    updatedAt: number;
+    reviewsForOwner: Array<IReview>;
+
+}
+
+
+interface IReview {
+    revId: number;
+    revFeedback: string;
+    ownerUserId: number;
+    prodUserId: number;
+    revRating: number;
+    prodId: number;
+    createdAt: number;
+    updatedAt: number;
+}
+
+interface ICategory {
+    catId: number;
+    catName: string;
+    createdAt: number;
+    updatedAt: number;
+}
+
+
+interface IProduct {
+    prodId: number;
+    prodTitle: string;
+    prodDesc: string;
+    catId: number;
+    userId: number;
+    prodPrice: number;
+    prodYear: number;
+    prodImg: string;
+    createdAt: number;
+    updatedAt: number;
+    category: ICategory,
+    rating: number;
+    reviews: Array<IReview>,
+    author: IUser,
+}
+
+interface IResponseData {
+    data: IProduct
+}
+
+interface IGeneral {
+    data: IResponseData;
+    home: any;
+    message: string;
+    error: any;
+}
+
+export default function Product(props: IGeneral) {
+    const { home, message, data, error } = props;
+    let product = data.data;
+    if (error) return <div>{message}</div>
     return (
         <Layout {...home}>
             <Head>
@@ -14,6 +78,7 @@ export default function Product({ product, home, query }) {
             <Link href={"/"} >
                 <a className="fixed z-10"><span className="px-3 py-2 bg-indigo-300 rounded-xl mx-3 hover:bg-indigo-200">Back</span></a>
             </Link>
+
             <article>
 
                 <h1 className="text-gray-900 text-2xl px-3 mt-3">{product.prodTitle}</h1>
@@ -87,7 +152,7 @@ export default function Product({ product, home, query }) {
                             (<p className="text-2xl px-3 mt-3">Reviews for {product.author.userFirstName}&nbsp;{product.author.userLastName}:</p>)
                     }
                     {
-                        product.author.reviewsForOwner === 0 ? '' :
+                        product.author.reviewsForOwner.length === 0 ? '' :
                             product.author.reviewsForOwner.map((r) => (
                                 <ReviewCard key={r.revId} review={r} />
                             ))
@@ -95,14 +160,15 @@ export default function Product({ product, home, query }) {
 
                 </div>
             </article>
+
         </Layout>
     )
 }
 
 Product.getInitialProps = async (ctx) => {
     const res = await fetch("http://localhost:3000/api/product/" + ctx.query.id);
-    const product = await res.json();
+    const data = await res.json();
     return {
-        product
+        data
     }
 }

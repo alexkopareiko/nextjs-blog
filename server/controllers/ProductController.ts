@@ -6,49 +6,24 @@ export default class ProductModelController extends BaseContext {
 
     @route('/list') //Get all products
     @GET()
-    getAllProductModels(req, res) {
-        const { ProductModel, UserModel, CategoryModel, ReviewModel } = this.di;
-
-        ProductModel.findAll(
-            {
-                include: [
-                    {
-                        model: CategoryModel,
-                        as: 'category'
-                    },
-                    {
-                        model: UserModel,
-                        as: 'author'
-                    },
-                    {
-                        model: ReviewModel,
-                        as: 'reviews',
-                    },
-                ],
-                group: ['Products.prodId', 'reviews.revId'],
-                //raw: true,
-            })
+    getAllProducts(req, res) {
+        const { ProductService } = this.di;
+        return ProductService.getAllProducts()
             .then(data => {
-                const products = JSON.parse(JSON.stringify(data))
-                const list = [];
-                products.map(product => {
-                    let sum = 0;
-                    product.reviews.map(review => {
-                        sum += Number(review.revRating);
-                    })
-                    let rating = product.reviews.length === 0 ? 0 : Math.ceil(sum / product.reviews.length);
-                    list.push({
-                        ...product,
-                        rating,
-                    })
-                })
-                res.send(list);
+                const answer = {
+                    data: data,
+                    message: "request successfull",
+                    error: false
+                }
+                res.send(answer);
             })
             .catch(err => {
-                res.status(500).send({
-                    message:
-                        err.message || "Some error occurred while retrieving tutorials."
-                });
+                const answer = {
+                    data: null,
+                    message: err,
+                    error: true
+                }
+                res.status(500).send(answer);
             });
     }
 
@@ -56,61 +31,24 @@ export default class ProductModelController extends BaseContext {
     @route('/:id')     // Find a single ProductModel with an id
     @GET()
     findOne(req, res) {
-        const { ProductModel, UserModel, CategoryModel, ReviewModel } = this.di;
-
+        const { ProductService } = this.di;
         const id = req.params.id;
-        ProductModel.findByPk(id, {
-            include: [
-                {
-                    model: CategoryModel,
-                    as: 'category'
-                },
-                {
-                    model: UserModel,
-                    as: 'author',
-                    include: [
-                        {
-                            model: ReviewModel,
-                            as: 'reviewsForOwner',
-                            include: [
-                                {
-                                    model: UserModel,
-                                    as: 'prodUser'
-                                },
-                            ],
-                        }
-                    ],
-                },
-                {
-                    model: ReviewModel,
-                    as: 'reviews',
-                    include: [
-                        {
-                            model: UserModel,
-                            as: 'prodUser'
-                        },
-                    ],
-                },
-            ],
-            group: ['Products.prodId', 'reviews.revId', 'author.reviewsForOwner.revId'],
-        })
-            .then(product => {
-                product = JSON.parse(JSON.stringify(product))
-                let sum = 0;
-                product.reviews.map(review => {
-                    sum += Number(review.revRating);
-                })
-                let rating = product.reviews.length === 0 ? 0 : Math.ceil(sum / product.reviews.length);
-                res.send({
-                    ...product,
-                    rating
-                });
+        return ProductService.findOne(id)
+            .then(data => {
+                const answer = {
+                    data: data,
+                    message: "request successfull",
+                    error: false
+                }
+                res.send(answer);
             })
             .catch(err => {
-                console.log(err)
-                res.status(500).send({
-                    message: "Error retrieving ProductModel with id=" + id
-                });
+                const answer = {
+                    data: null,
+                    message: err,
+                    error: true
+                }
+                res.status(500).send(answer);
             });
     };
 

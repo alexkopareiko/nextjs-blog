@@ -7,64 +7,73 @@ export default class ReviewController extends BaseContext {
     @route('/list') //Get all reviews
     @GET()
     getAllReviews(req, res) {
-        const { ReviewModel } = this.di;
-        ReviewModel.findAll()
+        const { ReviewService } = this.di;
+        return ReviewService.getAllReviews()
             .then(data => {
-                res.send(data);
+                const answer = {
+                    data: data,
+                    message: "reviews are found successfully",
+                    error: false
+                }
+                res.send(answer);
             })
             .catch(err => {
-                res.status(500).send({
-                    message:
-                        err.message || "Some error occurred while retrieving reviews."
-                });
+                const answer = {
+                    data: null,
+                    message: err,
+                    error: true
+                }
+                res.status(500).send(answer);
             });
     }
 
     @route('/:id') // Find a single Review with an id
     @GET()
     findOne(req, res) {
-        const { ReviewModel } = this.di;
+        const { ReviewService } = this.di;
         const id = req.params.id;
-        ReviewModel.findByPk(id)
+        return ReviewService.getReviewById(id)
             .then(data => {
-                res.send(data);
+                const answer = {
+                    data: data,
+                    message: "request successfull",
+                    error: false
+                }
+                res.send(answer);
             })
             .catch(err => {
-                res.status(500).send({
-                    message: "Error retrieving Review with id=" + id
-                });
+                const answer = {
+                    data: null,
+                    message: err,
+                    error: true
+                }
+                res.status(500).send(answer);
             });
-
     };
 
 
 
-    @route('/byProdId/:id')     // Find a single Review by prodId
+    @route('/by_prod_id/:id')     // Find Reviews by prodId
     @GET()
     findReviewsByProductId(req, res) {
         const id = req.params.id;
-        const { ReviewModel, UserModel } = this.di;
-        ReviewModel.findAll({
-            include: [
-                {
-                    model: UserModel,
-                    as: 'prodUser'
-                },
-            ],
-            where: {
-                prodId: id
-            },
-            //group: ['Reviews.revId'],
-        })
-            .then(review => {
-                res.send({
-                    review
-                });
+        const { ReviewService } = this.di;
+        return ReviewService.findReviewsByProductId(id)
+            .then(data => {
+                const answer = {
+                    data: data,
+                    message: "request successfull",
+                    error: false
+                }
+                res.send(answer);
             })
             .catch(err => {
-                res.status(500).send({
-                    message: "Error retrieving Reviews with prodId=" + id
-                });
+                const answer = {
+                    data: null,
+                    message: err,
+                    error: true
+                }
+                res.status(500).send(answer);
             });
     };
 

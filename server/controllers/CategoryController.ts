@@ -1,24 +1,32 @@
 import { route, GET } from 'awilix-express' // or `awilix-router-core`
 import BaseContext from '../BaseContext'
+import { Request, Response } from "express";
 
 @route('/api/category')
 export default class CategoryController extends BaseContext {
 
     @route('/list') //Get all categories
     @GET()
-    getAllCategories(req, res) {
-
-        const { CategoryModel } = this.di;
-        CategoryModel.findAll()
+    getAllCategories(req: Request, res: Response) {
+        const { CategoryService } = this.di;
+        return CategoryService.getAllCategories()
             .then(data => {
-                res.send(data);
+                const answer = {
+                    data: data,
+                    message: "request successfull",
+                    error: false
+                }
+                res.send(answer);
             })
             .catch(err => {
-                res.status(500).send({
-                    message:
-                        err.message || "Some error occurred while retrieving categories."
-                });
+                const answer = {
+                    data: null,
+                    message: err,
+                    error: true
+                }
+                res.status(500).send(answer);
             });
+
     }
 
 
@@ -26,18 +34,25 @@ export default class CategoryController extends BaseContext {
     @route('/:id')     // Find a single Category with an id
     @GET()
     findOne(req, res) {
-        const { CategoryModel } = this.di;
+        const { CategoryService } = this.di;
         const id = req.params.id;
-        CategoryModel.findByPk(id)
+        return CategoryService.getCategoryById(id)
             .then(data => {
-                res.send(data);
+                const answer = {
+                    data: data,
+                    message: "request successfull",
+                    error: false
+                }
+                res.send(answer);
             })
             .catch(err => {
-                res.status(500).send({
-                    message: "Error retrieving Category with id=" + id
-                });
+                const answer = {
+                    data: null,
+                    message: err,
+                    error: true
+                }
+                res.status(500).send(answer);
             });
-
     };
 
 }

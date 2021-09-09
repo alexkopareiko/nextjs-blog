@@ -1,41 +1,57 @@
 import { route, GET } from 'awilix-express' // or `awilix-router-core`
 import BaseContext from '../BaseContext'
+import { Request, Response } from "express";
 
 @route('/api/user')
 export default class UserController extends BaseContext {
 
     @route('/list') //Get all users
     @GET()
-    getAllUsers(req, res) {
-        const { UserModel } = this.di;
-        UserModel.findAll()
+    getAllUsers(req: Request, res: Response) {
+        const { UserSeviceCustom } = this.di;
+        return UserSeviceCustom.getAllUsers()
             .then(data => {
-                res.send(data);
+                const answer = {
+                    data: data,
+                    message: "request successfull",
+                    error: false
+                }
+                res.send(answer);
             })
             .catch(err => {
-                res.status(500).send({
-                    message:
-                        err.message || "Some error occurred while retrieving users."
-                });
+                const answer = {
+                    data: null,
+                    message: err,
+                    error: true
+                }
+                res.status(500).send(answer);
             });
+
     }
 
 
     @route('/:id') // Find a single UserModel with an id
     @GET()
     findOne(req, res) {
-        const { UserModel } = this.di;
+        const { UserSeviceCustom } = this.di;
         const id = req.params.id;
-        UserModel.findByPk(id)
+        return UserSeviceCustom.getUserById(id)
             .then(data => {
-                res.send(data);
+                const answer = {
+                    data: data,
+                    message: "request successfull",
+                    error: false
+                }
+                res.send(answer);
             })
             .catch(err => {
-                res.status(500).send({
-                    message: "Error retrieving User with id=" + id
-                });
+                const answer = {
+                    data: null,
+                    message: err,
+                    error: true
+                }
+                res.status(500).send(answer);
             });
-
     };
 
 }

@@ -3,8 +3,9 @@ import Link from 'next/link'
 import PropertyCard from "../components/propertyCard";
 import React from 'react';
 
-export default function Home({ data }) {
-  // console.log(data)
+export default function Home({ data, error, message }) {
+  if (error) return <div>{message}</div>
+  else data = data.data;
   return (
     <Layout>
       <div className="px-4 sm:grid sm:grid-cols-2 sm:pb-8 lg:grid-cols-3 2xl:grid-cols-4">
