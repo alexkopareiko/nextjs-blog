@@ -100,7 +100,7 @@ export default function Product({ product, home, query }) {
 }
 
 Product.getInitialProps = async (ctx) => {
-    const res = await fetch("http://localhost:3000/api/products/" + ctx.query.id);
+    const res = await fetch("http://localhost:3000/api/product/" + ctx.query.id);
     const product = await res.json();
     return {
         product

@@ -1,4 +1,4 @@
-import { route, GET, POST, before } from 'awilix-express' // or `awilix-router-core`
+import { route, GET } from 'awilix-express' // or `awilix-router-core`
 import BaseContext from '../BaseContext'
 
 @route('/api/product')
@@ -7,13 +7,13 @@ export default class ProductController extends BaseContext {
     @route('/list') //Get all products
     @GET()
     getAllProducts(req, res) {
-        const { Product, User } = this.di;
+        const { Product, User, Category, Review } = this.di;
 
         Product.findAll(
             {
                 include: [
                     {
-                        model: this.categories,
+                        model: Category,
                         as: 'category'
                     },
                     {
@@ -21,11 +21,11 @@ export default class ProductController extends BaseContext {
                         as: 'author'
                     },
                     {
-                        model: this.reviews,
+                        model: Review,
                         as: 'reviews',
                     },
                 ],
-                group: ['Product.prodId', 'reviews.revId'],
+                group: ['Products.prodId', 'reviews.revId'],
                 //raw: true,
             })
             .then(data => {
@@ -56,23 +56,25 @@ export default class ProductController extends BaseContext {
     @route('/:id')     // Find a single Product with an id
     @GET()
     findOne(req, res) {
+        const { Product, User, Category, Review } = this.di;
+
         const id = req.params.id;
-        this.products.findByPk(id, {
+        Product.findByPk(id, {
             include: [
                 {
-                    model: this.categories,
+                    model: Category,
                     as: 'category'
                 },
                 {
-                    model: this.users,
+                    model: User,
                     as: 'author',
                     include: [
                         {
-                            model: this.reviews,
+                            model: Review,
                             as: 'reviewsForOwner',
                             include: [
                                 {
-                                    model: this.users,
+                                    model: User,
                                     as: 'prodUser'
                                 },
                             ],
@@ -80,17 +82,17 @@ export default class ProductController extends BaseContext {
                     ],
                 },
                 {
-                    model: this.reviews,
+                    model: Review,
                     as: 'reviews',
                     include: [
                         {
-                            model: this.users,
+                            model: User,
                             as: 'prodUser'
                         },
                     ],
                 },
             ],
-            group: ['Product.prodId', 'reviews.revId', 'author.reviewsForOwner.revId'],
+            group: ['Products.prodId', 'reviews.revId', 'author.reviewsForOwner.revId'],
         })
             .then(product => {
                 product = JSON.parse(JSON.stringify(product))

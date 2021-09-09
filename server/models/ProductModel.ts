@@ -1,13 +1,22 @@
 import { Model, DataTypes, BuildOptions } from 'sequelize';
 
 import { IContextContainer } from '../container';
+import { IReview } from './ReviewModel';
+
 
 
 interface IProduct extends Model {
+    prodId: number;
+    prodTitle: string;
+    prodDesc: string;
+    catId: number;
     userId: number;
-
+    prodPrice: number;
+    prodYear: number;
+    prodImg: string;
     createdAt: number;
     updatedAt: number;
+    reviews: Array<IReview>
 }
 
 
@@ -53,6 +62,10 @@ export default (ctx: IContextContainer) => {
 
     Product.initModels = () => {
 
+        Product.belongsTo(ctx.User, { as: 'author', foreignKey: 'userId', onDelete: 'cascade' });
+        Product.belongsTo(ctx.Category, { as: 'category', foreignKey: 'catId' });
+        Product.belongsTo(ctx.Review, { as: 'product', foreignKey: 'prodId', onDelete: 'cascade' });
+        Product.hasMany(ctx.Review, { as: 'reviews', foreignKey: 'prodId', onDelete: 'cascade' });
 
     }
 

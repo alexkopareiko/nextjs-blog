@@ -1,26 +1,14 @@
 import express, { Request, Response } from "express";
-import { parse } from "url";
 import next from "next";
 
 import { loadControllers, scopePerRequest } from "awilix-express";
-import { asValue, createContainer } from "awilix";
+import container from "./container";
 
 const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });
 const handle = app.getRequestHandler();
 const port = process.env.PORT || 3000;
 
-import { users, products, categories, reviews, initModels } from './models';
-
-const container = createContainer();
-container.register({
-  User: asValue(users),
-  Product: asValue(products),
-  Category: asValue(categories),
-  Review: asValue(reviews),
-});
-
-initModels();
 
 (async () => {
   try {
