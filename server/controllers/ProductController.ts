@@ -2,26 +2,26 @@ import { route, GET } from 'awilix-express' // or `awilix-router-core`
 import BaseContext from '../BaseContext'
 
 @route('/api/product')
-export default class ProductController extends BaseContext {
+export default class ProductModelController extends BaseContext {
 
     @route('/list') //Get all products
     @GET()
-    getAllProducts(req, res) {
-        const { Product, User, Category, Review } = this.di;
+    getAllProductModels(req, res) {
+        const { ProductModel, UserModel, CategoryModel, ReviewModel } = this.di;
 
-        Product.findAll(
+        ProductModel.findAll(
             {
                 include: [
                     {
-                        model: Category,
+                        model: CategoryModel,
                         as: 'category'
                     },
                     {
-                        model: User,
+                        model: UserModel,
                         as: 'author'
                     },
                     {
-                        model: Review,
+                        model: ReviewModel,
                         as: 'reviews',
                     },
                 ],
@@ -53,28 +53,28 @@ export default class ProductController extends BaseContext {
     }
 
 
-    @route('/:id')     // Find a single Product with an id
+    @route('/:id')     // Find a single ProductModel with an id
     @GET()
     findOne(req, res) {
-        const { Product, User, Category, Review } = this.di;
+        const { ProductModel, UserModel, CategoryModel, ReviewModel } = this.di;
 
         const id = req.params.id;
-        Product.findByPk(id, {
+        ProductModel.findByPk(id, {
             include: [
                 {
-                    model: Category,
+                    model: CategoryModel,
                     as: 'category'
                 },
                 {
-                    model: User,
+                    model: UserModel,
                     as: 'author',
                     include: [
                         {
-                            model: Review,
+                            model: ReviewModel,
                             as: 'reviewsForOwner',
                             include: [
                                 {
-                                    model: User,
+                                    model: UserModel,
                                     as: 'prodUser'
                                 },
                             ],
@@ -82,11 +82,11 @@ export default class ProductController extends BaseContext {
                     ],
                 },
                 {
-                    model: Review,
+                    model: ReviewModel,
                     as: 'reviews',
                     include: [
                         {
-                            model: User,
+                            model: UserModel,
                             as: 'prodUser'
                         },
                     ],
@@ -109,7 +109,7 @@ export default class ProductController extends BaseContext {
             .catch(err => {
                 console.log(err)
                 res.status(500).send({
-                    message: "Error retrieving Product with id=" + id
+                    message: "Error retrieving ProductModel with id=" + id
                 });
             });
     };

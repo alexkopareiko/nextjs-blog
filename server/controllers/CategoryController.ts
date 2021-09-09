@@ -6,12 +6,10 @@ export default class CategoryController extends BaseContext {
 
     @route('/list') //Get all categories
     @GET()
-
-
     getAllCategories(req, res) {
 
-        const { Category } = this.di;
-        Category.findAll()
+        const { CategoryModel } = this.di;
+        CategoryModel.findAll()
             .then(data => {
                 res.send(data);
             })
@@ -28,9 +26,9 @@ export default class CategoryController extends BaseContext {
     @route('/:id')     // Find a single Category with an id
     @GET()
     findOne(req, res) {
-        const { Category } = this.di;
+        const { CategoryModel } = this.di;
         const id = req.params.id;
-        Category.findByPk(id)
+        CategoryModel.findByPk(id)
             .then(data => {
                 res.send(data);
             })

@@ -7,8 +7,8 @@ export default class UserController extends BaseContext {
     @route('/list') //Get all users
     @GET()
     getAllUsers(req, res) {
-        const { User } = this.di;
-        User.findAll()
+        const { UserModel } = this.di;
+        UserModel.findAll()
             .then(data => {
                 res.send(data);
             })
@@ -21,12 +21,12 @@ export default class UserController extends BaseContext {
     }
 
 
-    @route('/:id') // Find a single User with an id
+    @route('/:id') // Find a single UserModel with an id
     @GET()
     findOne(req, res) {
-        const { User } = this.di;
+        const { UserModel } = this.di;
         const id = req.params.id;
-        User.findByPk(id)
+        UserModel.findByPk(id)
             .then(data => {
                 res.send(data);
             })

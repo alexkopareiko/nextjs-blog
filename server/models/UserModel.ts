@@ -75,9 +75,9 @@ export default (ctx: IContextContainer) => {
 
   User.initModels = () => {
 
-    User.hasMany(ctx.Product, { as: 'author', foreignKey: 'userId', onDelete: 'cascade' });
-    User.hasMany(ctx.Review, { as: 'prodUser', foreignKey: 'prodUserId', onDelete: 'SET NULL' });
-    User.hasMany(ctx.Review, { as: 'reviewsForOwner', foreignKey: 'ownerUserId', onDelete: '' });
+    User.hasMany(ctx.ProductModel, { as: 'author', foreignKey: 'userId', onDelete: 'cascade' });
+    User.hasMany(ctx.ReviewModel, { as: 'prodUser', foreignKey: 'prodUserId', onDelete: 'SET NULL' });
+    User.hasMany(ctx.ReviewModel, { as: 'reviewsForOwner', foreignKey: 'ownerUserId', onDelete: '' });
   }
 
   return User;

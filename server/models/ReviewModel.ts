@@ -41,10 +41,10 @@ export default (ctx: IContextContainer) => {
 
     Review.initModels = () => {
 
-        Review.belongsTo(ctx.Product, { as: 'reviews', foreignKey: 'prodId', onDelete: 'cascade' });
-        Review.hasMany(ctx.Product, { as: 'product', foreignKey: 'prodId', onDelete: 'cascade' });
-        Review.belongsTo(ctx.User, { as: 'prodUser', foreignKey: 'prodUserId', onDelete: 'SET NULL' });
-        Review.belongsTo(ctx.User, { as: 'reviewsForOwner', foreignKey: 'ownerUserId', onDelete: '' });
+        Review.belongsTo(ctx.ProductModel, { as: 'reviews', foreignKey: 'prodId', onDelete: 'cascade' });
+        Review.hasMany(ctx.ProductModel, { as: 'product', foreignKey: 'prodId', onDelete: 'cascade' });
+        Review.belongsTo(ctx.UserModel, { as: 'prodUser', foreignKey: 'prodUserId', onDelete: 'SET NULL' });
+        Review.belongsTo(ctx.UserModel, { as: 'reviewsForOwner', foreignKey: 'ownerUserId', onDelete: '' });
 
     }
 

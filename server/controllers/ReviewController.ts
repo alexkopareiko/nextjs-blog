@@ -7,8 +7,8 @@ export default class ReviewController extends BaseContext {
     @route('/list') //Get all reviews
     @GET()
     getAllReviews(req, res) {
-        const { Review } = this.di;
-        Review.findAll()
+        const { ReviewModel } = this.di;
+        ReviewModel.findAll()
             .then(data => {
                 res.send(data);
             })
@@ -23,9 +23,9 @@ export default class ReviewController extends BaseContext {
     @route('/:id') // Find a single Review with an id
     @GET()
     findOne(req, res) {
-        const { Review } = this.di;
+        const { ReviewModel } = this.di;
         const id = req.params.id;
-        Review.findByPk(id)
+        ReviewModel.findByPk(id)
             .then(data => {
                 res.send(data);
             })
@@ -43,11 +43,11 @@ export default class ReviewController extends BaseContext {
     @GET()
     findReviewsByProductId(req, res) {
         const id = req.params.id;
-        const { Review, User } = this.di;
-        Review.findAll({
+        const { ReviewModel, UserModel } = this.di;
+        ReviewModel.findAll({
             include: [
                 {
-                    model: User,
+                    model: UserModel,
                     as: 'prodUser'
                 },
             ],

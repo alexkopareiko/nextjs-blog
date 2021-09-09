@@ -27,7 +27,7 @@ export default (ctx: IContextContainer) => {
 
     Category.initModels = () => {
 
-        Category.hasMany(ctx.Product, { as: 'category', foreignKey: 'catId' });
+        Category.hasMany(ctx.ProductModel, { as: 'category', foreignKey: 'catId' });
 
     }
 
