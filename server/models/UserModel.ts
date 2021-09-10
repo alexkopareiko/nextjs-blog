@@ -1,18 +1,20 @@
+import bcrypt from "bcrypt";
 import { Model, DataTypes, BuildOptions } from 'sequelize';
 
 import { IContextContainer } from '../container';
 
 export interface IUser extends Model {
-  userId: number;
+  userId?: number;
   userEmail: string;
-  userPasswd: string;
-  userRole: string;
-  userPhone: string;
-  userFirstName: string;
-  userLastName: string;
-  userImg: string;
-  createdAt: number;
-  updatedAt: number;
+  userPasswd?: string;
+  userRole?: string;
+  userPhone?: string;
+  userFirstName?: string;
+  userLastName?: string;
+  userImg?: string;
+  userToken?: string;
+  createdAt?: number;
+  updatedAt?: number;
 }
 
 
@@ -62,6 +64,12 @@ export default (ctx: IContextContainer) => {
       type: DataTypes.STRING(45),
     },
 
+    userToken: {
+      type: DataTypes.STRING(300),
+      allowNull: true,
+      unique: true,
+    },
+
     createdAt: {
       type: DataTypes.BIGINT,
     },
@@ -69,6 +77,24 @@ export default (ctx: IContextContainer) => {
     updatedAt: {
       type: DataTypes.BIGINT,
     },
+  });
+
+  User.beforeSave(async User => {
+    try {
+      if (User.changed('userPasswd')) {
+        const salt = await bcrypt.genSalt(10);
+        const hash = await bcrypt.hash(User.userPasswd, salt);
+        User.userPasswd = hash;
+      }
+
+      User.updatedAt = Date.now() / 1000;
+      if (User.isNewRecord) {
+        User.createdAt = Date.now() / 1000;
+      }
+
+    } catch (err: any) {
+      throw new Error(err);
+    }
   });
 
   User.initModels = () => {

@@ -11,4 +11,18 @@ export default class UserService extends BaseContext {
         if (isNaN(id)) return Promise.reject('Parameter is not a number!');
         return UserModel.findByPk(id)
     }
+
+    public getUserByEmail(email: string) {
+        const { UserModel } = this.di;
+        function validateEmail(email) {
+            var re = /\S+@\S+\.\S+/;
+            return re.test(email);
+        }
+        if (validateEmail(email)) return Promise.reject('Parameter is not an email!');
+        return UserModel.findOne({
+            where: { userEmail: email }
+        })
+    };
+
+
 }

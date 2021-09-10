@@ -14,6 +14,7 @@ import { IContextContainer } from "./container";
 // }
 
 export default class BaseContext {
+    [x: string]: any;
     protected di: IContextContainer;
     private static stopInit: boolean = false;
 

@@ -14,7 +14,7 @@ const prodConfig = {
     dev: isDev,
     jest: isJest,
     port: process.env.PORT || 3000,
-    jwtSecret: 'ubfaWS62u9LXbBVXaCfG263zecqcm692npKdsKG98cpubxfqR6vFJhf3qUbdaj8z',
+    jwtSecret: 'asdfdasf dasf asdfsdfdasfasdfdasfdsfs',
 
     db: {
         username: process.env.DB_USER,
