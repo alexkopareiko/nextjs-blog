@@ -69,6 +69,7 @@ interface IGeneral {
 export default function Product(props: IGeneral) {
     const { home, message, data, error } = props;
     let product = data.data;
+    // console.log(data)
     if (error) return <div>{message}</div>
     return (
         <Layout {...home}>

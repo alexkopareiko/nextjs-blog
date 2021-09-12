@@ -31,13 +31,12 @@ export default class JwtStrategy extends BaseContext {
 
     public async verifyRequest(jwtPayload: any, done: any) {
 
-        const sub = jwtPayload.sub;
         const { UserSeviceCustom, UserModel } = this.di;
-        const user = await UserSeviceCustom.getUserById(sub);
+        const user = await UserSeviceCustom.getUserById(jwtPayload.id);
         if (user) {
             //const identity = user.initSession(this._request);
             //return done(null, identity);
-            return done(null, true);
+            return done(null, jwtPayload);
         }
         return done('User was not found');
 

@@ -7,7 +7,7 @@ export default function Home({ data, error, message }) {
   if (error) return <div>{message}</div>
   else data = data.data;
   return (
-    <div>\_(--)_/</div>
+    <div>\_(^^)_/</div>
     // <Layout>
     //   <div className="px-4 sm:grid sm:grid-cols-2 sm:pb-8 lg:grid-cols-3 2xl:grid-cols-4">
     //     {

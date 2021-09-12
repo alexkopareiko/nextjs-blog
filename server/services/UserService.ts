@@ -18,9 +18,9 @@ export default class UserService extends BaseContext {
             var re = /\S+@\S+\.\S+/;
             return re.test(email);
         }
-        if (validateEmail(email)) return Promise.reject('Parameter is not an email!');
+        if (!validateEmail(email)) return Promise.reject('Parameter is not an email!');
         return UserModel.findOne({
-            where: { userEmail: email }
+            where: { userEmail: email } 
         })
     };
 

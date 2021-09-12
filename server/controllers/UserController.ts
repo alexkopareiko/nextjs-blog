@@ -82,39 +82,46 @@ export default class UserController extends BaseContext {
             });
     };
 
-
-    @POST()
     @route('/register')
+    @POST()
     public register(req: Request, res: Response, next: NextFunction) {
+        console.log(req.body)
         let { passportCustom } = this.di;
         return passportCustom.authenticate('local-signup', (errors, identity) => {
             if (identity) {
                 res.json({
-                    identity,
+                    identity, 
                     message: 'Registration completed successfully!!! You can now log in.'
                 })
             } else {
                 res.status(301).json({
                     identity: null,
-                    message: 'Could not process register'
+                    message: 'Could not process register',
                 })
             }
-        })(req, res, next);
+        })(req, res, next); 
     }
 
-    // @POST()
-    // @route('/login')
-    // public login(req: Request, res: Response, next: NextFunction) {
-    //     const { passport } = this.di;
-    //     return passport.authenticate('local-login', (errors, identity) => {
-    //         if (errors) {
-    //             console.warn('/login in UserController ', errors)
-    //         } else if (identity) {
-    //             console.log('/login ', identity)
-    //         }
-    //     })(req, res, next);
+    @POST()
+    @route('/login')
+    public login(req: Request, res: Response, next: NextFunction) {
+        const { passportCustom } = this.di;
+        return passportCustom.authenticate('local-login', (errors:any, identity) => {
+            if (errors) {
+                console.log('Validations denied : ', errors)
+                return res.json({
+                    identity: null,
+                    message: 'Could not process validations'
+                  })
+            } else if (identity) {
+                return  res.json({
+                    identity,
+                    message: 'You have successfully logged in!'
+                  })
+            }
+        })(req, res, next);
 
-    // }
+    }
 
 }
 

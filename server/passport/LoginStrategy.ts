@@ -54,7 +54,7 @@ export default class LoginStrategy extends BaseContext {
         user.save();
 
         //const identity = user.initSession(req);
-        return done(null, true);
+        return done(null, payload);
     }
 
 }
