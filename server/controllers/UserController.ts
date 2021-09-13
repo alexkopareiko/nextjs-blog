@@ -39,6 +39,7 @@ export default class UserController extends BaseContext {
     findOne(req, res) {
         const { UserSeviceCustom } = this.di;
         const id = req.params.id;
+        console.log('id', id)
         return UserSeviceCustom.getUserById(id)
             .then(data => {
                 const answer = {

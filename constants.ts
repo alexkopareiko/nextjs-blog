@@ -5,3 +5,10 @@ export interface IIdentity {
     userLastName?: string;
     userImg?: string;
 }
+
+export enum HTTP_METHOD {
+    PUT = 'PUT',
+    POST = 'POST',
+    GET = 'GET',
+    DELETE = 'DELETE',
+}
