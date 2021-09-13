@@ -6,6 +6,7 @@ import cookieParser from 'cookie-parser';
 import { loadControllers, scopePerRequest } from "awilix-express";
 import { PassportStatic } from 'passport';
 import container from "./container";
+var cors = require('cors')
 
 const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });
@@ -20,6 +21,7 @@ const passport = container.resolve<PassportStatic>('passportCustom');
 
     const server = express();
 
+    //server.use(cors({ credentials: true, origin: 'localhost:3000' }));
     server.use(compression());
     server.use(cookieParser());
     server.use(bodyParser.json({ limit: '30mb' }));
@@ -73,11 +75,11 @@ const acl = (req: Request, res: Response, next: NextFunction) => {
 
   if (useAcl) {
     const jwt = passport.authenticate('local-jwt', (err, identity) => {
-      const isLogged = identity && identity.id;
+      const isLogged = identity && identity.userId;
       if (!isLogged) {
         const isAPICall = req.path.toLowerCase().includes('api')
         if (isAPICall) {
-          return res.status(401).json({
+          return res.status(401).send({
             data: null,
             message: 'You are not authorized to open this page',
             error: true,
@@ -87,7 +89,7 @@ const acl = (req: Request, res: Response, next: NextFunction) => {
           return handle(req, res);
         }
       }
-      req.identity = identity;
+      //req.identity = identity;
       next()
     });
     jwt(req, res, next);
@@ -108,4 +110,5 @@ export const IGNORS = [
   '/__nextjs',
   '/api/user/register',
   '/api/user/login',
+  '/api/product/',
 ];

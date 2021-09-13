@@ -109,12 +109,13 @@ export default class UserController extends BaseContext {
         const { passportCustom } = this.di;
         return passportCustom.authenticate('local-login', (errors: any, identity) => {
             if (errors) {
-                console.log('Validations denied : ', errors)
                 return res.json({
                     identity: null,
-                    message: 'Could not process validations'
+                    message: 'Could not process validations',
+                    //errors:errors
                 })
             } else if (identity) {
+
                 res.cookie('token', identity.token, { maxAge: 1000606024 });
                 return res.json({
                     identity,

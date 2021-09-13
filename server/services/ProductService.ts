@@ -39,6 +39,9 @@ export default class ProductService extends BaseContext {
                 })
                 return list;
             })
+            .catch(err => {
+                return err;
+            })
     }
 
 

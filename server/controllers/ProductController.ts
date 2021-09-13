@@ -15,7 +15,7 @@ export default class ProductModelController extends BaseContext {
                     message: "request successfull",
                     error: false
                 }
-                res.send(answer);
+                res.status(200).send(answer);
             })
             .catch(err => {
                 const answer = {
@@ -23,7 +23,7 @@ export default class ProductModelController extends BaseContext {
                     message: err,
                     error: true
                 }
-                res.status(500).send(answer);
+                return res.status(500).send(answer);
             });
     }
 
@@ -40,7 +40,7 @@ export default class ProductModelController extends BaseContext {
                     message: "request successfull",
                     error: false
                 }
-                res.send(answer);
+                res.status(200).send(answer);
             })
             .catch(err => {
                 const answer = {
