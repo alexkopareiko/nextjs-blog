@@ -23,8 +23,7 @@ export default class SignUpStrategy extends BaseContext {
 
     this.strategyUser = new passportLocal.Strategy(
       {
-        passwordField: "userPasswd",
-        passReqToCallback: true,
+        passwordField: "userPasswd", passReqToCallback: true,
         usernameField: "userEmail",
         session: false,
       },
@@ -38,7 +37,7 @@ export default class SignUpStrategy extends BaseContext {
     password: string,
     done: any
   ) {
-    console.log("!!!verifyRequestUser from loginStrat");
+    console.log("!!!verifyRequestUser from signUpStrategy");
     const { UserSeviceCustom, UserModel } = this.di;
     const userEmail = email && email.trim().toLowerCase();
     const user = await UserSeviceCustom.getUserByEmail(userEmail).catch(
@@ -57,7 +56,7 @@ export default class SignUpStrategy extends BaseContext {
     };
     const newUser = await UserModel.create(userData);
     return done(null, {
-      id: newUser.userId,
+      identity: newUser.userId,
     });
   }
 }

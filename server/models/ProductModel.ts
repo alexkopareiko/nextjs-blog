@@ -58,7 +58,11 @@ export default (ctx: IContextContainer) => {
         prodImg: { type: DataTypes.STRING(300) },
         createdAt: { type: DataTypes.BIGINT },
         updatedAt: { type: DataTypes.BIGINT },
-    });
+    },
+        {
+            timestamps: false
+        }
+    );
 
     Product.initModels = () => {
 

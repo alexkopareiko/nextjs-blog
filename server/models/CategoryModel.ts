@@ -23,7 +23,11 @@ export default (ctx: IContextContainer) => {
         catName: { type: DataTypes.STRING(45), allowNull: false },
         createdAt: { type: DataTypes.BIGINT },
         updatedAt: { type: DataTypes.BIGINT },
-    });
+    },
+        {
+            timestamps: false
+        }
+    );
 
     Category.initModels = () => {
 

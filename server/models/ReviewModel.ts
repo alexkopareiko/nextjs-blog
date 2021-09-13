@@ -37,7 +37,11 @@ export default (ctx: IContextContainer) => {
         },
         createdAt: { type: DataTypes.BIGINT },
         updatedAt: { type: DataTypes.BIGINT },
-    });
+    },
+        {
+            timestamps: false
+        }
+    );
 
     Review.initModels = () => {
 

@@ -35,10 +35,12 @@ export default class JwtStrategy extends BaseContext {
         const user = await UserSeviceCustom.getUserById(jwtPayload.id);
         if (user) {
             //const identity = user.initSession(this._request);
-            //return done(null, identity);
-            return done(null, jwtPayload);
+            const identity = user;
+            return done(null, identity);
+            //return done(null, { ...jwtPayload, identity });
         }
-        return done('User was not found');
+        return done('User was not found', false);
+
 
     }
 

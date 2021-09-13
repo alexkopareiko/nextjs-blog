@@ -1,17 +1,17 @@
 import { IContextContainer } from "./container";
 
-// import { ResCode, IIdentity } from "../src/constants";
+import { IIdentity } from "../constants";
 
-// declare global {
-//     namespace Express {
-//         interface Response {
-//             answer: (data: any, message?: any, status?: number, code?: ResCode) => void;
-//         }
-//         interface Request {
-//             identity: IIdentity;
-//         }
-//     }
-// }
+declare global {
+    namespace Express {
+        interface Response {
+            answer: (data: any, message?: any, status?: number) => void;
+        }
+        interface Request {
+            identity: IIdentity;
+        }
+    }
+}
 
 export default class BaseContext {
     [x: string]: any;

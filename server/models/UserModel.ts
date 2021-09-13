@@ -77,6 +77,8 @@ export default (ctx: IContextContainer) => {
     updatedAt: {
       type: DataTypes.BIGINT,
     },
+  }, {
+    timestamps: false
   });
 
   User.beforeSave(async User => {
@@ -87,9 +89,9 @@ export default (ctx: IContextContainer) => {
         User.userPasswd = hash;
       }
 
-      User.updatedAt = Date.now() / 1000;
+      User.updatedAt = Math.floor(new Date().getTime() / 1000.0);
       if (User.isNewRecord) {
-        User.createdAt = Date.now() / 1000;
+        User.createdAt = Math.floor(new Date().getTime() / 1000.0);
       }
 
     } catch (err: any) {

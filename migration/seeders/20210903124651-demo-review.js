@@ -37,8 +37,8 @@ module.exports = {
           prodUserId:prodUserId,
           revRating:Math.floor(Math.random() * 5) + 1,
           prodId:getProduct(ownerUserId),
-          createdAt : Date.now()-1000,
-          updatedAt : Date.now()-1000,
+          createdAt : Math.floor(new Date().getTime() / 1000.0);,
+          updatedAt : Math.floor(new Date().getTime() / 1000.0);,
         };
         items.push(item);
       })

@@ -31,6 +31,7 @@ export default class LoginStrategy extends BaseContext {
 
 
     public async verifyRequestUser(req: Request, email: string, password: string, done: any) {
+        console.log(req.body)
         const { UserSeviceCustom, UserModel } = this.di;
         const userEmail = email && email.trim().toLowerCase();
         const user = await UserSeviceCustom.getUserByEmail(userEmail);
@@ -47,14 +48,20 @@ export default class LoginStrategy extends BaseContext {
         }
 
         const payload = {
-            sub: user.userId
+            id: user.userId
         };
         const token = jwt.sign(payload, config.jwtSecret);
         user.userToken = token;
         user.save();
 
         //const identity = user.initSession(req);
-        return done(null, payload);
+        return done(null, {
+            userId: user.userId,
+            userEmail: user.userEmail,
+            userFirstName: user.userFirstName,
+            userLastName: user.userLastName,
+            userImg: user.userImg,
+        });
     }
 
 }

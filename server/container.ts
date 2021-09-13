@@ -26,8 +26,7 @@ const container = awilix.createContainer<IContextContainer>({
 const passportFunc = (ctx: IContextContainer) => {
     passport.use('local-login', ctx.LoginStrategy.strategy);
     passport.use('local-signup', ctx.SignUpStrategy.strategy);
-    passport.use(ctx.JwtStrategy.strategy);
-    console.log(typeof passport)
+    passport.use('local-jwt', ctx.JwtStrategy.strategy);
     return passport;
 };
 

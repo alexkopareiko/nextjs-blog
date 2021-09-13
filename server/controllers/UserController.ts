@@ -89,35 +89,37 @@ export default class UserController extends BaseContext {
         let { passportCustom } = this.di;
         return passportCustom.authenticate('local-signup', (errors, identity) => {
             if (identity) {
-                res.json({
-                    identity, 
+                return res.json({
+                    identity,
                     message: 'Registration completed successfully!!! You can now log in.'
                 })
             } else {
-                res.status(301).json({
+                return res.status(301).json({
                     identity: null,
                     message: 'Could not process register',
+                    errors: errors
                 })
             }
-        })(req, res, next); 
+        })(req, res, next);
     }
 
     @POST()
     @route('/login')
     public login(req: Request, res: Response, next: NextFunction) {
         const { passportCustom } = this.di;
-        return passportCustom.authenticate('local-login', (errors:any, identity) => {
+        return passportCustom.authenticate('local-login', (errors: any, identity) => {
             if (errors) {
                 console.log('Validations denied : ', errors)
                 return res.json({
                     identity: null,
                     message: 'Could not process validations'
-                  })
+                })
             } else if (identity) {
-                return  res.json({
+                res.cookie('token', identity.token, { maxAge: 1000606024 });
+                return res.json({
                     identity,
                     message: 'You have successfully logged in!'
-                  })
+                })
             }
         })(req, res, next);
 
