@@ -1,12 +1,13 @@
 import { GetStaticProps } from "next";
 import { useState } from "react";
+import { xRead } from "src/request";
 
 // export const getStaticProps: GetStaticProps = async (context) => {
 
 // }
 
 
-export default function Header() {
+export default function Header(result) {
   const [isOpenSandwich, setIsOpenSandwich] = useState(false);
   const [isOpenProfile, setIsOpenProfile] = useState(false);
   return (
@@ -80,4 +81,14 @@ export default function Header() {
     </header>
 
   );
+}
+
+
+Header.getInitialProps = async (ctx) => {
+  const cookie = ctx.req ? ctx.req.headers.cookie || "" : document.cookie;
+  const token = cookie.token;
+  const result = await xRead("/user/by_token", {}, token);
+  return {
+    result
+  }
 }

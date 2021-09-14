@@ -1,7 +1,32 @@
 import Link from "next/link";
+import { xSave } from "src/request";
 import Layout from '../components/layout'
+import { useRouter } from 'next/router'
 
 const login = () => {
+    const router = useRouter()
+
+    const loginUser = async event => {
+        event.preventDefault()
+
+        const result = await xSave('/user/login', {
+            userEmail: event.target.userEmail.value,
+            userPasswd: event.target.userPasswd.value,
+        })
+
+        if (result.success === true) {
+            if (result.response.errors === false) {
+                router.push({
+                    pathname: '/',
+                })
+            }
+            else alert(result.response.message)
+        }
+        else alert('Something wrong')
+        console.log(result)
+        // result.user => 'Ada Lovelace'
+    }
+
     return (
         <Layout>
             <div className="relative">
@@ -53,7 +78,7 @@ const login = () => {
                                         Welcome ! let's login
                                     </h3>
                                     <br />
-                                    <form action="/api/user/login" method="post">
+                                    <form onSubmit={loginUser}>
                                         <div className="mb-1 sm:mb-2">
                                             <label
                                                 htmlFor="email"

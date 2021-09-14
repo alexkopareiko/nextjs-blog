@@ -20,7 +20,15 @@ export default class UserService extends BaseContext {
         }
         if (!validateEmail(email)) return Promise.reject('Parameter is not an email!');
         return UserModel.findOne({
-            where: { userEmail: email } 
+            where: { userEmail: email }
+        })
+    };
+
+    public getUserByToken(token: string) {
+        const { UserModel } = this.di;
+        if (token.trim() === "") return Promise.reject('Wrong token');
+        return UserModel.findOne({
+            where: { userToken: token }
         })
     };
 

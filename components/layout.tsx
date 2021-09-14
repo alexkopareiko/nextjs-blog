@@ -1,8 +1,6 @@
 import Header from "./header";
 import SearchFilters from "./searchFilters";
 
-const name = "Aleksandr";
-export const siteTitle = "Next.js Sample Website";
 
 export default function Layout({ children }) {
   return (

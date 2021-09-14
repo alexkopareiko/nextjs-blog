@@ -1,13 +1,12 @@
 import { route, GET, POST } from 'awilix-express' // or `awilix-router-core`
 import BaseContext from '../BaseContext'
 import { NextFunction, Request, Response } from "express";
-const LocalStrategy = require('passport-local').Strategy;
-import passport from 'passport';
+import JwtStrategy from '../passport/JwtStrategy';
 
 
 
 @route('/api/user')
-export default class UserController extends BaseContext {
+export default class UserController extends JwtStrategy {
 
     @route('/list') //Get all users
     @GET()
@@ -39,7 +38,6 @@ export default class UserController extends BaseContext {
     findOne(req, res) {
         const { UserSeviceCustom } = this.di;
         const id = req.params.id;
-        console.log('id', id)
         return UserSeviceCustom.getUserById(id)
             .then(data => {
                 const answer = {
@@ -83,10 +81,35 @@ export default class UserController extends BaseContext {
             });
     };
 
+    @route('/by_token') // Find a single UserModel with token
+    @GET()
+    getUserByToken(req, res) {
+        console.log('req.cookies ', req.cookies)
+        console.log("getJwtFromRequest ", this.getJwtFromRequest(req))
+        const { UserSeviceCustom } = this.di;
+        const token = req.params.token;
+        return UserSeviceCustom.getUserByToken(token)
+            .then(data => {
+                const answer = {
+                    data: data,
+                    message: "request successfull",
+                    error: false
+                }
+                res.send(answer);
+            })
+            .catch(err => {
+                const answer = {
+                    data: null,
+                    message: err,
+                    error: true
+                }
+                res.status(500).send(answer);
+            });
+    };
+
     @route('/register')
     @POST()
     public register(req: Request, res: Response, next: NextFunction) {
-        console.log(req.body)
         let { passportCustom } = this.di;
         return passportCustom.authenticate('local-signup', (errors, identity) => {
             if (identity) {
@@ -113,15 +136,18 @@ export default class UserController extends BaseContext {
                 return res.json({
                     identity: null,
                     message: 'Could not process validations',
-                    //errors:errors
+                    errors: errors
                 })
             } else if (identity) {
 
                 res.cookie('token', identity.token, { maxAge: 1000606024 });
-                return res.json({
-                    identity,
-                    message: 'You have successfully logged in!'
-                })
+                return res
+                    .json({
+                        identity,
+                        message: 'You have successfully logged in!',
+                        errors: false
+                    })
+
             }
         })(req, res, next);
 
