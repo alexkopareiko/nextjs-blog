@@ -2,75 +2,75 @@ import Layout from '../../components/layout'
 import Head from 'next/head'
 import Link from 'next/link'
 import ReviewCard from 'components/reviewCard'
+import { xRead } from 'src/request';
 
-export interface IUser {
-    userId: number;
-    userEmail: string;
-    userPasswd: string;
-    userRole: string;
-    userPhone: string;
-    userFirstName: string;
-    userLastName: string;
-    userImg: string;
-    createdAt: number;
-    updatedAt: number;
-    reviewsForOwner: Array<IReview>;
+// export interface IUser {
+//     userId: number;
+//     userEmail: string;
+//     userPasswd: string;
+//     userRole: string;
+//     userPhone: string;
+//     userFirstName: string;
+//     userLastName: string;
+//     userImg: string;
+//     createdAt: number;
+//     updatedAt: number;
+//     reviewsForOwner: Array<IReview>;
 
-}
-
-
-interface IReview {
-    revId: number;
-    revFeedback: string;
-    ownerUserId: number;
-    prodUserId: number;
-    revRating: number;
-    prodId: number;
-    createdAt: number;
-    updatedAt: number;
-}
-
-interface ICategory {
-    catId: number;
-    catName: string;
-    createdAt: number;
-    updatedAt: number;
-}
+// }
 
 
-interface IProduct {
-    prodId: number;
-    prodTitle: string;
-    prodDesc: string;
-    catId: number;
-    userId: number;
-    prodPrice: number;
-    prodYear: number;
-    prodImg: string;
-    createdAt: number;
-    updatedAt: number;
-    category: ICategory,
-    rating: number;
-    reviews: Array<IReview>,
-    author: IUser,
-}
+// interface IReview {
+//     revId: number;
+//     revFeedback: string;
+//     ownerUserId: number;
+//     prodUserId: number;
+//     revRating: number;
+//     prodId: number;
+//     createdAt: number;
+//     updatedAt: number;
+// }
 
-interface IResponseData {
-    data: IProduct
-}
+// interface ICategory {
+//     catId: number;
+//     catName: string;
+//     createdAt: number;
+//     updatedAt: number;
+// }
 
-interface IGeneral {
-    data: IResponseData;
-    home: any;
-    message: string;
-    error: any;
-}
 
-export default function Product(props: IGeneral) {
-    const { home, message, data, error } = props;
-    let product = data.data;
-    //console.log(data)
+// interface IProduct {
+//     prodId: number;
+//     prodTitle: string;
+//     prodDesc: string;
+//     catId: number;
+//     userId: number;
+//     prodPrice: number;
+//     prodYear: number;
+//     prodImg: string;
+//     createdAt: number;
+//     updatedAt: number;
+//     category: ICategory,
+//     rating: number;
+//     reviews: Array<IReview>,
+//     author: IUser,
+// }
+
+// interface IResponseData {
+//     data: IProduct
+// }
+
+// interface IGeneral {
+//     data: IResponseData;
+//     home: any;
+//     message: string;
+//     error: any;
+// }
+
+export default function Product({ result, home }) {
+    const { data, error, message } = result.response;
     if (error) return <div>{message}</div>
+    const product = data;
     return (
         <Layout {...home}>
             <Head>
@@ -167,9 +167,10 @@ export default function Product(props: IGeneral) {
 }
 
 Product.getInitialProps = async (ctx) => {
-    const res = await fetch("http://localhost:3000/api/product/" + ctx.query.id);
-    const data = await res.json();
+    const cookie = ctx.req ? ctx.req.headers.cookie || "" : document.cookie;
+    const token = cookie.token;
+    const result = await xRead("/product/" + ctx.query.id, {}, token);
     return {
-        data
+        result
     }
 }
