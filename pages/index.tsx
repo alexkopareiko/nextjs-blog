@@ -3,13 +3,14 @@ import Link from 'next/link'
 import PropertyCard from "../components/propertyCard";
 import React from 'react';
 import { xRead } from 'src/request';
+import { HTTP_METHOD } from "../constants";
 
 
-export default function Home({ result }) {
-  const { data, error, message } = result.response;
+export default function Home({ products, currentUser }) {
+  const { data, error, message } = products.response;
   if (error) return <div>{message}</div>
   return (
-    <Layout>
+    <Layout props={currentUser}>
       <div className="px-4 sm:grid sm:grid-cols-2 sm:pb-8 lg:grid-cols-3 2xl:grid-cols-4">
         {
           data && data.map(
@@ -28,11 +29,31 @@ export default function Home({ result }) {
 }
 
 Home.getInitialProps = async (ctx) => {
-  const cookie = ctx.req ? ctx.req.headers.cookie || "" : document.cookie;
-  const token = cookie.token;
-  const result = await xRead("/product/list", {}, token);
-  return {
-    result
+  const isServer = typeof window === 'undefined';
+  const cookie = isServer ? ctx.req.headers.cookie : document.cookie;
+
+  const getCookie = (name) => {
+    var match = cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+    if (match) return match[2];
   }
+
+  if (cookie !== undefined) {
+    const token = getCookie('token');
+    const products = await xRead("/product/list", {}, HTTP_METHOD.GET, token);
+    const currentUser = await xRead("/user/by_token", {}, HTTP_METHOD.GET, token);
+    return {
+      products,
+      currentUser
+    }
+  } else {
+    const products = await xRead("/product/list", {}, HTTP_METHOD.GET);
+    return {
+      products,
+      currentUser: null
+    }
+  }
+
+
+
 }
 

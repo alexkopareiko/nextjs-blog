@@ -27,9 +27,13 @@ export default class UserService extends BaseContext {
     public getUserByToken(token: string) {
         const { UserModel } = this.di;
         if (token.trim() === "") return Promise.reject('Wrong token');
-        return UserModel.findOne({
-            where: { userToken: token }
-        })
+        return UserModel.findOne(
+            {
+                attributes: [
+                    'userFirstName', 'userLastName', 'userImg'
+                ],
+                where: { userToken: token }
+            })
     };
 
 

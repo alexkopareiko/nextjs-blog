@@ -167,7 +167,7 @@ export default function Product({ result, home }) {
 }
 
 Product.getInitialProps = async (ctx) => {
-    const cookie = ctx.req ? ctx.req.headers.cookie || "" : document.cookie;
+    const cookie = ctx.req ? ctx.req.headers.cookie : document.cookie;
     const token = cookie.token;
     const result = await xRead("/product/" + ctx.query.id, {}, token);
     return {

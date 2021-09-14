@@ -32,12 +32,11 @@ export default class JwtStrategy extends BaseContext {
     public async verifyRequest(jwtPayload: any, done: any) {
 
         const { UserSeviceCustom, UserModel } = this.di;
-        console.log(jwtPayload)
+        //aconsole.log(jwtPayload)
         const user = await UserSeviceCustom.getUserById(jwtPayload.userId);
         if (user) {
             //const identity = user.initSession(this._request);
             const identity = user;
-
             return done(null, identity);
             //return done(null, { ...jwtPayload, identity });
         }

@@ -1,13 +1,19 @@
-import { GetStaticProps } from "next";
 import { useState } from "react";
-import { xRead } from "src/request";
+import Link from 'next/link'
 
-// export const getStaticProps: GetStaticProps = async (context) => {
+import { commons } from "./common";
 
-// }
+export default function Header({ props }) {
+  const NOT_AUTHORIZED = props.response.error;
 
-
-export default function Header(result) {
+  let userFirstName = '';
+  let userLastName = '';
+  let userImg = commons.imgDummy;
+  if (props.success === true && props.response.error === false) {
+    userFirstName = props.response.data.userFirstName;
+    userLastName = props.response.data.userLastName;
+    userImg = props.response.data.userImg;
+  }
   const [isOpenSandwich, setIsOpenSandwich] = useState(false);
   const [isOpenProfile, setIsOpenProfile] = useState(false);
   return (
@@ -59,18 +65,38 @@ export default function Header(result) {
 
         <div className="sm:flex sm:items-center">
           <div className="px-2 pt-2 pb-5 border-b border-gray-800 sm:flex sm:border-b-0 sm:py-0">
-            <a href="" className="block px-3 py-1 hover:bg-gray-700 rounded font-medium text-white sm:text-sm sm:px-2 xl:text-gray-900  xl:hover:bg-gray-200 ">List your property</a>
-            <a href="" className="block px-3 py-1 mt-1 hover:bg-gray-700 rounded font-medium text-white sm:mt-0 sm:text-sm sm:px-2 sm:ml-2 xl:text-gray-900 xl:hover:bg-gray-200 ">Trip</a>
-            <a href="" className="block px-3 py-1 mt-1 hover:bg-gray-700 rounded font-medium text-white sm:mt-0 sm:text-sm sm:px-2 sm:ml-2 xl:text-gray-900 xl:hover:bg-gray-200 ">Messages</a>
+            {
+              NOT_AUTHORIZED ?
+                <>
+                  <Link href={"/login"} >
+                    <a className="block px-3 py-1 mt-1 hover:bg-gray-700 rounded font-medium text-white sm:mt-0 sm:text-sm sm:px-2 sm:ml-2 xl:text-gray-900 xl:hover:bg-gray-200 ">Login</a>
+                  </Link>
+                  <Link href={"/register"} >
+                    <a className="block px-3 py-1 mt-1 hover:bg-gray-700 rounded font-medium text-white sm:mt-0 sm:text-sm sm:px-2 sm:ml-2 xl:text-gray-900 xl:hover:bg-gray-200 ">Register</a>
+                  </Link>
+                </>
+                :
+                <>
+                  <Link href={"/logout"} >
+                    <a className="block px-3 py-1 mt-1 hover:bg-gray-700 rounded font-medium text-white sm:mt-0 sm:text-sm sm:px-2 sm:ml-2 xl:text-gray-900 xl:hover:bg-gray-200 ">Logout</a>
+                  </Link>
+                  <span className="block px-3 py-1 mt-1 hover:bg-gray-700 rounded font-medium text-white sm:mt-0 sm:text-sm sm:px-2 sm:ml-2 xl:text-gray-900 xl:hover:bg-gray-200 ">{userFirstName} {userLastName}</span>
+
+                </>
+
+            }
+
           </div>
           <div className="relative px-5 py-5 sm:py-0">
             <div onClick={() => { setIsOpenProfile(!isOpenProfile) }} className="flex items-center">
-              <img className="h-10 w-10 object-cover rounded-full border-2 border-gray-600 cursor-pointer sm:w-8 sm:h-8 xl:border-gray-200 " src="https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" alt="" />
-              <span className="ml-4 font-medium text-gray-200 sm:hidden">Isla Sugar</span>
+              <img className="h-10 w-10 object-cover rounded-full border-2 border-gray-600 cursor-pointer sm:w-8 sm:h-8 xl:border-gray-200 " src={userImg} alt="" />
+              <span className="ml-4 font-medium text-gray-200 sm:hidden">{userFirstName} {userLastName}</span>
             </div>
             <div className={`${!isOpenProfile ? 'sm:hidden' : 'block'} mt-5 sm:bg-white sm:rounded-lg sm:fixed sm:mt-4 sm:right-0 sm:w-48 sm:py-2 sm:shadow-xl sm:mx-3 sm:z-50`}>
-              <a href="" className="block text-gray-400 hover:text-white sm:text-gray-800 sm:px-4 sm:mt-0 sm:py-2 sm:hover:bg-indigo-500">Account settings</a>
-              <a href="" className="mt-3 block text-gray-400 hover:text-white sm:text-gray-800 sm:px-4 sm:mt-0 sm:py-2 sm:hover:bg-indigo-500">Support</a>
+              <a href="/" className="block text-gray-400 hover:text-white sm:text-gray-800 sm:px-4 sm:mt-0 sm:py-2 sm:hover:bg-indigo-500">Account settings</a>
+              {/* <Link href={"/"} >
+                <a className="mt-3 block text-gray-400 hover:text-white sm:text-gray-800 sm:px-4 sm:mt-0 sm:py-2 sm:hover:bg-indigo-500">Login</a>
+              </Link> */}
               <a href="" className="mt-3 block text-gray-400 hover:text-white sm:text-gray-800 sm:px-4 sm:mt-0 sm:py-2 sm:hover:bg-indigo-500">Sign Out</a>
             </div>
             <button type="button" onClick={() => { setIsOpenProfile(!isOpenProfile) }} className={`${!isOpenProfile ? 'sm:hidden' : 'sm:block'} sm:fixed sm:opacity-1 sm:inset-0 sm:w-full sm:h-full sm:z-40`}></button>
@@ -83,12 +109,3 @@ export default function Header(result) {
   );
 }
 
-
-Header.getInitialProps = async (ctx) => {
-  const cookie = ctx.req ? ctx.req.headers.cookie || "" : document.cookie;
-  const token = cookie.token;
-  const result = await xRead("/user/by_token", {}, token);
-  return {
-    result
-  }
-}

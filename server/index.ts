@@ -74,7 +74,8 @@ const acl = (req: Request, res: Response, next: NextFunction) => {
   if (useAcl) {
     const jwt = passport.authenticate('local-jwt', (err, identity) => {
       const isLogged = identity && identity.userId;
-
+      // console.log("identity", identity)
+      // console.log("identity.userId", identity.userId)
       if (!isLogged) {
         const isAPICall = req.path.toLowerCase().includes('api')
         if (isAPICall) {

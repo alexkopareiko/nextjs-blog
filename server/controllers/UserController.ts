@@ -1,12 +1,11 @@
 import { route, GET, POST } from 'awilix-express' // or `awilix-router-core`
 import BaseContext from '../BaseContext'
 import { NextFunction, Request, Response } from "express";
-import JwtStrategy from '../passport/JwtStrategy';
 
 
 
 @route('/api/user')
-export default class UserController extends JwtStrategy {
+export default class UserController extends BaseContext {
 
     @route('/list') //Get all users
     @GET()
@@ -33,29 +32,7 @@ export default class UserController extends JwtStrategy {
     }
 
 
-    @route('/:id') // Find a single UserModel with an id
-    @GET()
-    findOne(req, res) {
-        const { UserSeviceCustom } = this.di;
-        const id = req.params.id;
-        return UserSeviceCustom.getUserById(id)
-            .then(data => {
-                const answer = {
-                    data: data,
-                    message: "request successfull",
-                    error: false
-                }
-                res.send(answer);
-            })
-            .catch(err => {
-                const answer = {
-                    data: null,
-                    message: err,
-                    error: true
-                }
-                res.status(500).send(answer);
-            });
-    };
+
 
     @route('/by_email/:email') // Find a single UserModel with an email
     @GET()
@@ -84,10 +61,8 @@ export default class UserController extends JwtStrategy {
     @route('/by_token') // Find a single UserModel with token
     @GET()
     getUserByToken(req, res) {
-        console.log('req.cookies ', req.cookies)
-        console.log("getJwtFromRequest ", this.getJwtFromRequest(req))
-        const { UserSeviceCustom } = this.di;
-        const token = req.params.token;
+        const { UserSeviceCustom, JwtStrategy } = this.di;
+        const token = JwtStrategy.getJwtFromRequest(req);
         return UserSeviceCustom.getUserByToken(token)
             .then(data => {
                 const answer = {
@@ -152,6 +127,32 @@ export default class UserController extends JwtStrategy {
         })(req, res, next);
 
     }
+
+
+    // DON'T MOVE THIS THING UP !!!
+    @route('/:id') // Find a single UserModel with an id
+    @GET()
+    findOne(req, res) {
+        const { UserSeviceCustom } = this.di;
+        const id = req.params.id;
+        return UserSeviceCustom.getUserById(id)
+            .then(data => {
+                const answer = {
+                    data: data,
+                    message: "request successfull",
+                    error: false
+                }
+                res.send(answer);
+            })
+            .catch(err => {
+                const answer = {
+                    data: null,
+                    message: err,
+                    error: true
+                }
+                res.status(500).send(answer);
+            });
+    };
 
 }
 

@@ -1,6 +1,10 @@
 {
-    "watch": ["server/**/*.ts"],
-    "execMap": {
-        "ts": "ts-node"
-    }
+  "watch": ["server/**/*.ts"],
+  "execMap": {
+    "ts": "ts-node"
+  },
+  "events": {
+    "start": "clear",
+    "restart": "clear"
+  }
 }

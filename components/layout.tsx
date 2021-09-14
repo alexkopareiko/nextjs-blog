@@ -2,11 +2,10 @@ import Header from "./header";
 import SearchFilters from "./searchFilters";
 
 
-export default function Layout({ children }) {
+export default function Layout({ props, children }) {
   return (
     <div className={"min-h-screen bg-gray-200 antialiased xl:flex xl:flex-col xl:h-screen xl:bg-gray-100"}>
-
-      <Header />
+      <Header props={props} />
       <div className="xl:flex xl:overflow-y-hidden">
         <SearchFilters />
         <main className="py-6 xl:flex-1 xl:overflow-y-scroll ">
