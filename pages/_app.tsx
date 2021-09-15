@@ -1,4 +1,4 @@
-import { wrapper } from '../store'
+import { wrapper } from '../redux-saga/store/store'
 import '../styles/global.css'
 
 
