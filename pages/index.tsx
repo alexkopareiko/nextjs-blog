@@ -1,59 +1,35 @@
-import Layout from '../components/layout'
-import Link from 'next/link'
-import PropertyCard from "../components/propertyCard";
-import React from 'react';
-import { xRead } from 'src/request';
-import { HTTP_METHOD } from "../constants";
+import { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
+import { END } from 'redux-saga'
+import { wrapper } from '../store'
+import { loadData, startClock, tickClock } from '../actions'
+import Home from './home'
+import Page from 'components/page';
 
 
-export default function Home({ products, currentUser }) {
-  const { data, error, message } = products.response;
-  if (error) return <div>{message}</div>
+const Index = () => {
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(startClock())
+  }, [dispatch])
   return (
-    <Layout props={currentUser}>
-      <div className="px-4 sm:grid sm:grid-cols-2 sm:pb-8 lg:grid-cols-3 2xl:grid-cols-4">
-        {
-          data && data.map(
-            (p) =>
-            (
-              <Link href={"/product/" + p.prodId} key={p.prodId}>
-                <a><PropertyCard product={p} /></a>
-              </Link>
-            )
-          )
-        }
-      </div>
-    </Layout>
+    // <Home />
+    <Page />
   );
 
 }
 
-Home.getInitialProps = async (ctx) => {
-  const isServer = typeof window === 'undefined';
-  const cookie = isServer ? ctx.req.headers.cookie : document.cookie;
+// @ts-ignore
+export const getServerSideProps = wrapper.getServerSideProps((store) => async ({ req }) => {
+  store.dispatch(tickClock(false))
 
-  const getCookie = (name) => {
-    var match = cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
-    if (match) return match[2];
+  if (!store.getState().placeholderData) {
+    store.dispatch(loadData())
+    store.dispatch(END)
   }
 
-  if (cookie !== undefined) {
-    const token = getCookie('token');
-    const products = await xRead("/product/list", {}, HTTP_METHOD.GET, token);
-    const currentUser = await xRead("/user/by_token", {}, HTTP_METHOD.GET, token);
-    return {
-      products,
-      currentUser
-    }
-  } else {
-    const products = await xRead("/product/list", {}, HTTP_METHOD.GET);
-    return {
-      products,
-      currentUser: null
-    }
-  }
+  await store.sagaTask.toPromise()
+})
 
-
-
-}
-
+export default Index;
