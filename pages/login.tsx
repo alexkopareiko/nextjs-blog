@@ -2,28 +2,34 @@ import Link from "next/link";
 import { xSave } from "src/request";
 import Layout from '../components/layout'
 import { useRouter } from 'next/router'
+import { useDispatch, useSelector } from "react-redux";
+import { increment } from "redux-saga/store/actions";
 
 const login = () => {
+
+    const count = useSelector((state: any) => state.countReducer.count)
+    const dispatch = useDispatch()
+
     const router = useRouter()
 
     const loginUser = async event => {
-        event.preventDefault()
+        event.preventDefault();
+        dispatch(increment());
+        // const result = await xSave('/user/login', {
+        //     userEmail: event.target.userEmail.value,
+        //     userPasswd: event.target.userPasswd.value,
+        // })
 
-        const result = await xSave('/user/login', {
-            userEmail: event.target.userEmail.value,
-            userPasswd: event.target.userPasswd.value,
-        })
-
-        if (result.success === true) {
-            if (result.response.errors === false) {
-                router.push({
-                    pathname: '/',
-                })
-            }
-            else alert(result.response.message)
-        }
-        else alert('Something wrong')
-        console.log(result)
+        // if (result.success === true) {
+        //     if (result.response.errors === false) {
+        //         router.push({
+        //             pathname: '/',
+        //         })
+        //     }
+        //     else alert(result.response.message)
+        // }
+        // else alert('Something wrong')
+        // console.log(result)
         // result.user => 'Ada Lovelace'
     }
 
