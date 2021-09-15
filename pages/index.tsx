@@ -10,7 +10,6 @@ import Page from 'components/page';
 const Index = () => {
   const dispatch = useDispatch()
 
-
   return (
     <>
       <Page />

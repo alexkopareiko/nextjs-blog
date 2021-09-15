@@ -2,7 +2,7 @@ import { applyMiddleware, combineReducers, createStore } from 'redux'
 import createSagaMiddleware from 'redux-saga'
 import { createWrapper } from 'next-redux-wrapper'
 
-import { rootWatcher } from 'redux-saga/saga'
+import { rootWatcher } from '../saga/index'
 
 import countReducer from './countReducer'
 import fetchUsersReducer from './fetchUsersReducer'

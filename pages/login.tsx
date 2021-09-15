@@ -3,7 +3,7 @@ import { xSave } from "src/request";
 import Layout from '../components/layout'
 import { useRouter } from 'next/router'
 import { useDispatch, useSelector } from "react-redux";
-import { increment } from "redux-saga/store/actions";
+import { btnClick, increment } from "redux-saga/store/actions";
 
 const login = () => {
 
@@ -14,7 +14,10 @@ const login = () => {
 
     const loginUser = async event => {
         event.preventDefault();
-        dispatch(increment());
+        dispatch(btnClick({
+            userEmail: event.target.userEmail.value,
+            userPasswd: event.target.userPasswd.value,
+        }));
         // const result = await xSave('/user/login', {
         //     userEmail: event.target.userEmail.value,
         //     userPasswd: event.target.userPasswd.value,

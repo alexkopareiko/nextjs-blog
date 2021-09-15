@@ -26,11 +26,13 @@ function xFetch(endpoint: string, method: HTTP_METHOD, data = {}, token?: string
         .then((response) => {
             return response.json().then((json) => ({ json, response }));
         })
-        .then(({ json, response }) =>
-            Promise.resolve({
+        .then(({ json, response }) => {
+            // console.log('json ', json);
+            return Promise.resolve({
                 success: response.ok ? true : false,
                 response: json
             })
+        }
         );
 }
 

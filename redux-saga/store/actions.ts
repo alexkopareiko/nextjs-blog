@@ -8,6 +8,8 @@ export const actionTypes = {
     LOAD_DATA_SUCCESS: 'LOAD_DATA_SUCCESS',
 
     HYDRATE: 'HYDRATE',
+
+    BTN_CLICK: 'BTN_CLICK'
 }
 
 export function failure(error) {
@@ -40,4 +42,10 @@ export function loadDataSuccess(data) {
     }
 }
 
+export function btnClick(data: any) {
+    return {
+        type: actionTypes.BTN_CLICK,
+        data,
+    }
+}
 
