@@ -1,5 +1,5 @@
+import { commons } from 'components/common';
 import { actionTypes } from './actions'
-import { HYDRATE } from 'next-redux-wrapper'
 
 const initialState = {
     userId: '',
@@ -8,7 +8,7 @@ const initialState = {
     userPhone: '',
     userFirstName: '',
     userLastName: '',
-    userImg: '',
+    userImg: commons.imgDummy,
     userToken: '',
     error: false,
 }
@@ -16,10 +16,10 @@ const initialState = {
 function userReducer(state = initialState, action) {
     switch (action.type) {
         case actionTypes.SET_USER_INFO: {
-            console.log(action.payload)
             return {
                 ...state,
-                ...action.payload
+                ...action.payload,
+                userToken: action.token
             }
         }
 

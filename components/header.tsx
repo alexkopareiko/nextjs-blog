@@ -4,16 +4,11 @@ import Link from 'next/link'
 import { commons } from "./common";
 
 export default function Header({ props }) {
-  const NOT_AUTHORIZED = props.response.error;
+  const NOT_AUTHORIZED = props.userId === '';
+  let userFirstName = props.userFirstName;
+  let userLastName = props.userLastName;
+  let userImg = props.userImg;
 
-  let userFirstName = '';
-  let userLastName = '';
-  let userImg = commons.imgDummy;
-  if (props.success === true && props.response.error === false) {
-    userFirstName = props.response.data.userFirstName;
-    userLastName = props.response.data.userLastName;
-    userImg = props.response.data.userImg;
-  }
   const [isOpenSandwich, setIsOpenSandwich] = useState(false);
   const [isOpenProfile, setIsOpenProfile] = useState(false);
   return (

@@ -2,33 +2,34 @@ import Layout from '../components/layout'
 import Link from 'next/link'
 import PropertyCard from "../components/propertyCard";
 import React from 'react';
-import { xRead } from 'src/request';
-import { HTTP_METHOD } from "../constants";
 import { useDispatch, useSelector } from 'react-redux';
+import { getProductsInfo } from 'redux-saga/store/actions';
 
 
 export default function Home() {
-    const count = useSelector((state: any) => state.countReducer.count)
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+    const products = useSelector((state: any) => state.productReducer.products);
+    const userReducer = useSelector((state: any) => state.userReducer);
+    if (products.length === 0) { dispatch(getProductsInfo()); return (<div>loading...</div>) }
+
     // const { data, error, message } = products.response;
     // if (error) return <div>{message}</div>
     return (
-        <></>
-        // <Layout props={currentUser}>
 
-        //     <div className="px-4 sm:grid sm:grid-cols-2 sm:pb-8 lg:grid-cols-3 2xl:grid-cols-4">
-        //         {
-        //             data && data.map(
-        //                 (p) =>
-        //                 (
-        //                     <Link href={"/product/" + p.prodId} key={p.prodId}>
-        //                         <a><PropertyCard product={p} /></a>
-        //                     </Link>
-        //                 )
-        //             )
-        //         }
-        //     </div>
-        // </Layout>
+        <Layout props={userReducer}>
+            <div className="px-4 sm:grid sm:grid-cols-2 sm:pb-8 lg:grid-cols-3 2xl:grid-cols-4">
+                {
+                    products && products.map(
+                        (p) =>
+                        (
+                            <Link href={"/product/" + p.prodId} key={p.prodId}>
+                                <a><PropertyCard product={p} /></a>
+                            </Link>
+                        )
+                    )
+                }
+            </div>
+        </Layout>
     );
 
 }

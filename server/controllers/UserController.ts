@@ -90,13 +90,14 @@ export default class UserController extends BaseContext {
             if (identity) {
                 return res.json({
                     identity,
-                    message: 'Registration completed successfully!!! You can now log in.'
+                    message: 'Registration completed successfully!!! You can now log in.',
+                    error: false
                 })
             } else {
                 return res.status(301).json({
                     identity: null,
                     message: 'Could not process register',
-                    errors: errors
+                    error: errors
                 })
             }
         })(req, res, next);
@@ -111,7 +112,7 @@ export default class UserController extends BaseContext {
                 return res.json({
                     identity: null,
                     message: 'Could not process validations',
-                    errors: errors
+                    error: errors
                 })
             } else if (identity) {
 
@@ -120,7 +121,7 @@ export default class UserController extends BaseContext {
                     .json({
                         identity,
                         message: 'You have successfully logged in!',
-                        errors: false
+                        error: false
                     })
 
             }

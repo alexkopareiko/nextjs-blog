@@ -52,6 +52,8 @@ export default class LoginStrategy extends BaseContext {
             userFirstName: user.userFirstName,
             userLastName: user.userLastName,
             userImg: user.userImg,
+            userRole: user.userRole,
+            userPhone: user.userPhone,
         };
         const token = jwt.sign(payload, config.jwtSecret);
         user.userToken = token;

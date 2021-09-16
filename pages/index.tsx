@@ -1,10 +1,9 @@
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { END } from 'redux-saga'
+import { btnLoginClick } from 'redux-saga/store/actions'
 import { wrapper } from '../redux-saga/store/store'
-// import { loadData } from '../redux-saga/store/actions'
 import Home from './home'
-import Page from 'components/page';
 
 
 const Index = () => {
@@ -12,8 +11,7 @@ const Index = () => {
 
   return (
     <>
-      <Page />
-      {/* <Home /> */}
+      <Home />
     </>
 
   );
@@ -21,14 +19,14 @@ const Index = () => {
 }
 
 // @ts-ignore
-export const getServerSideProps = wrapper.getServerSideProps((store) => async ({ req }) => {
+// export const getServerSideProps = wrapper.getServerSideProps((store) => async ({ req }) => {
+//   store.dispatch(btnLoginClick({
+//     userEmail: "asdf@asdf.ru",
+//     userPasswd: "123"
+//   }));
 
-  if (!store.getState().placeholderData) {
-    // store.dispatch(loadData())
-    store.dispatch(END)
-  }
+//   await store.sagaTask.toPromise()
+// })
 
-  await store.sagaTask.toPromise()
-})
 
 export default Index;

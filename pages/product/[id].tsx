@@ -3,6 +3,8 @@ import Head from 'next/head'
 import Link from 'next/link'
 import ReviewCard from 'components/reviewCard'
 import { xRead } from 'src/request';
+import { useDispatch, useSelector } from 'react-redux';
+import { getProductsInfo, getSingleProductInfo } from 'redux-saga/store/actions';
 
 // export interface IUser {
 //     userId: number;
@@ -67,12 +69,16 @@ import { xRead } from 'src/request';
 //     error: any;
 // }
 
-export default function Product({ result, home }) {
-    const { data, error, message } = result.response;
-    if (error) return <div>{message}</div>
-    const product = data;
+export default function Product({ prodId, home }) {
+    // const { data, error, message } = result.response;
+    // if (error) return <div>{message}</div>
+    const dispatch = useDispatch();
+    const product = useSelector((state: any) => state.productReducer.product);
+    const userReducer = useSelector((state: any) => state.userReducer);
+    if (product === '') { dispatch(getSingleProductInfo(prodId)); return (<div>loading...</div>) }
+
     return (
-        <Layout {...home}>
+        <Layout props={userReducer}>
             <Head>
                 <title></title>
             </Head>
@@ -167,10 +173,10 @@ export default function Product({ result, home }) {
 }
 
 Product.getInitialProps = async (ctx) => {
-    const cookie = ctx.req ? ctx.req.headers.cookie : document.cookie;
-    const token = cookie.token;
-    const result = await xRead("/product/" + ctx.query.id, {}, token);
+    // const cookie = ctx.req ? ctx.req.headers.cookie : document.cookie;
+    // const token = cookie.token;
+    // const result = await xRead("/product/" + ctx.query.id, {}, token);
     return {
-        result
+        prodId: ctx.query.id
     }
 }
