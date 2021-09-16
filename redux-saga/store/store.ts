@@ -4,8 +4,7 @@ import { createWrapper } from 'next-redux-wrapper'
 
 import { rootWatcher } from '../saga/index'
 
-import countReducer from './countReducer'
-import fetchUsersReducer from './fetchUsersReducer'
+import userReducer from './userReducer'
 
 const bindMiddleware = (middleware) => {
     if (process.env.NODE_ENV !== 'production') {
@@ -16,8 +15,7 @@ const bindMiddleware = (middleware) => {
 }
 
 const rootReducer = combineReducers({
-    countReducer,
-    fetchUsersReducer
+    userReducer
 })
 
 export const makeStore = (context) => {

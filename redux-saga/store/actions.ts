@@ -1,50 +1,21 @@
 export const actionTypes = {
-    FAILURE: 'FAILURE',
-    INCREMENT: 'INCREMENT',
-    DECREMENT: 'DECREMENT',
-    RESET: 'RESET',
+    //LOGIN_INTERFACE
+    BTN_LOGIN_CLICK: 'BTN_LOGIN_CLICK',
 
-    LOAD_DATA: 'LOAD_DATA',
-    LOAD_DATA_SUCCESS: 'LOAD_DATA_SUCCESS',
-
-    HYDRATE: 'HYDRATE',
-
-    BTN_CLICK: 'BTN_CLICK'
+    //USER
+    SET_USER_INFO: 'SET_USER_INFO',
 }
 
-export function failure(error) {
+export function btnLoginClick(data: any) {
     return {
-        type: actionTypes.FAILURE,
-        error,
-    }
-}
-
-export function increment() {
-    return { type: actionTypes.INCREMENT }
-}
-
-export function decrement() {
-    return { type: actionTypes.DECREMENT }
-}
-
-export function reset() {
-    return { type: actionTypes.RESET }
-}
-
-export function loadData() {
-    return { type: actionTypes.LOAD_DATA }
-}
-
-export function loadDataSuccess(data) {
-    return {
-        type: actionTypes.LOAD_DATA_SUCCESS,
+        type: actionTypes.BTN_LOGIN_CLICK,
         data,
     }
 }
 
-export function btnClick(data: any) {
+export function setUserInfo(data: any) {
     return {
-        type: actionTypes.BTN_CLICK,
+        type: actionTypes.SET_USER_INFO,
         data,
     }
 }

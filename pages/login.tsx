@@ -3,18 +3,17 @@ import { xSave } from "src/request";
 import Layout from '../components/layout'
 import { useRouter } from 'next/router'
 import { useDispatch, useSelector } from "react-redux";
-import { btnClick, increment } from "redux-saga/store/actions";
+import { btnLoginClick } from "redux-saga/store/actions";
 
 const login = () => {
 
-    const count = useSelector((state: any) => state.countReducer.count)
     const dispatch = useDispatch()
 
     const router = useRouter()
 
     const loginUser = async event => {
         event.preventDefault();
-        dispatch(btnClick({
+        dispatch(btnLoginClick({
             userEmail: event.target.userEmail.value,
             userPasswd: event.target.userPasswd.value,
         }));
