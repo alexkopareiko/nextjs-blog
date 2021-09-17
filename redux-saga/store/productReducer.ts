@@ -1,4 +1,5 @@
 import { actionTypes } from './actions'
+import { HYDRATE } from 'next-redux-wrapper'
 
 const initialState = {
     products: [],
@@ -7,7 +8,6 @@ const initialState = {
 
 function productReducer(state = initialState, action) {
     switch (action.type) {
-
         case actionTypes.SET_PRODUCTS_INFO: {
             return {
                 ...state,

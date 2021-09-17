@@ -1,5 +1,6 @@
 import { commons } from 'components/common';
 import { actionTypes } from './actions'
+import { HYDRATE } from 'next-redux-wrapper'
 
 const initialState = {
     userId: '',

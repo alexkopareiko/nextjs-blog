@@ -1,6 +1,7 @@
+import { actionTypes } from 'redux-saga/store/actions';
 import { applyMiddleware, combineReducers, createStore } from 'redux'
 import createSagaMiddleware from 'redux-saga'
-import { createWrapper } from 'next-redux-wrapper'
+import { createWrapper, HYDRATE } from 'next-redux-wrapper'
 
 import { rootWatcher } from '../saga/index'
 
@@ -15,10 +16,31 @@ const bindMiddleware = (middleware) => {
     return applyMiddleware(...middleware)
 }
 
-const rootReducer = combineReducers({
+const appReducer = combineReducers({
     userReducer,
     productReducer,
 })
+
+let isHydrated = false;
+function nextReducer(state, action) {
+    switch (action.type) {
+        case HYDRATE: {
+            if (!isHydrated) {
+                isHydrated = true;
+                return { ...state, ...action.payload }
+            }
+        }
+        default:
+            return state
+    }
+    return state
+}
+
+function rootReducer(state, action) {
+    const intermediateState = appReducer(state, action);
+    const finalState = nextReducer(intermediateState, action);
+    return finalState;
+}
 
 export const makeStore = (context) => {
     const sagaMiddleware = createSagaMiddleware()
@@ -30,4 +52,4 @@ export const makeStore = (context) => {
     return store
 }
 
-export const wrapper = createWrapper(makeStore, { debug: true })
+export const wrapper = createWrapper(makeStore)

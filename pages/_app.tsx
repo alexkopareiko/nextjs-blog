@@ -1,30 +1,33 @@
-import { useDispatch } from 'react-redux'
 import { END } from 'redux-saga'
-import { btnLoginClick } from 'redux-saga/store/actions'
+import { isHydrated } from 'redux-saga/store/actions';
 import { wrapper } from '../redux-saga/store/store'
 import '../styles/global.css'
 
 
 function App({ Component, pageProps }) {
-    const dispatch = useDispatch()
-    dispatch(btnLoginClick({
-        userEmail: "asdf@asdf.ru",
-        userPasswd: "123"
-    }));
     return (
         <Component {...pageProps} />
     )
 }
 
-// @ts-ignore
-// export const getServerSideProps = wrapper.getServerSideProps((store) => async ({ req }) => {
-//     store.dispatch(btnLoginClick({
-//         userEmail: "asdf@asdf.ru",
-//         userPasswd: "123"
-//     }));
+App.getInitialProps = wrapper.getInitialAppProps(store => async ({ Component, ctx }) => {
 
-//     await store.sagaTask.toPromise()
-// })
+    //   1. Wait for all page actions to dispatch
+    const pageProps = {
+        ...(Component.getInitialProps ? await Component.getInitialProps(ctx) : {}),
+        namespacesRequired: ['common']
+    };
 
+    //   2. Stop the saga if on server
+    if (store && ctx.req) {
+        store.dispatch(END);
+        await (store).sagaTask.toPromise();
+    }
+
+    // 3. Return props
+    return {
+        pageProps
+    };
+});
 
 export default wrapper.withRedux(App)

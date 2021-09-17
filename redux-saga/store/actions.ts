@@ -1,4 +1,6 @@
 export const actionTypes = {
+    IS_HYDRATED: 'IS_HYDRATED',
+
     //LOGIN_INTERFACE
     BTN_LOGIN_CLICK: 'BTN_LOGIN_CLICK',
 
@@ -10,7 +12,18 @@ export const actionTypes = {
     SET_PRODUCTS_INFO: 'SET_PRODUCTS_INFO',
     SET_SINGLE_PRODUCT_INFO: 'SET_SINGLE_PRODUCT_INFO',
     GET_SINGLE_PRODUCT_INFO: 'GET_SINGLE_PRODUCT_INFO',
+
+    HYDRATE: 'HYDRATE',
+
 }
+
+export function isHydrated() {
+    return {
+        type: actionTypes.IS_HYDRATED,
+        payload: true,
+    }
+}
+
 
 export function btnLoginClick(payload: any) {
     return {
