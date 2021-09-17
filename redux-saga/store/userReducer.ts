@@ -1,6 +1,5 @@
 import { commons } from '../../constants';
-import { actionTypes } from './actions'
-import { HYDRATE } from 'next-redux-wrapper'
+import { SET_USER_INFO } from 'redux-saga/saga/identity';
 
 const initialState = {
     userId: '',
@@ -16,7 +15,7 @@ const initialState = {
 
 function userReducer(state = initialState, action) {
     switch (action.type) {
-        case actionTypes.SET_USER_INFO: {
+        case SET_USER_INFO: {
             return {
                 ...state,
                 ...action.payload,

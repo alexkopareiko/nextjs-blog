@@ -1,5 +1,5 @@
 import { IProduct } from "../../constants";
-import { call, put, select, take } from "redux-saga/effects";
+import { all, call, put, select, take } from "redux-saga/effects";
 import { action } from "redux-saga/store/actions"
 import { xRead } from "src/request";
 
@@ -14,6 +14,7 @@ const FIND_PRODUCT_BY_ID = 'FIND_PRODUCT_BY_ID';
 
 
 export const findProductById = (id: string) => action(FIND_PRODUCT_BY_ID, { id });
+export const getProductsInfo = () => action(GET_PRODUCTS_INFO);
 export const setProductsInfo = (products: Array<IProduct>) => action(SET_PRODUCTS_INFO, { products });
 export const getSingleProductInfo = (id: number) => action(GET_SINGLE_PRODUCT_INFO, { id });
 export const setSingleProductInfo = (product: IProduct) => action(SET_SINGLE_PRODUCT_INFO, { product });
@@ -47,9 +48,9 @@ export function* sagaGetAndSetSingleProduct() {
 
 
 export default function* sagas() {
-    [
+    yield all([
         call(sagaGetAndSetProducts),
         call(sagaGetAndSetSingleProduct),
-    ]
+    ])
 }
 

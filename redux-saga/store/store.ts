@@ -1,9 +1,8 @@
-import { actionTypes } from 'redux-saga/store/actions';
 import { applyMiddleware, combineReducers, createStore } from 'redux'
 import createSagaMiddleware from 'redux-saga'
 import { createWrapper, HYDRATE } from 'next-redux-wrapper'
 
-import { rootWatcher } from '../saga/index'
+import rootWatcher from '../saga/index'
 
 import userReducer from './userReducer'
 import productReducer from './productReducer'

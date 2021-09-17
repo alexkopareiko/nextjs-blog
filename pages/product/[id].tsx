@@ -172,11 +172,17 @@ export default function Product({ prodId, home }) {
     )
 }
 
-Product.getInitialProps = async (ctx) => {
-    // const cookie = ctx.req ? ctx.req.headers.cookie : document.cookie;
-    // const token = cookie.token;
-    // const result = await xRead("/product/" + ctx.query.id, {}, token);
-    return {
-        prodId: ctx.query.id
-    }
-}
+// Product.getInitialProps = async (ctx) => {
+//     // const cookie = ctx.req ? ctx.req.headers.cookie : document.cookie;
+//     // const token = cookie.token;
+//     // const result = await xRead("/product/" + ctx.query.id, {}, token);
+//     return {
+//         prodId: ctx.query.id
+//     }
+// }
+// @ts-ignore
+Product.getInitialProps = wrapper.getInitialAppProps(store => (ctx) => {
+
+    store.dispatch(getSingleProductInfo(ctx.query.id));
+
+});

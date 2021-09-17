@@ -1,9 +1,4 @@
-import { GetStaticProps } from "next";
-import { useState } from "react";
-
-
 export default function PropertyCard({ product }) {
-
     return (
         <div className="mt-9 sm:mt-6 sm:px-2">
             <div className="relative pb-5/6" >
@@ -45,6 +40,5 @@ export default function PropertyCard({ product }) {
                 </div>
             </div>
         </div>
-
     );
 }

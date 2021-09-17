@@ -4,6 +4,8 @@ export interface IIdentity {
     userFirstName?: string;
     userLastName?: string;
     userImg?: string;
+    userToken?: string;
+    userPhone?: string;
 }
 
 export interface IProduct {

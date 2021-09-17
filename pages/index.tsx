@@ -2,24 +2,14 @@ import Layout from '../components/layout'
 import { wrapper } from '../redux-saga/store/store'
 import Link from 'next/link'
 import PropertyCard from "../components/propertyCard";
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { getProductsInfo } from 'redux-saga/store/actions';
+import React from 'react';
+import { useSelector } from 'react-redux';
+import { getProductsInfo } from 'redux-saga/saga/products';
 
-
-export default function Home() {
-  const dispatch = useDispatch();
+export default function Index() {
   const products = useSelector((state: any) => state.productReducer.products);
   const userReducer = useSelector((state: any) => state.userReducer);
-
-  // useEffect(() => {
-  //   console.log('Products amount', products.length);
-  //   dispatch(getProductsInfo());
-  // }, []);
-
-
   return (
-
     <Layout props={userReducer}>
       {
         products.length <= 0 ?
@@ -40,16 +30,13 @@ export default function Home() {
             }
           </div>
       }
-
     </Layout>
   );
-
 }
+
 // @ts-ignore
-Home.getInitialProps = wrapper.getInitialAppProps(store => () => {
-
+Index.getInitialProps = wrapper.getInitialAppProps(store => () => {
   store.dispatch(getProductsInfo());
-
 });
 
 
