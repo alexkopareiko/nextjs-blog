@@ -36,9 +36,10 @@ export function* sagaGetAndSetProducts() {
 }
 
 export function* sagaGetAndSetSingleProduct() {
+    console.log('sagaGetAndSetSingleProduct');
     while (true) {
         const data = yield take(GET_SINGLE_PRODUCT_INFO);
-        const prodId = data.payload;
+        const prodId = data.id;
         const result = yield call(xRead, '/product/' + prodId, {});
         if (result.success === true && result.response.error === false) {
             yield put(setSingleProductInfo(result.response.data))
