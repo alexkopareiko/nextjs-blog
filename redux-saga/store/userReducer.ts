@@ -1,4 +1,4 @@
-import { commons } from 'components/common';
+import { commons } from '../../constants';
 import { actionTypes } from './actions'
 import { HYDRATE } from 'next-redux-wrapper'
 

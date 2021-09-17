@@ -1,5 +1,4 @@
-import { actionTypes } from './actions'
-import { HYDRATE } from 'next-redux-wrapper'
+import { GET_PRODUCTS_INFO, SET_SINGLE_PRODUCT_INFO } from "redux-saga/saga/products";
 
 const initialState = {
     products: [],
@@ -8,13 +7,13 @@ const initialState = {
 
 function productReducer(state = initialState, action) {
     switch (action.type) {
-        case actionTypes.SET_PRODUCTS_INFO: {
+        case GET_PRODUCTS_INFO: {
             return {
                 ...state,
                 products: action.payload
             }
         }
-        case actionTypes.SET_SINGLE_PRODUCT_INFO: {
+        case SET_SINGLE_PRODUCT_INFO: {
             return {
                 ...state,
                 product: action.payload
