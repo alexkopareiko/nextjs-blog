@@ -18,7 +18,7 @@ function userReducer(state = initialState, action) {
         case SET_USER_INFO: {
             return {
                 ...state,
-                ...action.payload,
+                ...action.identity,
                 userToken: action.token
             }
         }

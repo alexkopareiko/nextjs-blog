@@ -27,6 +27,29 @@ export default class ProductModelController extends BaseContext {
             });
     }
 
+    @route('/all')
+    @GET()
+    findAll(req, res) {
+        const { ProductModel } = this.di;
+        return ProductModel.findAll()
+            .then(data => {
+                const answer = {
+                    data: data,
+                    message: "request successfull",
+                    error: false
+                }
+                res.status(200).send(answer);
+            })
+            .catch(err => {
+                const answer = {
+                    data: null,
+                    message: err,
+                    error: true
+                }
+                res.status(500).send(answer);
+            });
+    };
+
 
     @route('/:id')     // Find a single ProductModel with an id
     @GET()

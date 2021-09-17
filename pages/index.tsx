@@ -2,17 +2,17 @@ import Layout from '../components/layout'
 import { wrapper } from '../redux-saga/store/store'
 import Link from 'next/link'
 import PropertyCard from "../components/propertyCard";
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { getProductsInfo } from 'redux-saga/saga/products';
+import { getAllProducts } from 'redux-saga/saga/products';
 
 export default function Index() {
-  const products = useSelector((state: any) => state.productReducer.products);
+  const products = useSelector((state: any) => state.products.items);
   const userReducer = useSelector((state: any) => state.userReducer);
   return (
     <Layout props={userReducer}>
       {
-        products.length <= 0 ?
+        products !== undefined && products.length <= 0 ?
           <div className="my-10 flex justify-center text-red-500 font-bold">
             <h1>There are not any products...</h1>
           </div>
@@ -36,7 +36,7 @@ export default function Index() {
 
 // @ts-ignore
 Index.getInitialProps = wrapper.getInitialAppProps(store => () => {
-  store.dispatch(getProductsInfo());
+  store.dispatch(getAllProducts());
 });
 
 

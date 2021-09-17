@@ -44,7 +44,6 @@ export default class ProductService extends BaseContext {
             })
     }
 
-
     public findOne(id: number) {
         const { ProductModel, UserModel, CategoryModel, ReviewModel } = this.di;
         if (isNaN(id)) return Promise.reject('Parameter is not a number!');

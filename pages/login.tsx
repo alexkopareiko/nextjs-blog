@@ -3,7 +3,7 @@ import { xSave } from "src/request";
 import Layout from '../components/layout'
 import { useRouter } from 'next/router'
 import { useDispatch, useSelector } from "react-redux";
-import { btnLoginClick } from "redux-saga/store/actions";
+import { btnLoginClick } from "redux-saga/saga/identity";
 
 const login = () => {
 

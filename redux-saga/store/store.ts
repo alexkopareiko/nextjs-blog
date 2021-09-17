@@ -5,7 +5,8 @@ import { createWrapper, HYDRATE } from 'next-redux-wrapper'
 import rootWatcher from '../saga/index'
 
 import userReducer from './userReducer'
-import productReducer from './productReducer'
+import products from './products'
+
 
 const bindMiddleware = (middleware) => {
     if (process.env.NODE_ENV !== 'production') {
@@ -17,7 +18,7 @@ const bindMiddleware = (middleware) => {
 
 const appReducer = combineReducers({
     userReducer,
-    productReducer,
+    products,
 })
 
 let isHydrated = false;
@@ -28,11 +29,12 @@ function nextReducer(state, action) {
                 isHydrated = true;
                 return { ...state, ...action.payload }
             }
+            return state
         }
         default:
             return state
     }
-    return state
+
 }
 
 function rootReducer(state, action) {
