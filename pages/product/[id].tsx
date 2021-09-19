@@ -2,10 +2,10 @@ import Layout from '../../components/layout'
 import Head from 'next/head'
 import Link from 'next/link'
 import ReviewCard from 'components/reviewCard'
-import { xRead } from 'src/request';
-import { useDispatch, useSelector } from 'react-redux';
-import { getSingleProductInfo } from 'redux-saga/saga/products';
+import { getProductById, } from 'redux-saga/saga/products';
 import { wrapper } from '../../redux-saga/store/store'
+import { useSelector } from 'react-redux';
+import { IProduct } from '../../constants';
 
 // export interface IUser {
 //     userId: number;
@@ -71,8 +71,15 @@ import { wrapper } from '../../redux-saga/store/store'
 // }
 
 export default function Product({ prodId, home }) {
-    const product = useSelector((state: any) => state.productReducer.product);
+    const products = useSelector((state: any) => state.products.items);
     const userReducer = useSelector((state: any) => state.userReducer);
+    let product: IProduct;
+    if (products.length !== 0 && !isNaN(prodId)) {
+        product = products.find(p => {
+            return Number(p.prodId) === Number(prodId)
+        })
+    }
+
     return (
         <Layout props={userReducer}>
             <Head>
@@ -81,9 +88,8 @@ export default function Product({ prodId, home }) {
             <Link href={"/"} >
                 <a className="fixed z-10"><span className="px-3 py-2 bg-indigo-300 rounded-xl mx-3 hover:bg-indigo-200">Back</span></a>
             </Link>
-
             {
-                product.prodId >= 0 ?
+                product?.prodId !== undefined ?
                     <article>
 
                         <h1 className="text-gray-900 text-2xl px-3 mt-3">{product.prodTitle}</h1>
@@ -96,7 +102,7 @@ export default function Product({ prodId, home }) {
                                 {product.prodDesc}
                             </p>
                             <p className="text-2xl px-3 mt-3">Characteristics:</p>
-                            <div className="mt-1">
+                            {/* <div className="mt-1">
                                 <table className="table-fixed w-full ">
                                     <thead >
                                         <tr className="bg-gray-200">
@@ -161,7 +167,7 @@ export default function Product({ prodId, home }) {
                                     product.author.reviewsForOwner.map((r) => (
                                         <ReviewCard key={r.revId} review={r} />
                                     ))
-                            }
+                            } */}
 
                         </div>
                     </article>
@@ -184,5 +190,8 @@ export default function Product({ prodId, home }) {
 // }
 // @ts-ignore
 Product.getInitialProps = wrapper.getInitialAppProps(store => (ctx: any) => {
-    store.dispatch(getSingleProductInfo(ctx.query.id));
+    store.dispatch(getProductById(ctx.query.id));
+    return {
+        prodId: ctx.query.id
+    }
 });

@@ -9,6 +9,7 @@ import { getAllProducts } from 'redux-saga/saga/products';
 export default function Index() {
   const products = useSelector((state: any) => state.products.items);
   const userReducer = useSelector((state: any) => state.userReducer);
+
   return (
     <Layout props={userReducer}>
       {
