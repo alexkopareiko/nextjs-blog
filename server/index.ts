@@ -108,7 +108,7 @@ export const IGNORS = [
   '/manifest.json',
   '/styles.chunk.css.map',
   '/__nextjs',
-  '/api/user/register',
-  '/api/user/login',
+  '/api/user/',
   '/api/product/',
+  '/api/review/',
 ];

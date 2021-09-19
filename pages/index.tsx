@@ -8,10 +8,10 @@ import { getAllProducts } from 'redux-saga/saga/products';
 
 export default function Index() {
   const products = useSelector((state: any) => state.products.items);
-  const userReducer = useSelector((state: any) => state.userReducer);
+  const identity = useSelector((state: any) => state.identity);
 
   return (
-    <Layout props={userReducer}>
+    <Layout props={identity}>
       {
         products !== undefined && products.length <= 0 ?
           <div className="my-10 flex justify-center text-red-500 font-bold">

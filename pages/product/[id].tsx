@@ -1,87 +1,35 @@
+import { useSelector } from 'react-redux';
+
 import Layout from '../../components/layout'
 import Head from 'next/head'
 import Link from 'next/link'
 import ReviewCard from 'components/reviewCard'
+
 import { getProductById, } from 'redux-saga/saga/products';
+import { getUsers } from 'redux-saga/saga/users';
+import { getReviewsByProductId } from 'redux-saga/saga/reviews';
+
 import { wrapper } from '../../redux-saga/store/store'
-import { useSelector } from 'react-redux';
 import { IProduct } from '../../constants';
-
-// export interface IUser {
-//     userId: number;
-//     userEmail: string;
-//     userPasswd: string;
-//     userRole: string;
-//     userPhone: string;
-//     userFirstName: string;
-//     userLastName: string;
-//     userImg: string;
-//     createdAt: number;
-//     updatedAt: number;
-//     reviewsForOwner: Array<IReview>;
-
-// }
-
-
-// interface IReview {
-//     revId: number;
-//     revFeedback: string;
-//     ownerUserId: number;
-//     prodUserId: number;
-//     revRating: number;
-//     prodId: number;
-//     createdAt: number;
-//     updatedAt: number;
-// }
-
-// interface ICategory {
-//     catId: number;
-//     catName: string;
-//     createdAt: number;
-//     updatedAt: number;
-// }
-
-
-// interface IProduct {
-//     prodId: number;
-//     prodTitle: string;
-//     prodDesc: string;
-//     catId: number;
-//     userId: number;
-//     prodPrice: number;
-//     prodYear: number;
-//     prodImg: string;
-//     createdAt: number;
-//     updatedAt: number;
-//     category: ICategory,
-//     rating: number;
-//     reviews: Array<IReview>,
-//     author: IUser,
-// }
-
-// interface IResponseData {
-//     data: IProduct
-// }
-
-// interface IGeneral {
-//     data: IResponseData;
-//     home: any;
-//     message: string;
-//     error: any;
-// }
 
 export default function Product({ prodId, home }) {
     const products = useSelector((state: any) => state.products.items);
-    const userReducer = useSelector((state: any) => state.userReducer);
+    const identity = useSelector((state: any) => state.identity);
+    const reviews = useSelector((state: any) => state.reviews.items);
+    const users = useSelector((state: any) => state.users.items);
+
     let product: IProduct;
-    if (products.length !== 0 && !isNaN(prodId)) {
+    if (products.length !== 0 && !isNaN(prodId)) {  //need to get details about request architecture
         product = products.find(p => {
             return Number(p.prodId) === Number(prodId)
         })
     }
+    let userOwner = users.find(u => {
+        return Number(u.userId) === Number(product.userId)
+    })
 
     return (
-        <Layout props={userReducer}>
+        <Layout props={identity}>
             <Head>
                 <title></title>
             </Head>
@@ -102,7 +50,8 @@ export default function Product({ prodId, home }) {
                                 {product.prodDesc}
                             </p>
                             <p className="text-2xl px-3 mt-3">Characteristics:</p>
-                            {/* <div className="mt-1">
+
+                            <div className="mt-1">
                                 <table className="table-fixed w-full ">
                                     <thead >
                                         <tr className="bg-gray-200">
@@ -112,11 +61,11 @@ export default function Product({ prodId, home }) {
                                         </tr>
                                     </thead>
                                     <tbody className="">
-                                        <tr className="px-3 text-center">
+                                        {/* <tr className="px-3 text-center">
                                             <td className="px-3">Category</td>
                                             <td className="px-3">{product.category.catName}</td>
 
-                                        </tr>
+                                        </tr> */}
 
                                         <tr className="bg-gray-300 text-center ">
                                             <td className="py-1 px-3">Price</td>
@@ -126,20 +75,20 @@ export default function Product({ prodId, home }) {
                                             <td className="py-1 px-3">Year</td>
                                             <td className="py-1px-3">{product.prodYear}</td>
                                         </tr>
-                                        <tr className="bg-gray-300 text-center">
+                                        {/* <tr className="bg-gray-300 text-center">
                                             <td className="py-1">Rating</td>
                                             <td className="py-1">{product.rating}</td>
-                                        </tr>
+                                        </tr> */}
                                         <tr className="text-center">
                                             <td className="py-1">Reviews</td>
-                                            <td className="py-1">{product.reviews.length}</td>
+                                            <td className="py-1">{reviews.length}</td>
                                         </tr>
                                         <tr className="bg-gray-300">
                                             <td className="px-3 py-1 text-center">Seller</td>
                                             <td className="px-3 py-2 flex flex-col items-center">
-                                                <img src={product.author.userImg} alt="" className="rounded w-10 h-10" />
+                                                <img src={userOwner.userImg} alt="" className="rounded w-10 h-10" />
                                                 <div>
-                                                    {product.author.userFirstName}&nbsp;{product.author.userLastName}
+                                                    {userOwner.userFirstName}&nbsp;{userOwner.userLastName}
                                                 </div>
 
                                             </td>
@@ -148,17 +97,18 @@ export default function Product({ prodId, home }) {
                                 </table>
 
                             </div>
+
                             {
-                                product.reviews.length === 0 ? '' :
+                                reviews.length === 0 ? '' :
                                     (<p className="text-2xl px-3 mt-3">Reviews for {product.prodTitle}:</p>)
                             }
                             {
-                                product.reviews.length === 0 ? '' :
-                                    product.reviews.map((r) => (
-                                        <ReviewCard key={r.revId} review={r} />
+                                reviews.length === 0 ? '' :
+                                    reviews.map((r) => (
+                                        <ReviewCard key={r.revId} review={r} users={users} />
                                     ))
                             }
-                            {
+                            {/* {
                                 product.author.reviewsForOwner.length === 0 ? '' :
                                     (<p className="text-2xl px-3 mt-3">Reviews for {product.author.userFirstName}&nbsp;{product.author.userLastName}:</p>)
                             }
@@ -191,6 +141,8 @@ export default function Product({ prodId, home }) {
 // @ts-ignore
 Product.getInitialProps = wrapper.getInitialAppProps(store => (ctx: any) => {
     store.dispatch(getProductById(ctx.query.id));
+    store.dispatch(getReviewsByProductId(ctx.query.id));
+    store.dispatch(getUsers());
     return {
         prodId: ctx.query.id
     }

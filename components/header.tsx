@@ -2,7 +2,7 @@ import { useState } from "react";
 import Link from 'next/link'
 
 export default function Header({ props }) {
-  const NOT_AUTHORIZED = props.userId === '';
+  const NOT_AUTHORIZED = props.userId === -1;
   let userFirstName = props.userFirstName;
   let userLastName = props.userLastName;
   let userImg = props.userImg;

@@ -51,12 +51,12 @@ export default class ProductModelController extends BaseContext {
     };
 
 
-    @route('/:id')     // Find a single ProductModel with an id
+    @route('/:id')
     @GET()
-    findOne(req, res) {
-        const { ProductService } = this.di;
+    findAOne(req, res) {
+        const { ProductModel } = this.di;
         const id = req.params.id;
-        return ProductService.findOne(id)
+        return ProductModel.findByPk(id)
             .then(data => {
                 const answer = {
                     data: data,
@@ -74,6 +74,32 @@ export default class ProductModelController extends BaseContext {
                 res.status(500).send(answer);
             });
     };
+
+
+
+    // @route('/:id')     // Find a single ProductModel with an id
+    // @GET()
+    // findOne(req, res) {
+    //     const { ProductService } = this.di;
+    //     const id = req.params.id;
+    //     return ProductService.findOne(id)
+    //         .then(data => {
+    //             const answer = {
+    //                 data: data,
+    //                 message: "request successfull",
+    //                 error: false
+    //             }
+    //             res.status(200).send(answer);
+    //         })
+    //         .catch(err => {
+    //             const answer = {
+    //                 data: null,
+    //                 message: err,
+    //                 error: true
+    //             }
+    //             res.status(500).send(answer);
+    //         });
+    // };
 
 }
 

@@ -1,8 +1,10 @@
-import { commons } from '../../constants';
+import { commons, IIdentity } from '../../constants';
 import { SET_USER_INFO } from 'redux-saga/saga/identity';
 
-const initialState = {
-    userId: '',
+
+
+const initialState: IIdentity = {
+    userId: -1,
     userEmail: '',
     userRole: '',
     userPhone: '',
@@ -10,10 +12,9 @@ const initialState = {
     userLastName: '',
     userImg: commons.imgDummy,
     userToken: '',
-    error: false,
 }
 
-function userReducer(state = initialState, action) {
+function identity(state = initialState, action) {
     switch (action.type) {
         case SET_USER_INFO: {
             return {
@@ -28,4 +29,4 @@ function userReducer(state = initialState, action) {
     }
 }
 
-export default userReducer;
+export default identity;

@@ -1,11 +1,14 @@
-export default function ReviewCard({ review }) {
+export default function ReviewCard({ review, users }) {
+    let ownerOfReview = users.find(u => {
+        return Number(u.userId) === Number(review.prodUserId)
+    })
     return (
         <div className="shadow-md rounded-lg my-3 px-3">
             <div className="flex mx-2 my-2">
                 <div className="flex flex-col items-center w-24 px-5">
-                    <img src={review.prodUser.userImg} alt="" className="rounded w-10 h-10" />
+                    <img src={ownerOfReview.userImg} alt="" className="rounded w-10 h-10" />
                     <div>
-                        {review.prodUser.userFirstName}
+                        {ownerOfReview.userFirstName}
                     </div>
                 </div>
                 <div className="flex flex-col px-3">

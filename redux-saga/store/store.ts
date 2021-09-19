@@ -4,8 +4,10 @@ import { createWrapper, HYDRATE } from 'next-redux-wrapper'
 
 import rootWatcher from '../saga/index'
 
-import userReducer from './userReducer'
+import identity from './identity'
 import products from './products'
+import reviews from './reviews'
+import users from './users'
 
 
 const bindMiddleware = (middleware) => {
@@ -17,8 +19,10 @@ const bindMiddleware = (middleware) => {
 }
 
 const appReducer = combineReducers({
-    userReducer,
+    identity,
     products,
+    reviews,
+    users,
 })
 
 let isHydrated = false;

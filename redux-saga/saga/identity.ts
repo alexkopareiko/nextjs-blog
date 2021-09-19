@@ -25,7 +25,7 @@ export const setUserInfo = (identity: IIdentity, token: string) => action(SET_US
 
 export function* sagaLoginWatcher() {
     while (true) {
-        let identity = yield select(state => state.userReducer);
+        let identity = yield select(state => state.identity);
         const data = yield take(BTN_LOGIN_CLICK);
         if (identity.userToken === '') {
             if (validateEmail(data.payload.userEmail) && data.payload.userPasswd !== '') {

@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.sequelize.query(`
@@ -12,7 +12,7 @@ module.exports = {
       userFirstName varchar(45) DEFAULT NULL,
       userLastName varchar(45) DEFAULT NULL,
       userImg varchar(300) DEFAULT NULL,
-      userToken varchar(300) DEFAULT NULL,
+      userToken varchar(1000) DEFAULT NULL,
       createdAt bigint DEFAULT NULL,
       updatedAt bigint DEFAULT NULL,
       PRIMARY KEY (userId),
@@ -22,6 +22,6 @@ module.exports = {
     `);
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Users');
-  }
+    await queryInterface.dropTable("Users");
+  },
 };

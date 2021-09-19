@@ -1,6 +1,11 @@
+import { IProduct } from "../../constants";
 import { SET_ALL_PRODUCTS, SET_PRODUCT_BY_ID } from "redux-saga/saga/products";
 
-const initialState = {
+interface IProductsState {
+    items: Array<IProduct>
+}
+
+const initialState: IProductsState = {
     items: []
 };
 

@@ -6,6 +6,7 @@ export interface IIdentity {
     userImg?: string;
     userToken?: string;
     userPhone?: string;
+    userRole?: string;
 }
 
 export interface IProduct {
@@ -17,6 +18,17 @@ export interface IProduct {
     prodPrice?: number;
     prodYear?: number;
     prodImg?: string;
+    createdAt?: number;
+    updatedAt?: number;
+}
+
+export interface IReview {
+    revId?: number;
+    revFeedback?: string;
+    ownerUserId?: number;
+    prodUserId?: number;
+    revRating?: number;
+    prodId?: number;
     createdAt?: number;
     updatedAt?: number;
 }
