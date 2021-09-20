@@ -3,7 +3,6 @@ import SearchFilters from "./searchFilters";
 
 
 export default function Layout({ props, children }) {
-  console.log('Layout', props);
   return (
     <div className={"min-h-screen bg-gray-200 antialiased xl:flex xl:flex-col xl:h-screen xl:bg-gray-100"}>
       <Header props={props} />

@@ -2,6 +2,12 @@ import BaseContext from '../BaseContext'
 
 export default class ProductService extends BaseContext {
 
+    public findProductById(prodId: number) {
+        const { ProductModel } = this.di;
+        if (isNaN(prodId)) return Promise.reject('Parameter is not a number!');
+        return ProductModel.findByPk(prodId)
+    }
+
     // public getAllProducts() {
     //     const { ProductModel, UserModel, CategoryModel, ReviewModel } = this.di;
 
@@ -53,7 +59,7 @@ export default class ProductService extends BaseContext {
     //             {
     //                 model: CategoryModel,
     //                 as: 'category'
-    //             },
+    //             }, 
     //             {
     //                 model: UserModel,
     //                 as: 'author',

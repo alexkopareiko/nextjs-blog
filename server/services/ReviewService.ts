@@ -17,36 +17,27 @@ export default class ReviewService extends BaseContext {
         const { ReviewModel, UserModel } = this.di;
         if (isNaN(id)) return Promise.reject('Parameter is not a number!');
         const result = ReviewModel.findAll({
-            // include: [
-            //     {
-            //         model: UserModel, 
-            //         as: 'prodUser'
-            //     },
-            // ],
             where: {
                 prodId: id
             },
         })
         return result;
     }
-    public findUserReviewsByProductId(id: number) {
-        const { ReviewModel, UserModel, ProductModel } = this.di;
-        if (isNaN(id)) return Promise.reject('Parameter is not a number!');
-        const result = ReviewModel.findAll({
-            include: [
-                {
-                    model: UserModel,
-                    as: 'prodUser'
-                },
-                {
-                    model: ProductModel,
-                    as: 'prodUser'
-                },
-            ],
-            where: {
-                prodId: id
-            },
-        })
-        return result;
-    }
+    // public findUserReviewsByProductId(id: number) {
+    //     const { ReviewModel, UserModel, ProductModel } = this.di;
+    //     if (isNaN(id)) return Promise.reject('Parameter is not a number!');
+    //     const result = ProductModel.findOne({
+    //         include: [
+    //             {
+    //                 model: ReviewModel,
+    //                 as: 'reviewsForOwner'
+    //             }
+    //         ],
+    //         where: {
+    //             prodId: id
+    //         },
+
+    //     })
+    //     return result;
+    // }
 }

@@ -1,12 +1,14 @@
 import { IReview } from "../../constants";
-import { SET_REVIEWS_BY_PRODUCT_ID } from "redux-saga/saga/reviews";
+import { SET_REVIEWS_BY_PRODUCT_ID, SET_REVIEWS_BY_OWNER_ID } from "redux-saga/saga/reviews";
 
 interface IReviewsState {
-    items: Array<IReview>
+    items: Array<IReview>,
+    itemsForOwner: Array<IReview>,
 }
 
 const initialState: IReviewsState = {
-    items: []
+    items: [],
+    itemsForOwner: []
 };
 
 function products(state = initialState, action) {
@@ -17,6 +19,12 @@ function products(state = initialState, action) {
                 items: action.reviews
             }
         }
+        // case SET_REVIEWS_BY_OWNER_ID: {
+        //     return {
+        //         ...state,
+        //         itemsForOwner: action.reviews
+        //     }
+        // }
         default:
             return state
     }

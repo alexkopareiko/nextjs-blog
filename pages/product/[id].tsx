@@ -16,6 +16,7 @@ export default function Product({ prodId, home }) {
     const products = useSelector((state: any) => state.products.items);
     const identity = useSelector((state: any) => state.identity);
     const reviews = useSelector((state: any) => state.reviews.items);
+    const reviewsForOwner = useSelector((state: any) => state.reviews.itemsForOwner);
     const users = useSelector((state: any) => state.users.items);
 
     let product: IProduct;
@@ -111,13 +112,13 @@ export default function Product({ prodId, home }) {
                                     ))
                             }
                             {/* {
-                                product.author.reviewsForOwner.length === 0 ? '' :
-                                    (<p className="text-2xl px-3 mt-3">Reviews for {product.author.userFirstName}&nbsp;{product.author.userLastName}:</p>)
+                                reviewsForOwner.length === 0 ? '' :
+                                    (<p className="text-2xl px-3 mt-3">Reviews for {userOwner.userFirstName}&nbsp;{userOwner.userLastName}:</p>)
                             }
                             {
-                                product.author.reviewsForOwner.length === 0 ? '' :
-                                    product.author.reviewsForOwner.map((r) => (
-                                        <ReviewCard key={r.revId} review={r} />
+                                reviewsForOwner.length === 0 ? '' :
+                                    reviewsForOwner.map((r) => (
+                                        <ReviewCard key={r.revId} review={r} users={users} />
                                     ))
                             } */}
 
@@ -144,7 +145,7 @@ export default function Product({ prodId, home }) {
 Product.getInitialProps = wrapper.getInitialAppProps(store => (ctx: any) => {
     store.dispatch(getProductById(ctx.query.id));
     store.dispatch(getReviewsByProductId(ctx.query.id));
-    store.dispatch(getUsers());
+    store.dispatch(getUsers(ctx.query.id));
     return {
         prodId: ctx.query.id
     }

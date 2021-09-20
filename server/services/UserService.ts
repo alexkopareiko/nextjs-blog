@@ -1,4 +1,5 @@
 import BaseContext from '../BaseContext'
+import { Op } from 'sequelize';
 
 export default class UserService extends BaseContext {
     public getAllUsers() {
@@ -33,6 +34,34 @@ export default class UserService extends BaseContext {
                     'userFirstName', 'userLastName', 'userImg'
                 ],
                 where: { userToken: token }
+            })
+    };
+
+    public async getUsersByProductId(prodId: number) {
+        const { UserModel, ProductService, ReviewService } = this.di;
+        if (isNaN(prodId)) return Promise.reject('Parameter is not a number!');
+        const product = await ProductService.findProductById(prodId);
+        const reviews = await ReviewService.findReviewsByProductId(prodId);
+        // const userIDs = [
+        //     product.userId,
+        // ];
+        // reviews.reduce((a, v) => { a.push(v.prodUserId) } , [ product.userId ]);
+
+        // const arr = reviews.reduce(function (carry, item) {
+        //     carry.push(item['prodUserId']);
+        //     return carry;
+        // }, []);
+
+        const userIDs = [
+            product.userId,
+        ]
+        reviews.map(r => userIDs.push(r.prodUserId));
+
+        return UserModel.findAll(
+            {
+                where: {
+                    userId: userIDs
+                }
             })
     };
 

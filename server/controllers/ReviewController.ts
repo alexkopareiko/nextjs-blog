@@ -77,5 +77,29 @@ export default class ReviewController extends BaseContext {
             });
     };
 
+    @route('/for_owner_by_prod_id/:id')     // Find Reviews for Owner by prodId
+    @GET()
+    findUserReviewsByProductId(req, res) {
+        const id = req.params.id;
+        const { ReviewService } = this.di;
+        return ReviewService.findUserReviewsByProductId(id)
+            .then(data => {
+                const answer = {
+                    data: data,
+                    message: "request successfull",
+                    error: false
+                }
+                res.send(answer);
+            })
+            .catch(err => {
+                const answer = {
+                    data: null,
+                    message: err,
+                    error: true
+                }
+                res.status(500).send(answer);
+            });
+    };
+
 }
 

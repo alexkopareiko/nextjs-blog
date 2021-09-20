@@ -53,10 +53,10 @@ export default class ProductModelController extends BaseContext {
 
     @route('/:id')
     @GET()
-    findAOne(req, res) {
-        const { ProductModel } = this.di;
+    findProductById(req, res) {
+        const { ProductService } = this.di;
         const id = req.params.id;
-        return ProductModel.findByPk(id)
+        return ProductService.findProductById(id)
             .then(data => {
                 const answer = {
                     data: data,

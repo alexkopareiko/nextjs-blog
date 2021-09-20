@@ -7,19 +7,15 @@ import { IIdentity } from '../../constants';
 export const GET_USERS = 'GET_USERS';
 export const SET_USERS = 'SET_USERS';
 
-export const getUsers = () => action(GET_USERS);
+export const getUsers = (prodId: number) => action(GET_USERS, { prodId });
 export const setUsers = (users: Array<IIdentity>) => action(SET_USERS, { users });
 
 export function* sagaGetUsers() {
     while (true) {
-        yield take(GET_USERS);
-        let users = yield select(state => state.users.items);
-        const result = yield call(xRead, '/user/list', {});
+        const data = yield take(GET_USERS);
+        const result = yield call(xRead, '/user/by_prod_id/' + data.prodId, {});
         if (result.success === true && result.response.error === false) {
-            const araysAreSame = JSON.stringify(users) === JSON.stringify(result.response.data);
-            if (!araysAreSame) {
-                yield put(setUsers(result.response.data))
-            }
+            yield put(setUsers(result.response.data))
         }
     }
 }

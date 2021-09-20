@@ -32,7 +32,6 @@ function nextReducer(state, action) {
     }
     switch (action.type) {
         case HYDRATE: {
-            console.log('HYDRATE = ', state.products.items.length, action.payload.products.items);
             if (!isHydrated) {
                 isHydrated = true;
                 return { ...state, ...action.payload }

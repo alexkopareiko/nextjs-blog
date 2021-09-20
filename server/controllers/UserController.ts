@@ -82,6 +82,30 @@ export default class UserController extends BaseContext {
             });
     };
 
+    @route('/by_prod_id/:id') // Find Users by product Id
+    @GET()
+    getUsersByProductId(req, res) {
+        const { UserSeviceCustom } = this.di;
+        const prodId = req.params.id;
+        return UserSeviceCustom.getUsersByProductId(prodId)
+            .then(data => {
+                const answer = {
+                    data: data,
+                    message: "request successfull",
+                    error: false
+                }
+                res.send(answer);
+            })
+            .catch(err => {
+                const answer = {
+                    data: null,
+                    message: err,
+                    error: true
+                }
+                res.status(500).send(answer);
+            });
+    };
+
     @route('/register')
     @POST()
     public register(req: Request, res: Response, next: NextFunction) {
