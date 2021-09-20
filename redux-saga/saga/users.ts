@@ -1,3 +1,6 @@
+import { reviewSchema } from './reviews';
+import { normalize, schema } from 'normalizr';
+
 import { all, call, put, select, take } from "redux-saga/effects";
 
 import { action } from "redux-saga/store/actions"
@@ -9,6 +12,10 @@ export const SET_USERS = 'SET_USERS';
 
 export const getUsers = (prodId: number) => action(GET_USERS, { prodId });
 export const setUsers = (users: Array<IIdentity>) => action(SET_USERS, { users });
+
+export const userSchema = new schema.Entity('users', {
+    reviewsForOwner: [reviewSchema]
+});
 
 export function* sagaGetUsers() {
     while (true) {

@@ -1,4 +1,7 @@
+import { userSchema } from './users';
 import { all, call, put, select, take } from "redux-saga/effects";
+
+import { normalize, schema } from 'normalizr';
 
 import { IReview } from "../../constants";
 import { action } from "redux-saga/store/actions"
@@ -6,11 +9,15 @@ import { xRead } from "src/request";
 
 export const GET_REVIEWS_BY_PRODUCT_ID = 'GET_REVIEWS_BY_PRODUCT_ID';
 export const SET_REVIEWS_BY_PRODUCT_ID = 'SET_REVIEWS_BY_PRODUCT_ID';
-export const SET_REVIEWS_BY_OWNER_ID = 'SET_REVIEWS_BY_OWNER_ID';
+// export const SET_REVIEWS_BY_OWNER_ID = 'SET_REVIEWS_BY_OWNER_ID';
 
 export const getReviewsByProductId = (prodId: number) => action(GET_REVIEWS_BY_PRODUCT_ID, { prodId });
 export const setReviewsByProductId = (reviews: Array<IReview>) => action(SET_REVIEWS_BY_PRODUCT_ID, { reviews });
 // export const setReviewsByOwnerId = (reviews: Array<IReview>) => action(SET_REVIEWS_BY_OWNER_ID, { reviews });
+
+export const reviewSchema = new schema.Entity('users', {
+    prodUser: userSchema,
+});
 
 export function* sagaGetReviewsByProductId() {
     while (true) {
