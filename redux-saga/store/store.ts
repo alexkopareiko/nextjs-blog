@@ -27,8 +27,12 @@ const appReducer = combineReducers({
 
 let isHydrated = false;
 function nextReducer(state, action) {
+    if (action.type.includes('@@redux/INIT')) {
+        isHydrated = false;
+    }
     switch (action.type) {
         case HYDRATE: {
+            console.log('HYDRATE = ', state.products.items.length, action.payload.products.items);
             if (!isHydrated) {
                 isHydrated = true;
                 return { ...state, ...action.payload }

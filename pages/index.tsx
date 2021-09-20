@@ -3,17 +3,19 @@ import { wrapper } from '../redux-saga/store/store'
 import Link from 'next/link'
 import PropertyCard from "../components/propertyCard";
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, connect } from 'react-redux';
 import { getAllProducts } from 'redux-saga/saga/products';
 
-export default function Index() {
-  const products = useSelector((state: any) => state.products.items);
-  const identity = useSelector((state: any) => state.identity);
+function Index(props) {
+  const { products, identity } = props;
+  // const products = useSelector((state: any) => state.products.items);
+  // const identity = useSelector((state: any) => state.identity);
 
+  console.log('Render Products Page = ', products.length);
   return (
     <Layout props={identity}>
       {
-        products !== undefined && products.length <= 0 ?
+        products === undefined || products.length <= 0 ?
           <div className="my-10 flex justify-center text-red-500 font-bold">
             <h1>There are not any products...</h1>
           </div>
@@ -40,6 +42,15 @@ Index.getInitialProps = wrapper.getInitialAppProps(store => () => {
   store.dispatch(getAllProducts());
 });
 
+const mapStateToProps = (state) => {
+  console.log('Products mapStateToProps!!!', state.products.items.length);
+  return {
+    products: state.products.items,
+    identity: state.identity,
+  }
+}
+
+export default connect(mapStateToProps)(Index)
 
 // Home.getInitialProps = async (ctx) => {
 //     const isServer = typeof window === 'undefined';

@@ -30,9 +30,6 @@ export default function Product({ prodId, home }) {
 
     return (
         <Layout props={identity}>
-            <Head>
-                <title></title>
-            </Head>
             <Link href={"/"} >
                 <a className="fixed z-10"><span className="px-3 py-2 bg-indigo-300 rounded-xl mx-3 hover:bg-indigo-200">Back</span></a>
             </Link>
@@ -83,16 +80,21 @@ export default function Product({ prodId, home }) {
                                             <td className="py-1">Reviews</td>
                                             <td className="py-1">{reviews.length}</td>
                                         </tr>
-                                        <tr className="bg-gray-300">
-                                            <td className="px-3 py-1 text-center">Seller</td>
-                                            <td className="px-3 py-2 flex flex-col items-center">
-                                                <img src={userOwner.userImg} alt="" className="rounded w-10 h-10" />
-                                                <div>
-                                                    {userOwner.userFirstName}&nbsp;{userOwner.userLastName}
-                                                </div>
+                                        {
+                                            userOwner?.userId !== undefined ?
+                                                <tr className="bg-gray-300">
+                                                    <td className="px-3 py-1 text-center">Seller</td>
+                                                    <td className="px-3 py-2 flex flex-col items-center">
+                                                        <img src={userOwner.userImg} alt="" className="rounded w-10 h-10" />
+                                                        <div>
+                                                            {userOwner.userFirstName}&nbsp;{userOwner.userLastName}
+                                                        </div>
 
-                                            </td>
-                                        </tr>
+                                                    </td>
+                                                </tr> :
+                                                <></>
+                                        }
+
                                     </tbody>
                                 </table>
 

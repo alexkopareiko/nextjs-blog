@@ -60,6 +60,7 @@ export function* sagaGetAllProducts() {
         const result = yield call(xRead, '/product/all', {});
         if (result.success === true && result.response.error === false) {
             if (products.length !== result.response.data.length) {
+                console.log('setAllProducts', result.response.data.length);
                 yield put(setAllProducts(result.response.data))
             }
         }

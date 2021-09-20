@@ -11,12 +11,12 @@ function App({ Component, pageProps }) {
 }
 
 App.getInitialProps = wrapper.getInitialAppProps(store => async ({ Component, ctx }) => {
-    if (store.getState().identity.userId === -1) {
-        store.dispatch(btnLoginClick({
-            userEmail: "asdf@asdf.ru",
-            userPasswd: "123"
-        }));
-    }
+    // if (store.getState().identity.userId === -1) {
+    //     store.dispatch(btnLoginClick({
+    //         userEmail: "asdf@asdf.ru",
+    //         userPasswd: "123"
+    //     }));
+    // }
 
 
     //   1. Wait for all page actions to dispatch

@@ -20,9 +20,10 @@ function products(state = initialState, action) {
         // }
 
         case SET_ALL_PRODUCTS: {
+            console.log('SET_ALL_PRODUCTS = ', action.products.length);
             return {
                 ...state,
-                items: action.products
+                items: [...action.products]
             }
         }
         case SET_PRODUCT_BY_ID: {
@@ -34,6 +35,7 @@ function products(state = initialState, action) {
 
 
         default:
+            console.log('old product state = ', action.type, state.items.length);
             return state
     }
 }
