@@ -1,7 +1,7 @@
 import { reviewSchema } from './reviews';
 import { IProduct } from "../../constants";
 import { all, call, put, select, take } from "redux-saga/effects";
-import { action } from "redux-saga/store/actions"
+import { action, setAllData } from "redux-saga/store/actions"
 import { xRead } from "src/request";
 import { userSchema } from "./users";
 import { normalize, schema } from 'normalizr';
@@ -30,37 +30,38 @@ export function* sagaGetAllProducts() {
         const result = yield call(xRead, '/product/all', {});
         if (result.success === true && result.response.error === false) {
             if (products.length !== result.response.data.length) {
-                yield put(setAllProducts(result.response.data))
+
+                yield put(setAllData(result.response.data))
             }
         }
     }
 }
 
-export function* sagaGetProductById() {
-    while (true) {
-        const data = yield take(GET_PRODUCT_BY_ID);
-        const prodId = data.id;
-        const products = yield select(state => state.products.items);
-        let product = undefined;
-        if (!isNaN(prodId)) {
-            if (products.length !== 0) {
-                product = products.find(p => {
-                    return Number(p.prodId) === Number(prodId)
-                })
-            }
-            if (product === undefined) {
-                const result = yield call(xRead, '/product/' + prodId, {});
-                if (result.success === true && result.response.error === false) {
-                    yield put(setProductById(result.response.data))
-                }
-            }
-        }
-    }
-}
+// export function* sagaGetProductById() {
+//     while (true) {
+//         const data = yield take(GET_PRODUCT_BY_ID);
+//         const prodId = data.id;
+//         const products = yield select(state => state.products.items);
+//         let product = undefined;
+//         if (!isNaN(prodId)) {
+//             if (products.length !== 0) {
+//                 product = products.find(p => {
+//                     return Number(p.prodId) === Number(prodId)
+//                 })
+//             }
+//             if (product === undefined) {
+//                 const result = yield call(xRead, '/product/' + prodId, {});
+//                 if (result.success === true && result.response.error === false) {
+//                     yield put(setProductById(result.response.data))
+//                 }
+//             }
+//         }
+//     }
+// }
 
 export default function* sagas() {
     yield all([
-        call(sagaGetProductById),
+        // call(sagaGetProductById),
         call(sagaGetAllProducts),
     ])
 }

@@ -1,4 +1,5 @@
 import { SET_ALL_DATA } from "./actions";
+import { cloneDeep, merge } from 'lodash';
 
 const initialEntities = {};
 
@@ -10,13 +11,14 @@ function entities(state = initialEntities, action: any) {
                 const { response: { entities } } = action;
                 if (entities) {
                     Object.keys(entities).map((entityName) => {
-                        let list = state.get(entityName);
+                        let list = state[entityName];
                         if (list && list.size > 0) {
                             Object.keys(entities[entityName]).map((id) => list = list.remove(id));
                         }
-                        state = state.set(entityName, list);
+                        const newState = cloneDeep(state);
+                        newState[entityName] = { ...list };
                     });
-                    state = state.mergeDeep(fromJS(entities));
+                    return merge(state, entities);
                 }
             }
             break;
