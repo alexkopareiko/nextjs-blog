@@ -17,6 +17,7 @@ class ProductEntity extends Entity {
             author: userEntity.getSchema(),
             reviews: [reviewEntity.getSchema()],
             category: categoryEntity.getSchema(),
+            reviewsForOwner: [reviewEntity.getSchema()],
         }, { idAttribute: 'prodId' });
         this.sagaGetAllProducts = this.sagaGetAllProducts.bind(this);
         this.sagaGetProductById = this.sagaGetProductById.bind(this);

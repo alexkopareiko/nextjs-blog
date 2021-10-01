@@ -12,6 +12,7 @@ function Product(props) {
     const product = props.product;
     const userOwner = props.userOwner;
     const reviewsForProd = props.reviewsForProd;
+    const category = props.category;
 
     return (
         <Layout props={identity}>
@@ -39,16 +40,14 @@ function Product(props) {
                                         <tr className="bg-gray-200">
                                             <th className="w-1/2"></th>
                                             <th className="w-1/2"></th>
-
                                         </tr>
                                     </thead>
                                     <tbody className="">
-                                        {/* <tr className="px-3 text-center">
+                                        <tr className="px-3 text-center">
                                             <td className="px-3">Category</td>
-                                            <td className="px-3">{product.category.catName}</td>
+                                            <td className="px-3">{category.get('catName')}</td>
 
-                                        </tr> */}
-
+                                        </tr>
                                         <tr className="bg-gray-300 text-center ">
                                             <td className="py-1 px-3">Price</td>
                                             <td className=" py-1px-3">$&nbsp;{product.get('prodPrice')}</td>
@@ -57,10 +56,10 @@ function Product(props) {
                                             <td className="py-1 px-3">Year</td>
                                             <td className="py-1px-3">{product.get('prodYear')}</td>
                                         </tr>
-                                        {/* <tr className="bg-gray-300 text-center">
+                                        <tr className="bg-gray-300 text-center">
                                             <td className="py-1">Rating</td>
-                                            <td className="py-1">{product.rating}</td>
-                                        </tr> */}
+                                            <td className="py-1">{product.get('rating')}</td>
+                                        </tr>
                                         <tr className="text-center">
                                             <td className="py-1">Reviews</td>
                                             <td className="py-1">{reviewsForProd.size}</td>
@@ -89,7 +88,7 @@ function Product(props) {
                                 reviewsForProd.size === 0 ? '' :
                                     (
                                         <div>
-                                            <p className="text-2xl px-3 mt-3">Reviews for {product.prodTitle}:</p>
+                                            <p className="text-2xl px-3 mt-3">Reviews for {product.get('prodTitle')}:</p>
                                             {
                                                 // reviewsForProd && reviewsForProd.valueSeq().map((r) => {
                                                 //     return (
@@ -133,15 +132,21 @@ Product.getInitialProps = wrapper.getInitialAppProps(store => (ctx: any) => {
 
 const mapStateToProps = (state, props) => {
     const { entities } = state;
-    const product = entities.get('products').filter((item: any) => item.get('prodId') == props.prodId)[0];
-    const userOwner = entities.get('users').filter((item: any) => item.get('userId') == product.get('userId'))[0];
+    const product = entities.get('products').filter((item: any) => item.get('prodId') == props.prodId).valueSeq().first();
+    const userOwner = entities.get('users').filter((item: any) => item.get('userId') == product.get('userId')).valueSeq().first();
     const reviewsForProd = entities.get('reviews').filter((item: any) => item.get('prodId') == props.prodId);
+    const category = entities.get('categories').filter((item: any) => item.get('catId') == product.get('catId')).valueSeq().first();
+    const findReviewsByUserId = (userId) => { return reviewsForProd.valueSeq().find(review => review.get('prodUserId') === userId ) };
+    //const reviewUsers = entities.get('users').filter((item: any) => findUserId(item.get('userId')).isMap());
+ console.log(findReviewsByUserId(1));
+    
     return {
         reviewsForProd,
         product,
         identity: state.identity,
         users: entities.get('users'),
-        userOwner
+        userOwner,
+        category
     }
 }
 

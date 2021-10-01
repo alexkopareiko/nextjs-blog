@@ -78,9 +78,7 @@ export default class Entity {
 
     const schema = (Array.isArray(result.response.data) ? [this.getSchema()] : this.getSchema())
     if (result.success === true && result.response.error === false) {
-      console.log("schema Entity.ts",schema);
       const normalizedData = normalize(camelizeKeys(result.response.data), schema);
-      
       return yield put(setAllDataAC(this.getEntityName(), normalizedData))
     }
     return result;
