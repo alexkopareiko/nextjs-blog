@@ -10,9 +10,9 @@ export default class Entity {
   private entityName: string;
   private static actions: any = [];
 
-  constructor(name: string, options: any = {}) {
+  constructor(name: string, definition:any = {}, options: any = {}) {
 
-    this.schema = new schema.Entity(name, options);
+    this.schema = new schema.Entity(name, definition, options);
     this.entityName = name;
 
     this.xFetch = this.xFetch.bind(this);
@@ -78,7 +78,9 @@ export default class Entity {
 
     const schema = (Array.isArray(result.response.data) ? [this.getSchema()] : this.getSchema())
     if (result.success === true && result.response.error === false) {
+      console.log("schema Entity.ts",schema);
       const normalizedData = normalize(camelizeKeys(result.response.data), schema);
+      
       return yield put(setAllDataAC(this.getEntityName(), normalizedData))
     }
     return result;

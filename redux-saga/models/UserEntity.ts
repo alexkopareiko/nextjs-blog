@@ -15,8 +15,8 @@ export const getUsersByProductId = (prodId: number) => action(GET_USER_BY_PRODUC
 class UserEntity extends Entity {
     constructor() {
         super(ENTITIES.USERS, {
-            reviewsForOwner: [reviewEntity.getSchema()],
-        });
+            //reviewsForOwner: [reviewEntity.getSchema()],
+        }, { idAttribute: 'userId' });
         this.sagaGetAllUsers = this.sagaGetAllUsers.bind(this);
         this.sagaGetUserById = this.sagaGetUserById.bind(this);
         this.sagaGetUsersByProductId = this.sagaGetUsersByProductId.bind(this);

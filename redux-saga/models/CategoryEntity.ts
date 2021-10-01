@@ -11,7 +11,7 @@ export const getCategoryById = (id: number) => action(GET_CATEGORY_BY_ID, { id }
 
 class CategoryEntity extends Entity {
     constructor() {
-        super(ENTITIES.CATEGORIES, {});
+        super(ENTITIES.CATEGORIES, {}, { idAttribute: 'catId' });
         this.sagaGetAllCategories = this.sagaGetAllCategories.bind(this);
         this.sagaGetCategoryById = this.sagaGetCategoryById.bind(this);
         Entity.addAction(this.sagaGetAllCategories);
@@ -21,7 +21,7 @@ class CategoryEntity extends Entity {
     public * sagaGetAllCategories() {
         while (true) {
             yield take(GET_ALL_CATEGORIES);
-            yield call(this.xRead, '/user/list');
+            yield call(this.xRead, '/category/list');
         }
     }
 
@@ -29,7 +29,7 @@ class CategoryEntity extends Entity {
         while (true) {
             const data = yield take(GET_CATEGORY_BY_ID);
             const id = data.id;
-            yield call(this.xRead, '/user/' + id);
+            yield call(this.xRead, '/category/' + id);
 
         }
     }

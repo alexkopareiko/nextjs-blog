@@ -16,7 +16,7 @@ class ReviewEntity extends Entity {
     constructor() {
         super(ENTITIES.REVIEWS, {
             prodUser: userEntity.getSchema(),
-        });
+        }, { idAttribute: 'revId' });
         this.sagaGetAllReviews = this.sagaGetAllReviews.bind(this);
         this.sagaGetReviewById = this.sagaGetReviewById.bind(this);
         this.sagaGetReviewsByProductId = this.sagaGetReviewsByProductId.bind(this);
@@ -29,7 +29,7 @@ class ReviewEntity extends Entity {
     public * sagaGetAllReviews() {
         while (true) {
             yield take(GET_ALL_REVIEWS);
-            yield call(this.xRead, '/review/');
+            yield call(this.xRead, '/review/list');
         }
     }
 
