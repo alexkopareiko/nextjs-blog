@@ -4,7 +4,7 @@ export default function PropertyCard({ product }) {
             <div className="relative pb-5/6" >
                 <img
                     className="rounded-lg shadow-md inset-0 w-full object-cover h-64"
-                    src={product.prodImg}
+                    src={product.get('prodImg')}
                     alt=""
                 />
             </div>
@@ -15,15 +15,15 @@ export default function PropertyCard({ product }) {
                             {product.category.catName}
                         </span> */}
                         <div className="ml-2 text-xs text-gray-600 font-medium uppercase tracking-wide">
-                            ({product.prodYear})
+                            ({product.get('prodYear')})
                         </div>
                     </div>
                     <h4 className="mt-1 text-gray-900 font-medium text-lg">
-                        {product.prodTitle}
+                        {product.get('prodTitle')}
                     </h4>
                     <div className="mt-1">
                         <span className="ml-1 text-sm text-gray-600">$&nbsp;</span>
-                        <span className="text-gray-900">{product.prodPrice}</span>
+                        <span className="text-gray-900">{product.get('prodPrice')}</span>
 
                     </div>
                     {/* <div className="flex items-center mt-2 text-sm text-gray-600">

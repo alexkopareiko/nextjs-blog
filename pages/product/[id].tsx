@@ -1,33 +1,17 @@
-import { useSelector } from 'react-redux';
+import { connect } from 'react-redux';
 
 import Layout from '../../components/layout'
-import Head from 'next/head'
 import Link from 'next/link'
 import ReviewCard from 'components/reviewCard'
 
-import { getProductById, } from 'redux-saga/saga/products';
-import { getUsers } from 'redux-saga/saga/users';
-import { getReviewsByProductId } from 'redux-saga/saga/reviews';
+import { getProductById, } from 'redux-saga/models/ProductEntity';
+import wrapper from '../../redux-saga/store/store'
 
-import { wrapper } from '../../redux-saga/store/store'
-import { IProduct } from '../../constants';
-
-export default function Product({ prodId, home }) {
-    const products = useSelector((state: any) => state.products.items);
-    const identity = useSelector((state: any) => state.identity);
-    const reviews = useSelector((state: any) => state.reviews.items);
-    const reviewsForOwner = useSelector((state: any) => state.reviews.itemsForOwner);
-    const users = useSelector((state: any) => state.users.items);
-
-    let product: IProduct;
-    if (products.length !== 0 && !isNaN(prodId)) {  //need to get details about request architecture
-        product = products.find(p => {
-            return Number(p.prodId) === Number(prodId)
-        })
-    }
-    let userOwner = users.find(u => {
-        return Number(u.userId) === Number(product.userId)
-    })
+function Product(props) {
+    const identity = props.identity;
+    const product = props.product;
+    const userOwner = props.userOwner;
+    const reviewsForProd = props.reviewsForProd;
 
     return (
         <Layout props={identity}>
@@ -35,17 +19,17 @@ export default function Product({ prodId, home }) {
                 <a className="fixed z-10"><span className="px-3 py-2 bg-indigo-300 rounded-xl mx-3 hover:bg-indigo-200">Back</span></a>
             </Link>
             {
-                product?.prodId !== undefined ?
+                product ?
                     <article>
 
-                        <h1 className="text-gray-900 text-2xl px-3 mt-3">{product.prodTitle}</h1>
+                        <h1 className="text-gray-900 text-2xl px-3 mt-3">{product.get('prodTitle')}</h1>
                         <div className="flex shadow-md relative flex-col">
                             <div className="pt-5">
-                                <img src={product.prodImg} className="inset-0 w-full" />
+                                <img src={product.get('prodImg')} className="inset-0 w-full" />
                             </div>
                             <p className="text-2xl px-3 mt-3">Description:</p>
                             <p className="px-3 mt-1">
-                                {product.prodDesc}
+                                {product.get('prodDesc')}
                             </p>
                             <p className="text-2xl px-3 mt-3">Characteristics:</p>
 
@@ -67,11 +51,11 @@ export default function Product({ prodId, home }) {
 
                                         <tr className="bg-gray-300 text-center ">
                                             <td className="py-1 px-3">Price</td>
-                                            <td className=" py-1px-3">$&nbsp;{product.prodPrice}</td>
+                                            <td className=" py-1px-3">$&nbsp;{product.get('prodPrice')}</td>
                                         </tr>
                                         <tr className="text-center">
                                             <td className="py-1 px-3">Year</td>
-                                            <td className="py-1px-3">{product.prodYear}</td>
+                                            <td className="py-1px-3">{product.get('prodYear')}</td>
                                         </tr>
                                         {/* <tr className="bg-gray-300 text-center">
                                             <td className="py-1">Rating</td>
@@ -79,16 +63,16 @@ export default function Product({ prodId, home }) {
                                         </tr> */}
                                         <tr className="text-center">
                                             <td className="py-1">Reviews</td>
-                                            <td className="py-1">{reviews.length}</td>
+                                            <td className="py-1">{reviewsForProd.size}</td>
                                         </tr>
                                         {
-                                            userOwner?.userId !== undefined ?
+                                            userOwner ?
                                                 <tr className="bg-gray-300">
                                                     <td className="px-3 py-1 text-center">Seller</td>
                                                     <td className="px-3 py-2 flex flex-col items-center">
-                                                        <img src={userOwner.userImg} alt="" className="rounded w-10 h-10" />
+                                                        <img src={userOwner.get('userImg')} alt="" className="rounded w-10 h-10" />
                                                         <div>
-                                                            {userOwner.userFirstName}&nbsp;{userOwner.userLastName}
+                                                            {userOwner.get('userFirstName')}&nbsp;{userOwner.get('userLastName')}
                                                         </div>
 
                                                     </td>
@@ -102,15 +86,21 @@ export default function Product({ prodId, home }) {
                             </div>
 
                             {
-                                reviews.length === 0 ? '' :
-                                    (<p className="text-2xl px-3 mt-3">Reviews for {product.prodTitle}:</p>)
+                                reviewsForProd.size === 0 ? '' :
+                                    (
+                                        <div>
+                                            <p className="text-2xl px-3 mt-3">Reviews for {product.prodTitle}:</p>
+                                            {
+                                                // reviewsForProd && reviewsForProd.valueSeq().map((r) => {
+                                                //     return (
+                                                //         <ReviewCard key={r.revId} review={r} users={users} />
+                                                //     );
+                                                // })
+                                            }
+                                        </div>
+                                    )
                             }
-                            {
-                                reviews.length === 0 ? '' :
-                                    reviews.map((r) => (
-                                        <ReviewCard key={r.revId} review={r} users={users} />
-                                    ))
-                            }
+
                             {/* {
                                 reviewsForOwner.length === 0 ? '' :
                                     (<p className="text-2xl px-3 mt-3">Reviews for {userOwner.userFirstName}&nbsp;{userOwner.userLastName}:</p>)
@@ -133,20 +123,26 @@ export default function Product({ prodId, home }) {
     )
 }
 
-// Product.getInitialProps = async (ctx) => {
-//     // const cookie = ctx.req ? ctx.req.headers.cookie : document.cookie;
-//     // const token = cookie.token;
-//     // const result = await xRead("/product/" + ctx.query.id, {}, token);
-//     return {
-//         prodId: ctx.query.id
-//     }
-// }
 // @ts-ignore
 Product.getInitialProps = wrapper.getInitialAppProps(store => (ctx: any) => {
     store.dispatch(getProductById(ctx.query.id));
-    store.dispatch(getReviewsByProductId(ctx.query.id));
-    store.dispatch(getUsers(ctx.query.id));
     return {
         prodId: ctx.query.id
     }
 });
+
+const mapStateToProps = (state, props) => {
+    const { entities } = state;
+    const product = entities.get('products').filter((item: any) => item.get('prodId') == props.prodId)[0];
+    const userOwner = entities.get('users').filter((item: any) => item.get('userId') == product.get('userId'))[0];
+    const reviewsForProd = entities.get('reviews').filter((item: any) => item.get('prodId') == props.prodId);
+    return {
+        reviewsForProd,
+        product,
+        identity: state.identity,
+        users: entities.get('users'),
+        userOwner
+    }
+}
+
+export default connect(mapStateToProps)(Product)

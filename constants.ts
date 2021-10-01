@@ -9,6 +9,12 @@ export interface IIdentity {
     userRole?: string;
 }
 
+export interface ICategory {
+    catId?: number;
+    catName?: string;
+}
+
+
 export interface IProduct {
     prodId?: number;
     prodTitle?: string;
@@ -40,8 +46,16 @@ export enum HTTP_METHOD {
     DELETE = 'DELETE',
 }
 
+export enum ENTITIES {
+    PRODUCTS = 'products',
+    REVIEWS = 'reviews',
+    USERS = 'users',
+    CATEGORIES = 'categories',
+}
+
 export const commons = {
     imgDummy: 'https://zm-cs.ru/files/avatars/1537189754.jpg',
-
+    baseUrl: process.env.BASE_URL || 'http://localhost:3000',
 };
+
 

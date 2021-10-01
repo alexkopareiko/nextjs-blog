@@ -1,16 +1,7 @@
-import { all, call } from "redux-saga/effects"
-import products from './products'
-import identity from './identity'
-import reviews from "./reviews"
-import users from "./users"
+import { all, call} from "redux-saga/effects"
+import Entity from "../models/Entity";
 
-
-export default function* rootWatcher() {
-    console.log('rootWatcher')
-    yield all([
-        // call(products),
-        // call(identity),
-        // call(reviews),
-        // call(users),
-    ])
+export const rootWatcher = function* root() {
+  const sagaAll = Entity.getActions();
+  yield all(sagaAll.map(saga => call(saga))) 
 }

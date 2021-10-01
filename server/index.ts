@@ -65,6 +65,7 @@ const passport = container.resolve<PassportStatic>('passportCustom');
 const acl = (req: Request, res: Response, next: NextFunction) => {
   let useAcl = true
   const url = req.url
+
   for (const item of IGNORS) {
     if (url.startsWith(item)) {
       useAcl = false
@@ -108,7 +109,7 @@ export const IGNORS = [
   '/manifest.json',
   '/styles.chunk.css.map',
   '/__nextjs',
-  '/api/user/',
-  '/api/product/',
-  '/api/review/',
+  '/api/user',
+  '/api/product',
+  '/api/review',
 ];

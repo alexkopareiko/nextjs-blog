@@ -56,7 +56,7 @@ export default class ProductModelController extends BaseContext {
     findProductById(req, res) {
         const { ProductService } = this.di;
         const id = req.params.id;
-        return ProductService.findProductById(id)
+        return ProductService.findOne(id)
             .then(data => {
                 const answer = {
                     data: data,
