@@ -13,6 +13,7 @@ function Product(props) {
     const userOwner = props.userOwner;
     const reviewsForProd = props.reviewsForProd;
     const category = props.category;
+    const usersForReviews = props.usersForReviews;
 
     return (
         <Layout props={identity}>
@@ -90,11 +91,11 @@ function Product(props) {
                                         <div>
                                             <p className="text-2xl px-3 mt-3">Reviews for {product.get('prodTitle')}:</p>
                                             {
-                                                // reviewsForProd && reviewsForProd.valueSeq().map((r) => {
-                                                //     return (
-                                                //         <ReviewCard key={r.revId} review={r} users={users} />
-                                                //     );
-                                                // })
+                                                reviewsForProd && reviewsForProd.valueSeq().map((r) => {
+                                                    return (
+                                                        <ReviewCard key={r.get('revId')} review={r} usersForReviews={usersForReviews} />
+                                                    );
+                                                })
                                             }
                                         </div>
                                     )
@@ -136,15 +137,15 @@ const mapStateToProps = (state, props) => {
     const userOwner = entities.get('users').filter((item: any) => item.get('userId') == product.get('userId')).valueSeq().first();
     const reviewsForProd = entities.get('reviews').filter((item: any) => item.get('prodId') == props.prodId);
     const category = entities.get('categories').filter((item: any) => item.get('catId') == product.get('catId')).valueSeq().first();
-    const findReviewsByUserId = (userId) => { return reviewsForProd.valueSeq().find(review => review.get('prodUserId') === userId ) };
-    //const reviewUsers = entities.get('users').filter((item: any) => findUserId(item.get('userId')).isMap());
- console.log(findReviewsByUserId(1));
+    const findUsersById = (userId) => { return entities.get('users').find(u => u.get('userId') === userId) };
+    let usersForReviews = [];
+    reviewsForProd.map(r => usersForReviews.push(findUsersById(r.get('prodUserId'))));
     
     return {
         reviewsForProd,
         product,
         identity: state.identity,
-        users: entities.get('users'),
+        usersForReviews,
         userOwner,
         category
     }

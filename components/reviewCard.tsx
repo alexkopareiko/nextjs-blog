@@ -1,19 +1,19 @@
-export default function ReviewCard({ review, users }) {
-    let ownerOfReview = users.find(u => {
-        return Number(u.userId) === Number(review.prodUserId)
-    })
+import { connect } from "react-redux";
+
+function ReviewCard({ review, user }) {
+
     return (
         <div className="shadow-md rounded-lg my-3 px-3">
             <div className="flex mx-2 my-2">
                 <div className="flex flex-col items-center w-24 px-5">
-                    <img src={ownerOfReview.userImg} alt="" className="rounded w-10 h-10" />
+                    <img src={user.get('userImg')} alt="" className="rounded w-10 h-10" />
                     <div>
-                        {ownerOfReview.userFirstName}
+                        {user.get('userFirstName')}
                     </div>
                 </div>
                 <div className="flex flex-col px-3">
                     <div className="flex">
-                        {[...Array(Number(review.revRating))].map((elementInArray, i) => (
+                        {[...Array(Number(review.get('revRating')))].map((elementInArray, i) => (
                             <svg key={i}
                                 className="h-4 w-4 fill-current text-teal-500"
                                 xmlns="http://www.w3.org/2000/svg"
@@ -25,10 +25,20 @@ export default function ReviewCard({ review, users }) {
                         }
                     </div>
                     <div>
-                        {review.revFeedback}
+                        {review.get('revFeedback')}
                     </div>
                 </div>
             </div>
         </div>
     );
 }
+
+const mapStateToProps = (state, props) => {
+    const review = props.review;
+    const user = props.usersForReviews.find(u => u.get('userId') === review.get('prodUserId'));
+    return {
+        review,
+        user,
+    }
+}
+export default connect(mapStateToProps)(ReviewCard)
