@@ -15,6 +15,7 @@ class ProductEntity extends Entity {
     constructor() {
         super(ENTITIES.PRODUCTS, {
             author: userEntity.getSchema(),
+            users: [userEntity.getSchema()],
             reviews: [reviewEntity.getSchema()],
             category: categoryEntity.getSchema(),
             reviewsForOwner: [reviewEntity.getSchema()],

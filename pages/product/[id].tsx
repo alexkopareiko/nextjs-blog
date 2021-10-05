@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import Layout from '../../components/layout'
 import Link from 'next/link'
-import ReviewCard from 'components/reviewCard'
+import ReviewCard from 'components/ReviewCard'
 
 import { getProductById, } from 'redux-saga/models/ProductEntity';
 import wrapper from '../../redux-saga/store/store'
@@ -14,6 +14,7 @@ function Product(props) {
     const reviewsForProd = props.reviewsForProd;
     const category = props.category;
     const usersForReviews = props.usersForReviews;
+    const reviewsForOwner = props.reviewsForOwner;
 
     return (
         <Layout props={identity}>
@@ -93,7 +94,7 @@ function Product(props) {
                                             {
                                                 reviewsForProd && reviewsForProd.valueSeq().map((r) => {
                                                     return (
-                                                        <ReviewCard key={r.get('revId')} review={r} usersForReviews={usersForReviews} />
+                                                        <ReviewCard key={r.get('revId')} review={r} users={usersForReviews} />
                                                     );
                                                 })
                                             }
@@ -102,16 +103,20 @@ function Product(props) {
                             }
 
                             {/* {
-                                reviewsForOwner.length === 0 ? '' :
-                                    (<p className="text-2xl px-3 mt-3">Reviews for {userOwner.userFirstName}&nbsp;{userOwner.userLastName}:</p>)
-                            }
-                            {
-                                reviewsForOwner.length === 0 ? '' :
-                                    reviewsForOwner.map((r) => (
-                                        <ReviewCard key={r.revId} review={r} users={users} />
-                                    ))
+                                reviewsForOwner.size === 0 ? '' :
+                                    (
+                                        <div>
+                                            <p className="text-2xl px-3 mt-3">Reviews for {userOwner.get('userFirstName')}&nbsp;{userOwner.get('userLastName')}:</p>
+                                            {
+                                                reviewsForOwner && reviewsForOwner.valueSeq().map((r) => {
+                                                    return (
+                                                        <ReviewCard key={r.get('revId')} review={r} users={usersForReviews} />
+                                                    );
+                                                })
+                                            }
+                                        </div>
+                                    )
                             } */}
-
                         </div>
                     </article>
                     :
@@ -138,14 +143,17 @@ const mapStateToProps = (state, props) => {
     const reviewsForProd = entities.get('reviews').filter((item: any) => item.get('prodId') == props.prodId);
     const category = entities.get('categories').filter((item: any) => item.get('catId') == product.get('catId')).valueSeq().first();
     const findUsersById = (userId) => { return entities.get('users').find(u => u.get('userId') === userId) };
-    let usersForReviews = [];
+    const usersForReviews = [];
     reviewsForProd.map(r => usersForReviews.push(findUsersById(r.get('prodUserId'))));
-    
+    const reviewsForOwner = entities.get('reviews').filter((item: any) => item.get('ownerUserId') === product.get('userId'));
+    reviewsForOwner.map(r => usersForReviews.push(findUsersById(r.get('prodUserId'))));
+
     return {
         reviewsForProd,
         product,
         identity: state.identity,
         usersForReviews,
+        reviewsForOwner,
         userOwner,
         category
     }

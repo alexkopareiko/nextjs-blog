@@ -1,14 +1,13 @@
 import { connect } from "react-redux";
 
 function ReviewCard({ review, user }) {
-
     return (
         <div className="shadow-md rounded-lg my-3 px-3">
             <div className="flex mx-2 my-2">
                 <div className="flex flex-col items-center w-24 px-5">
-                    <img src={user.get('userImg')} alt="" className="rounded w-10 h-10" />
+                    <img src={user?.get('userImg')} alt="" className="rounded w-10 h-10" />
                     <div>
-                        {user.get('userFirstName')}
+                        {user?.get('userFirstName')}
                     </div>
                 </div>
                 <div className="flex flex-col px-3">
@@ -35,7 +34,7 @@ function ReviewCard({ review, user }) {
 
 const mapStateToProps = (state, props) => {
     const review = props.review;
-    const user = props.usersForReviews.find(u => u.get('userId') === review.get('prodUserId'));
+    let user = props.users.find((item: any) => item?.get('userId') == review.get('prodUserId'));
     return {
         review,
         user,

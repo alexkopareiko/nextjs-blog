@@ -9,4 +9,7 @@ export function action(type: string, payload = {}): Action {
 
 export const SET_ALL_DATA_SCHEMA = 'SET_ALL_DATA_SCHEMA';
 
-export const setAllDataAC = (entityName: string, response: any) => action(SET_ALL_DATA_SCHEMA, { entityName, response });
+export const setAllDataAC = (entityName: string, response: any) => {
+    //console.log('SET_ALL_DATA_SCHEMA');
+    return action(SET_ALL_DATA_SCHEMA, { entityName, response });
+};

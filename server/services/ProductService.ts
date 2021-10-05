@@ -52,7 +52,7 @@ export default class ProductService extends BaseContext {
     }
 
     public findOne(id: number) {
-        const { ProductModel, UserModel, CategoryModel, ReviewModel } = this.di;
+        const { ProductModel, UserModel, CategoryModel, ReviewModel, UserSeviceCustom } = this.di;
         if (isNaN(id)) return Promise.reject('Parameter is not a number!');
         return ProductModel.findByPk(id, {
             include: [
@@ -95,10 +95,14 @@ export default class ProductService extends BaseContext {
                 product.reviews.map(review => {
                     sum += Number(review.revRating);
                 })
-                let rating = product.reviews.length === 0 ? 0 : Math.ceil(sum / product.reviews.length);
+                const rating = product.reviews.length === 0 ? 0 : Math.ceil(sum / product.reviews.length);
+                //const users = JSON.parse(JSON.stringify(UserSeviceCustom.getUsersByProductId(id)));
+                //console.log("users service", users[0]);
+                
                 return {
                     ...product,
-                    rating
+                    rating,
+                    //users
                 };
             })
     };

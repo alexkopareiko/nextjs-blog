@@ -14,11 +14,22 @@ export default class ReviewService extends BaseContext {
     }
 
     public findReviewsByProductId(id: number) {
-        const { ReviewModel, UserModel } = this.di;
+        const { ReviewModel} = this.di;
         if (isNaN(id)) return Promise.reject('Parameter is not a number!');
         const result = ReviewModel.findAll({
             where: {
                 prodId: id
+            },
+        })
+        return result;
+    }
+
+    public findReviewsByUserOwnerId(id: number) {
+        const { ReviewModel } = this.di;
+        if (isNaN(id)) return Promise.reject('Parameter is not a number!');
+        const result = ReviewModel.findAll({
+            where: {
+                ownerUserId: id
             },
         })
         return result;

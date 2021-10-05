@@ -1,6 +1,6 @@
 import { call, take } from "redux-saga/effects"
 import { action } from "../store/actions"
-import { IIdentity, ENTITIES } from "../../constants";
+import { ENTITIES } from "../../constants";
 import Entity from "./Entity";
 import reviewEntity from "./UserEntity";
 

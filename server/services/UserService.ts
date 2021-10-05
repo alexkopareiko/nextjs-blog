@@ -42,6 +42,9 @@ export default class UserService extends BaseContext {
         if (isNaN(prodId)) return Promise.reject('Parameter is not a number!');
         const product = await ProductService.findProductById(prodId);
         const reviews = await ReviewService.findReviewsByProductId(prodId);
+        const reviewsForOwner = await ReviewService.findReviewsByUserOwnerId(product.userId);
+        console.log("reviewsForOwner srvice", reviewsForOwner);
+        
         // const userIDs = [
         //     product.userId,
         // ];
@@ -56,11 +59,16 @@ export default class UserService extends BaseContext {
             product.userId,
         ]
         reviews.map(r => userIDs.push(r.prodUserId));
-
+        reviewsForOwner.map(r => userIDs.push(r.ownerUserId));
+        
+        let unique = [...new Set(userIDs)];
         return UserModel.findAll(
             {
+                attributes: [
+                    'userFirstName', 'userLastName', 'userImg'
+                ],
                 where: {
-                    userId: userIDs
+                    userId: unique
                 }
             })
     };
