@@ -4,9 +4,9 @@ import Layout from '../../components/layout'
 import Link from 'next/link'
 import ReviewCard from 'components/ReviewCard'
 
-import { getProductById, } from 'redux-saga/models/ProductEntity';
+import productEntity from '../../redux-saga/models/ProductEntity';
 import wrapper from '../../redux-saga/store/store'
-
+import { ENTITIES } from "../../constants";
 function Product(props) {
     const identity = props.identity;
     const product = props.product;
@@ -130,7 +130,8 @@ function Product(props) {
 
 // @ts-ignore
 Product.getInitialProps = wrapper.getInitialAppProps(store => (ctx: any) => {
-    store.dispatch(getProductById(ctx.query.id));
+    const action = productEntity.getActions(ENTITIES.PRODUCTS).sagaGetProductById.action;
+    store.dispatch(action({ id: ctx.query.id }));
     return {
         prodId: ctx.query.id
     }

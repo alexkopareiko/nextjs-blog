@@ -3,9 +3,11 @@ import wrapper from '../redux-saga/store/store'
 import Link from 'next/link'
 import PropertyCard from "../components/propertyCard";
 import React from 'react';
-import { getAllProducts } from 'redux-saga/models/ProductEntity';
 import { connect } from 'react-redux';
-
+import {actions} from '../redux-saga/store/actions'
+import Entity from 'redux-saga/models/Entity';
+import { ENTITIES } from '../constants';
+import productEntity from 'redux-saga/models/ProductEntity';
 function Index(props) {
   const { products, identity } = props;
   return (
@@ -32,9 +34,11 @@ function Index(props) {
   );
 }
 
+
 // @ts-ignore
 Index.getInitialProps = wrapper.getInitialAppProps(store => () => {
-  store.dispatch(getAllProducts());
+  const action = productEntity.getActions(ENTITIES.PRODUCTS).sagaGetAllProducts.action;
+  store.dispatch(action());
 });
 
 const mapStateToProps = (state) => {

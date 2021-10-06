@@ -96,13 +96,12 @@ export default class ProductService extends BaseContext {
                     sum += Number(review.revRating);
                 })
                 const rating = product.reviews.length === 0 ? 0 : Math.ceil(sum / product.reviews.length);
-                //const users = JSON.parse(JSON.stringify(UserSeviceCustom.getUsersByProductId(id)));
-                //console.log("users service", users[0]);
+                const users = JSON.parse(JSON.stringify(UserSeviceCustom.getUsersByProductId(id)));
                 
                 return {
                     ...product,
                     rating,
-                    //users
+                    users
                 };
             })
     };

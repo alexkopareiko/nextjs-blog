@@ -1,7 +1,7 @@
 import { call, put, select, take } from 'redux-saga/effects';
 import { normalize, schema } from "normalizr";
 import { HTTP_METHOD } from "../../constants";
-import { setAllDataAC } from '../store/actions';
+import { action, setAllDataAC } from '../store/actions';
 import { commons } from '../../constants';
 import { camelizeKeys } from 'humps';
 
@@ -10,7 +10,7 @@ export default class Entity {
   private entityName: string;
   private static actions: any = [];
 
-  constructor(name: string, definition:any = {}, options: any = {}) {
+  constructor(name: string, definition: any = {}, options: any = {}) {
 
     this.schema = new schema.Entity(name, definition, options);
     this.entityName = name;
@@ -21,8 +21,9 @@ export default class Entity {
     this.xSave = this.xSave.bind(this);
 
     Entity.addAction = Entity.addAction.bind(this);
-    Entity.getActions = Entity.getActions.bind(this);
+    this.getActions = this.getActions.bind(this);
 
+    this.initAction();
   }
 
   public getSchema() {
@@ -30,6 +31,23 @@ export default class Entity {
   }
   public getEntityName() {
     return this.entityName;
+  }
+
+  private initAction() {
+    const propertyNames = Object.getOwnPropertyNames(this.constructor.prototype);
+    const sagas = propertyNames.filter(e => e.startsWith('saga'));
+
+    const obj = {};
+    sagas.forEach(e => {
+      this[e] = this[e].bind(this);
+      obj[e] = {
+        'action': function (data = {}) {
+          return action(e, data);
+        },
+        'saga': this[e]
+      };
+    });
+    Entity.actions[this.entityName] = obj;
   }
 
   private xFetch = (endpoint: string, method: HTTP_METHOD, data = {}, token?: string) => {
@@ -68,8 +86,8 @@ export default class Entity {
     Entity.actions.push(saga);
   }
 
-  public static getActions() {
-    return Entity.actions;
+  public getActions(actionName) {
+    return Entity.actions[actionName];
   }
 
   public * actionRequest(endpoint?: string, method?: HTTP_METHOD, data?: any, token?: string) {

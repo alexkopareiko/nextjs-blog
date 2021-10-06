@@ -43,7 +43,6 @@ export default class UserService extends BaseContext {
         const product = await ProductService.findProductById(prodId);
         const reviews = await ReviewService.findReviewsByProductId(prodId);
         const reviewsForOwner = await ReviewService.findReviewsByUserOwnerId(product.userId);
-        console.log("reviewsForOwner srvice", reviewsForOwner);
         
         // const userIDs = [
         //     product.userId,
@@ -64,12 +63,12 @@ export default class UserService extends BaseContext {
         let unique = [...new Set(userIDs)];
         return UserModel.findAll(
             {
-                attributes: [
-                    'userFirstName', 'userLastName', 'userImg'
-                ],
-                where: {
-                    userId: unique
-                }
+                // attributes: [
+                //     'userFirstName', 'userLastName', 'userImg'
+                // ],
+                // where: {
+                //     userId: unique
+                // }
             })
     };
 
