@@ -11,31 +11,31 @@ class UserEntity extends Entity {
     }
 
 
-    public * sagaGetAllUsers() {
-        while (true) {
-            yield take('sagaGetAllUsers');
-            yield call(this.xRead, '/user/list');
-        }
-    }
+    // public * sagaGetAllUsers() {
+    //     while (true) {
+    //         yield take('sagaGetAllUsers');
+    //         yield call(this.xRead, '/user/list');
+    //     }
+    // }
 
-    public * sagaGetUserById() {
-        while (true) {
-            const data = yield take('sagaGetUserById');
-            const id = data.id;
-            yield call(this.xRead, '/user/' + id);
+    // public * sagaGetUserById() {
+    //     while (true) {
+    //         const data = yield take('sagaGetUserById');
+    //         const id = data.id;
+    //         yield call(this.xRead, '/user/' + id);
 
-        }
-    }
+    //     }
+    // }
 
-    public * sagaGetUsersByProductId() {
-        while (true) {
-            const data = yield take('sagaGetUsersByProductId');
-            const prodId = data.prodId;
-            if (!isNaN(prodId)) {
-                yield call(this.xRead, '/user/by_prod_id/' + prodId, {});
-            }
-        }
-    }
+    // public * sagaGetUsersByProductId() {
+    //     while (true) {
+    //         const data = yield take('sagaGetUsersByProductId');
+    //         const prodId = data.prodId;
+    //         if (!isNaN(prodId)) {
+    //             yield call(this.xRead, '/user/by_prod_id/' + prodId, {});
+    //         }
+    //     }
+    // }
 }
 
 const userEntity = new UserEntity();

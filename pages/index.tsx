@@ -4,8 +4,6 @@ import Link from 'next/link'
 import PropertyCard from "../components/propertyCard";
 import React from 'react';
 import { connect } from 'react-redux';
-import {actions} from '../redux-saga/store/actions'
-import Entity from 'redux-saga/models/Entity';
 import { ENTITIES } from '../constants';
 import productEntity from 'redux-saga/models/ProductEntity';
 function Index(props) {

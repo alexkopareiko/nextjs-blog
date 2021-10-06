@@ -13,7 +13,9 @@ export const rootWatcher = function* root() {
     userEntity.getActions(ENTITIES.REVIEWS),
     categoryEntity.getActions(ENTITIES.USERS),
   ];
-  //  console.log("sagaAll",sagaAll);
+
+  // console.log("sagaAll", sagaAll);
+  
   
   yield all(sagaAll.map(
     entity => all(

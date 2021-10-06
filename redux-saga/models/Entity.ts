@@ -36,10 +36,17 @@ export default class Entity {
   private initAction() {
     const propertyNames = Object.getOwnPropertyNames(this.constructor.prototype);
     const sagas = propertyNames.filter(e => e.startsWith('saga'));
-
+    
     const obj = {};
     sagas.forEach(e => {
-      this[e] = this[e].bind(this);
+      let tmpObj = this[e]();
+      this[e] = function* () {
+        while (true) {
+          const data = yield take(e);
+          const postfix = tmpObj.postfix !== '' ? data[tmpObj.postfix] : '';
+          yield call(tmpObj.method, tmpObj.params + postfix);
+        }
+      };
       obj[e] = {
         'action': function (data = {}) {
           return action(e, data);
@@ -48,6 +55,27 @@ export default class Entity {
       };
     });
     Entity.actions[this.entityName] = obj;
+
+
+    // const obj = {};
+    // sagas.forEach(e => {
+    //   this[e] = this[e].bind(this);
+    //   obj[e] = {
+    //     'action': function (data = {}) {
+    //       return action(e, data);
+    //     },
+    //     'saga': this[e]
+    //   };
+    // });
+    // Entity.actions[this.entityName] = obj;
+  }
+
+  public *sagaWrap(name: string, method: Function, params: object) {
+    while(true) {
+      const data = yield take(name);
+      const id = data.id;
+      yield call(this.xRead, '/product/' + id);
+    }
   }
 
   private xFetch = (endpoint: string, method: HTTP_METHOD, data = {}, token?: string) => {

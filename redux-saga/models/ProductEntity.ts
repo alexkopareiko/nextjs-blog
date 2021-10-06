@@ -16,7 +16,23 @@ class ProductEntity extends Entity {
 
     }
 
-    public * sagaGetAllProducts() {
+    public sagaGetAllProducts() {
+        return {
+            'method': this.xRead,
+            'params': '/product/list',
+            'postfix':''
+        }
+    }
+
+    public sagaGetProductById() {
+        return {
+            'method': this.xRead,
+            'params': '/product/',
+            'postfix':'id'
+        }
+    }
+
+    /*public * sagaGetAllProducts() {
         while (true) {
             yield take('sagaGetAllProducts');
             yield call(this.xRead, '/product/list');
@@ -30,7 +46,7 @@ class ProductEntity extends Entity {
             yield call(this.xRead, '/product/' + id);
 
         }
-    }
+    }*/
 }
 
 const productEntity = new ProductEntity();
