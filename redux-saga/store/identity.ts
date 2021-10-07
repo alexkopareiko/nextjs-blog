@@ -1,7 +1,5 @@
 import { commons, IIdentity } from '../../constants';
-import { SET_USER_INFO } from 'redux-saga/saga/identity';
-
-
+import { LOGOUT, SET_USER_INFO } from '../../redux-saga/models/IdentityEntity';
 
 const initialState: IIdentity = {
     userId: -1,
@@ -21,6 +19,11 @@ function identity(state = initialState, action) {
                 ...state,
                 ...action.identity,
                 userToken: action.token
+            }
+        }
+        case LOGOUT: {
+            return {
+                ...initialState
             }
         }
 

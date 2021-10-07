@@ -64,7 +64,7 @@ function Product(props) {
                                         </tr>
                                         <tr className="text-center">
                                             <td className="py-1">Reviews</td>
-                                            <td className="py-1">{reviewsForProd.size}</td>
+                                            <td className="py-1">{reviewsForProd?.size}</td>
                                         </tr>
                                         {
                                             userOwner ?
@@ -87,7 +87,7 @@ function Product(props) {
                             </div>
 
                             {
-                                reviewsForProd.size === 0 ? '' :
+                                reviewsForProd?.size === 0 ? '' :
                                     (
                                         <div>
                                             <p className="text-2xl px-3 mt-3">Reviews for {product.get('prodTitle')}:</p>
@@ -130,7 +130,7 @@ function Product(props) {
 
 // @ts-ignore
 Product.getInitialProps = wrapper.getInitialAppProps(store => (ctx: any) => {
-    const action = productEntity.getActions(ENTITIES.PRODUCTS).sagaGetProductById.action;
+    const action = productEntity.getActions("ProductEntity").sagaGetProductById.action;
     store.dispatch(action({ id: ctx.query.id }));
     return {
         prodId: ctx.query.id
@@ -139,15 +139,15 @@ Product.getInitialProps = wrapper.getInitialAppProps(store => (ctx: any) => {
 
 const mapStateToProps = (state, props) => {
     const { entities } = state;
-    const product = entities.get('products').filter((item: any) => item.get('prodId') == props.prodId).valueSeq().first();
-    const userOwner = entities.get('users').filter((item: any) => item.get('userId') == product.get('userId')).valueSeq().first();
-    const reviewsForProd = entities.get('reviews').filter((item: any) => item.get('prodId') == props.prodId);
-    const category = entities.get('categories').filter((item: any) => item.get('catId') == product.get('catId')).valueSeq().first();
+    const product = entities.get('products')?.filter((item: any) => item.get('prodId') == props.prodId).valueSeq().first();
+    const userOwner = entities.get('users')?.filter((item: any) => item.get('userId') == product.get('userId')).valueSeq().first();
+    const reviewsForProd = entities.get('reviews')?.filter((item: any) => item.get('prodId') == props.prodId);
+    const category = entities.get('categories')?.filter((item: any) => item.get('catId') == product.get('catId')).valueSeq().first();
     const findUsersById = (userId) => { return entities.get('users').find(u => u.get('userId') === userId) };
     const usersForReviews = [];
-    reviewsForProd.map(r => usersForReviews.push(findUsersById(r.get('prodUserId'))));
-    const reviewsForOwner = entities.get('reviews').filter((item: any) => item.get('ownerUserId') === product.get('userId'));
-    reviewsForOwner.map(r => usersForReviews.push(findUsersById(r.get('prodUserId'))));
+    reviewsForProd?.map(r => usersForReviews.push(findUsersById(r.get('prodUserId'))));
+    const reviewsForOwner = entities.get('reviews')?.filter((item: any) => item.get('ownerUserId') === product.get('userId'));
+    reviewsForOwner?.map(r => usersForReviews.push(findUsersById(r.get('prodUserId'))));
 
     return {
         reviewsForProd,

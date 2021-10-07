@@ -1,11 +1,19 @@
 import { useState } from "react";
 import Link from 'next/link'
+import identityEntity from "redux-saga/models/IdentityEntity";
+import { useDispatch } from "react-redux";
 
 export default function Header({ props }) {
   const NOT_AUTHORIZED = props.userId === -1;
   let userFirstName = props.userFirstName;
   let userLastName = props.userLastName;
   let userImg = props.userImg;
+  const dispatch = useDispatch()
+
+  const logout = () =>{
+    const action = identityEntity.getActions("IdentityEntity").sagaLogout.action;
+        dispatch(action());
+  }
 
   const [isOpenSandwich, setIsOpenSandwich] = useState(false);
   const [isOpenProfile, setIsOpenProfile] = useState(false);
@@ -62,18 +70,20 @@ export default function Header({ props }) {
 
         <div className="sm:flex sm:items-center">
           <div className="px-2 pt-2 pb-5 border-b border-gray-800 sm:flex sm:border-b-0 sm:py-0">
+            <Link href={"/login"} >
+              <a className="block px-3 py-1 mt-1 hover:bg-gray-700 rounded font-medium text-white sm:mt-0 sm:text-sm sm:px-2 sm:ml-2 xl:text-gray-900 xl:hover:bg-gray-200 ">Login</a>
+            </Link>
             {
-              // NOT_AUTHORIZED ?
-              //   <div>
-              //     <Link href={"/login"} >
-              //       <a className="block px-3 py-1 mt-1 hover:bg-gray-700 rounded font-medium text-white sm:mt-0 sm:text-sm sm:px-2 sm:ml-2 xl:text-gray-900 xl:hover:bg-gray-200 ">Login</a>
-              //     </Link>
-              //     <Link href={"/register"} >
-              //       <a className="block px-3 py-1 mt-1 hover:bg-gray-700 rounded font-medium text-white sm:mt-0 sm:text-sm sm:px-2 sm:ml-2 xl:text-gray-900 xl:hover:bg-gray-200 ">Register</a>
-              //     </Link>
-              //   </div>
-              //   :
-              //   <span className="block px-3 py-1 mt-1 hover:bg-gray-700 rounded font-medium text-white sm:mt-0 sm:text-sm sm:px-2 sm:ml-2 xl:text-gray-900 xl:hover:bg-gray-200 ">{userFirstName} {userLastName}</span>
+              NOT_AUTHORIZED ?
+                <>
+                  <Link href={"/register"} >
+                    <a className="block px-3 py-1 mt-1 hover:bg-gray-700 rounded font-medium text-white sm:mt-0 sm:text-sm sm:px-2 sm:ml-2 xl:text-gray-900 xl:hover:bg-gray-200 ">Register</a>
+                  </Link>
+                </>
+                :
+                <>
+                  <span className="block px-3 py-1 mt-1 hover:bg-gray-700 rounded font-medium text-white sm:mt-0 sm:text-sm sm:px-2 sm:ml-2 xl:text-gray-900 xl:hover:bg-gray-200 ">{userFirstName} {userLastName}</span>
+                </>
             }
 
           </div>
@@ -83,13 +93,18 @@ export default function Header({ props }) {
               <span className="ml-4 font-medium text-gray-200 sm:hidden">{userFirstName} {userLastName}</span>
             </div>
             <div className={`${!isOpenProfile ? 'sm:hidden' : 'block'} mt-5 sm:bg-white sm:rounded-lg sm:fixed sm:mt-4 sm:right-0 sm:w-48 sm:py-2 sm:shadow-xl sm:mx-3 sm:z-50`}>
-              <a href="/" className="block text-gray-400 hover:text-white sm:text-gray-800 sm:px-4 sm:mt-0 sm:py-2 sm:hover:bg-indigo-500">Account settings</a>
-              {/* <Link href={"/"} >
-                <a className="mt-3 block text-gray-400 hover:text-white sm:text-gray-800 sm:px-4 sm:mt-0 sm:py-2 sm:hover:bg-indigo-500">Login</a>
-              </Link> */}
-              <Link href={"/logout"} >
-                <a className="mt-3 block text-gray-400 hover:text-white sm:text-gray-800 sm:px-4 sm:mt-0 sm:py-2 sm:hover:bg-indigo-500">Sign Out</a>
-              </Link>
+             
+              {
+                !NOT_AUTHORIZED ?
+                  <>
+                    <span className="mt-3 block text-gray-400 hover:text-white sm:text-gray-800 sm:px-4 sm:mt-0 sm:py-2 sm:hover:bg-indigo-500" onClick={logout}>Logout</span>
+                    {/* <a href="/" className="block text-gray-400 hover:text-white sm:text-gray-800 sm:px-4 sm:mt-0 sm:py-2 sm:hover:bg-indigo-500">Account settings</a> */}
+                  </>
+                  : <>
+                    <Link href={"/login"} >
+                      <a className="mt-3 block text-gray-400 hover:text-white sm:text-gray-800 sm:px-4 sm:mt-0 sm:py-2 sm:hover:bg-indigo-500">Login</a>
+                    </Link>
+                  </>}
             </div>
             <button type="button" onClick={() => { setIsOpenProfile(!isOpenProfile) }} className={`${!isOpenProfile ? 'sm:hidden' : 'sm:block'} sm:fixed sm:opacity-1 sm:inset-0 sm:w-full sm:h-full sm:z-40`}></button>
 

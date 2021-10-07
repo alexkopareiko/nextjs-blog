@@ -1,44 +1,23 @@
 import Link from "next/link";
-import { xSave } from "src/request";
-import Layout from '../components/layout'
-import { useRouter } from 'next/router'
-import { useDispatch, useSelector } from "react-redux";
-import { btnLoginClick } from "redux-saga/saga/identity";
+import { useDispatch } from "react-redux";
+import identityEntity from "../redux-saga/models/IdentityEntity";
+import { ENTITIES } from "../constants";
 
 const login = () => {
-
     const dispatch = useDispatch()
-
-    const router = useRouter()
-
     const loginUser = async event => {
         event.preventDefault();
-        dispatch(btnLoginClick({
+        const action = identityEntity.getActions("IdentityEntity").sagaLogin.action;
+        dispatch(action({
             userEmail: event.target.userEmail.value,
             userPasswd: event.target.userPasswd.value,
         }));
-        // const result = await xSave('/user/login', {
-        //     userEmail: event.target.userEmail.value,
-        //     userPasswd: event.target.userPasswd.value,
-        // })
-
-        // if (result.success === true) {
-        //     if (result.response.errors === false) {
-        //         router.push({
-        //             pathname: '/',
-        //         })
-        //     }
-        //     else alert(result.response.message)
-        // }
-        // else alert('Something wrong')
-        // console.log(result)
-        // result.user => 'Ada Lovelace'
     }
 
     return (
         <div className="relative">
-            <img   // https://images.unsplash.com/photo-1568605114967-8130f3a36994?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80  https://vwartclub.com/media/projects/1700/2.jpg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;h=750&amp;w=1260
-                src="https://vwartclub.com/media/projects/1700/2.jpg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;h=750&amp;w=1260"
+            <img
+                src="https://www.techadvisor.com/cmsdata/features/3797568/iphone_13_news_18_thumb1200_16-9.png"
                 className="absolute inset-0 object-cover w-full h-full"
                 alt="img"
             />
@@ -56,34 +35,18 @@ const login = () => {
                     <div className="flex flex-col items-center justify-between xl:flex-row">
                         <div className="w-full max-w-xl mb-12 xl:mb-0 xl:pr-16 xl:w-7/12">
                             <h2 className="max-w-lg mb-6 font-sans text-3xl font-bold tracking-tight text-white sm:text-4xl sm:leading-none">
-                                Title<br className="hidden md:block" />
-                                Description
+                                Choose Your IPhone
                             </h2>
-                            <p className="max-w-xl mb-4 text-base text-white md:text-lg">
-                                Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-                                accusantium doloremque laudan, totam rem aperiam, eaque ipsa
-                                quae.
-                            </p>
-                            <a
-                                href="/"
-                                aria-label=""
-                                className="inline-flex items-center font-semibold border-collapse tracking-wider transition-colors duration-200 text-white hover:text-teal-accent-700"
-                            >
-                                Learn more
-                                <svg
-                                    className="inline-block w-3 ml-2"
-                                    fill="currentColor"
-                                    viewBox="0 0 12 12"
-                                >
-                                    <path d="M9.707,5.293l-5-5A1,1,0,0,0,3.293,1.707L7.586,6,3.293,10.293a1,1,0,1,0,1.414,1.414l5-5A1,1,0,0,0,9.707,5.293Z" />
-                                </svg>
-                            </a>
+                            <Link href={"/"} >
+                                <a className="sm:text-center sm:mb-6 text-white text-xl bg-black rounded-xl p-2">Main</a>
+                            </Link>
                         </div>
                         <div className="w-full max-w-xl xl:px-8 xl:w-5/12">
                             <div className="bg-white rounded shadow-2xl p-7 sm:p-10">
                                 <h3 className="mb-4 text-xl font-semibold sm:text-center sm:mb-6 sm:text-2xl">
                                     Welcome ! let's login
                                 </h3>
+
                                 <br />
                                 <form onSubmit={loginUser}>
                                     <div className="mb-1 sm:mb-2">

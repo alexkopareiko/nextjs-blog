@@ -1,4 +1,4 @@
-import { call, put, select, take } from 'redux-saga/effects';
+import { call, put, take } from 'redux-saga/effects';
 import { normalize, schema } from "normalizr";
 import { HTTP_METHOD } from "../../constants";
 import { action, setAllDataAC } from '../store/actions';
@@ -6,15 +6,15 @@ import { commons } from '../../constants';
 import { camelizeKeys } from 'humps';
 
 export default class Entity {
-  private schema;
+  private schema = null;
   private entityName: string;
   private static actions: any = [];
+  private className;
 
-  constructor(name: string, definition: any = {}, options: any = {}) {
-
-    this.schema = new schema.Entity(name, definition, options);
+  constructor(name: string = null, definition: any = {}, options: any = {}) {
+    if (name !== null) this.schema = new schema.Entity(name, definition, options);
     this.entityName = name;
-
+    this.className = this.constructor.name;
     this.xFetch = this.xFetch.bind(this);
     this.actionRequest = this.actionRequest.bind(this);
     this.xRead = this.xRead.bind(this);
@@ -36,17 +36,10 @@ export default class Entity {
   private initAction() {
     const propertyNames = Object.getOwnPropertyNames(this.constructor.prototype);
     const sagas = propertyNames.filter(e => e.startsWith('saga'));
-    
+
     const obj = {};
     sagas.forEach(e => {
-      let tmpObj = this[e]();
-      this[e] = function* () {
-        while (true) {
-          const data = yield take(e);
-          const postfix = tmpObj.postfix !== '' ? data[tmpObj.postfix] : '';
-          yield call(tmpObj.method, tmpObj.params + postfix);
-        }
-      };
+      this[e] = this[e].bind(this);
       obj[e] = {
         'action': function (data = {}) {
           return action(e, data);
@@ -54,24 +47,11 @@ export default class Entity {
         'saga': this[e]
       };
     });
-    Entity.actions[this.entityName] = obj;
-
-
-    // const obj = {};
-    // sagas.forEach(e => {
-    //   this[e] = this[e].bind(this);
-    //   obj[e] = {
-    //     'action': function (data = {}) {
-    //       return action(e, data);
-    //     },
-    //     'saga': this[e]
-    //   };
-    // });
-    // Entity.actions[this.entityName] = obj;
+    Entity.actions[this.className] = obj;
   }
 
   public *sagaWrap(name: string, method: Function, params: object) {
-    while(true) {
+    while (true) {
       const data = yield take(name);
       const id = data.id;
       yield call(this.xRead, '/product/' + id);
@@ -80,7 +60,6 @@ export default class Entity {
 
   private xFetch = (endpoint: string, method: HTTP_METHOD, data = {}, token?: string) => {
     let fullUrl = commons.baseUrl + '/api' + endpoint;
-
     const params: any = {
       method,
       credentials: 'include',
@@ -114,16 +93,14 @@ export default class Entity {
     Entity.actions.push(saga);
   }
 
-  public getActions(actionName) {
-    return Entity.actions[actionName];
+  public getActions(entityName) {
+    return Entity.actions[entityName];
   }
 
   public * actionRequest(endpoint?: string, method?: HTTP_METHOD, data?: any, token?: string) {
-
     const result = yield call(this.xFetch, endpoint, method, data, token)
-
-    const schema = (Array.isArray(result.response.data) ? [this.getSchema()] : this.getSchema())
-    if (result.success === true && result.response.error === false) {
+    const schema = (Array.isArray(result.response.data) ? [this.schema] : this.schema)
+    if (result.success === true && result.response.error === false && this.schema ) {
       const normalizedData = normalize(camelizeKeys(result.response.data), schema);
       return yield put(setAllDataAC(this.getEntityName(), normalizedData))
     }

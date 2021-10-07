@@ -4,7 +4,6 @@ import Link from 'next/link'
 import PropertyCard from "../components/propertyCard";
 import React from 'react';
 import { connect } from 'react-redux';
-import { ENTITIES } from '../constants';
 import productEntity from 'redux-saga/models/ProductEntity';
 function Index(props) {
   const { products, identity } = props;
@@ -35,7 +34,7 @@ function Index(props) {
 
 // @ts-ignore
 Index.getInitialProps = wrapper.getInitialAppProps(store => () => {
-  const action = productEntity.getActions(ENTITIES.PRODUCTS).sagaGetAllProducts.action;
+  const action = productEntity.getActions("ProductEntity").sagaGetAllProducts.action;
   store.dispatch(action());
 });
 

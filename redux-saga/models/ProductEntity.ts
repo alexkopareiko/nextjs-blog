@@ -16,37 +16,38 @@ class ProductEntity extends Entity {
 
     }
 
-    public sagaGetAllProducts() {
-        return {
-            'method': this.xRead,
-            'params': '/product/list',
-            'postfix':''
-        }
-    }
-
-    public sagaGetProductById() {
-        return {
-            'method': this.xRead,
-            'params': '/product/',
-            'postfix':'id'
-        }
-    }
-
-    /*public * sagaGetAllProducts() {
+    
+    public * sagaGetAllProducts() {
         while (true) {
             yield take('sagaGetAllProducts');
             yield call(this.xRead, '/product/list');
         }
     }
-
+    
     public * sagaGetProductById() {
         while (true) {
             const data = yield take('sagaGetProductById');
             const id = data.id;
             yield call(this.xRead, '/product/' + id);
-
+            
         }
-    }*/
+    }
+    
+    // public sagaGetAllProducts() {
+    //     return {
+    //         'method': this.xRead,
+    //         'params': '/product/list',
+    //         'postfix': ''
+    //     }
+    // }
+
+    // public sagaGetProductById() {
+    //     return {
+    //         'method': this.xRead,
+    //         'params': '/product/',
+    //         'postfix': 'id'
+    //     }
+    // }
 }
 
 const productEntity = new ProductEntity();

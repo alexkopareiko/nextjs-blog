@@ -8,15 +8,13 @@ import categoryEntity from "redux-saga/models/CategoryEntity";
 export const rootWatcher = function* root() {
 
   const sagaAll = [
-    productEntity.getActions(ENTITIES.PRODUCTS),
-    reviewEntity.getActions(ENTITIES.CATEGORIES),
-    userEntity.getActions(ENTITIES.REVIEWS),
-    categoryEntity.getActions(ENTITIES.USERS),
+    productEntity.getActions("CategoryEntity"),
+    reviewEntity.getActions("IdentityEntity"),
+    userEntity.getActions("ProductEntity"),
+    categoryEntity.getActions("ReviewEntity"),
+    categoryEntity.getActions("UserEntity"),
   ];
 
-  // console.log("sagaAll", sagaAll);
-  
-  
   yield all(sagaAll.map(
     entity => all(
       Object.values(entity).map(
