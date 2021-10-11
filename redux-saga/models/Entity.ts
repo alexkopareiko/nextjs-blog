@@ -21,9 +21,9 @@ export default class Entity {
     this.xSave = this.xSave.bind(this);
 
     Entity.addAction = Entity.addAction.bind(this);
-    this.getActions = this.getActions.bind(this);
+    Entity.getActions = Entity.getActions.bind(this);
 
-    this.initAction();
+    //this.initAction();
   }
 
   public getSchema() {
@@ -50,13 +50,6 @@ export default class Entity {
     Entity.actions[this.className] = obj;
   }
 
-  public *sagaWrap(name: string, method: Function, params: object) {
-    while (true) {
-      const data = yield take(name);
-      const id = data.id;
-      yield call(this.xRead, '/product/' + id);
-    }
-  }
 
   private xFetch = (endpoint: string, method: HTTP_METHOD, data = {}, token?: string) => {
     let fullUrl = commons.baseUrl + '/api' + endpoint;
@@ -93,8 +86,8 @@ export default class Entity {
     Entity.actions.push(saga);
   }
 
-  public getActions(entityName) {
-    return Entity.actions[entityName];
+  public static getActions() {
+    return Entity.actions;
   }
 
   public * actionRequest(endpoint?: string, method?: HTTP_METHOD, data?: any, token?: string) {

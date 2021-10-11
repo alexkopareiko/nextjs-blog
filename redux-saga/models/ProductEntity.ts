@@ -1,10 +1,11 @@
 import { call, take } from "redux-saga/effects"
-import { action } from "../store/actions"
 import { ENTITIES } from "../../constants";
 import Entity from "./Entity"
 import reviewEntity from "./ReviewEntity"
 import userEntity from "./UserEntity"
 import categoryEntity from "./CategoryEntity";
+import actionDecor from '../decorators/action';
+
 class ProductEntity extends Entity {
     constructor() {
         super(ENTITIES.PRODUCTS, {
@@ -16,10 +17,11 @@ class ProductEntity extends Entity {
 
     }
 
-    
+    @actionDecor()
     public * sagaGetAllProducts() {
         while (true) {
             yield take('sagaGetAllProducts');
+            
             yield call(this.xRead, '/product/list');
         }
     }
