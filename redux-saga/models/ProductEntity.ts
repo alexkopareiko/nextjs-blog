@@ -4,7 +4,7 @@ import Entity from "./Entity"
 import reviewEntity from "./ReviewEntity"
 import userEntity from "./UserEntity"
 import categoryEntity from "./CategoryEntity";
-import actionDecor from '../decorators/action';
+import action from '../decorators/action';
 
 class ProductEntity extends Entity {
     constructor() {
@@ -17,39 +17,15 @@ class ProductEntity extends Entity {
 
     }
 
-    @actionDecor()
-    public * sagaGetAllProducts() {
-        while (true) {
-            yield take('sagaGetAllProducts');
-            
-            yield call(this.xRead, '/product/list');
-        }
+    @action()
+    public * sagaGetAllProducts(data) {
+        yield call(this.xRead, '/product/list');
     }
-    
-    public * sagaGetProductById() {
-        while (true) {
-            const data = yield take('sagaGetProductById');
-            const id = data.id;
-            yield call(this.xRead, '/product/' + id);
-            
-        }
-    }
-    
-    // public sagaGetAllProducts() {
-    //     return {
-    //         'method': this.xRead,
-    //         'params': '/product/list',
-    //         'postfix': ''
-    //     }
-    // }
 
-    // public sagaGetProductById() {
-    //     return {
-    //         'method': this.xRead,
-    //         'params': '/product/',
-    //         'postfix': 'id'
-    //     }
-    // }
+    @action()
+    public * sagaGetProductById(data) {
+        yield call(this.xRead, '/product/' + data.id);
+    }
 }
 
 const productEntity = new ProductEntity();

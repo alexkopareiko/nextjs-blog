@@ -1,22 +1,17 @@
 import Entity from "../models/Entity";
-import { action } from '../store/actions';
-const actionDecor = () => {
+import { action as a} from '../store/actions';
+
+const action = () => {
     return (target: any, propertyKey: string) => {
         const entityName = target.constructor.name;
-        // target[propertyKey] = target[propertyKey].bind(target)
-        console.log("target", target);
-        
-        const entityItem =
-            entityName in Entity.getActions() ? Entity.getActions()[entityName] : {};
+        const entityItem = entityName in Entity.getActions() ? Entity.getActions()[entityName] : {};
         if (!(propertyKey in entityItem)) {
             entityItem[propertyKey] = {
-                saga: target[propertyKey],
-                action: (data) => action(propertyKey, data),
-                isAdded: false,
+                decoratorFunction: (data) => a(propertyKey, data),
             };
         }
         Entity.getActions()[entityName] = entityItem;
     };
 };
 
-export default actionDecor;
+export default action;

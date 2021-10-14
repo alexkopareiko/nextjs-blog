@@ -11,10 +11,6 @@ export const rootWatcher = function* root() {
   const actions = Entity.getActions();
   
   yield all(Object.values(actions).map(
-    entity => all(
-      Object.values(entity).map(
-        (saga: any) => call(saga.saga)
-      )
-    )
+    entity => all(Object.values(entity).map((saga: any) => call(saga.saga)))
   ));
 }

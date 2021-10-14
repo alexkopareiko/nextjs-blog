@@ -8,7 +8,7 @@ import { camelizeKeys } from 'humps';
 export default class Entity {
   private schema = null;
   private entityName: string;
-  private static actions: any = [];
+  public static actions: any = [];
   private className;
 
   constructor(name: string = null, definition: any = {}, options: any = {}) {
@@ -87,6 +87,10 @@ export default class Entity {
   }
 
   public static getActions() {
+    return Entity.actions;
+  }
+
+  public getOneAction(action, data) { //need to finish
     return Entity.actions;
   }
 
