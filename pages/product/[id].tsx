@@ -4,133 +4,135 @@ import Layout from '../../components/layout'
 import Link from 'next/link'
 import ReviewCard from 'components/ReviewCard'
 
-import productEntity from '../../redux-saga/models/ProductEntity';
 import wrapper from '../../redux-saga/store/store'
-import { ENTITIES } from "../../constants";
-function Product(props) {
-    const identity = props.identity;
-    const product = props.product;
-    const userOwner = props.userOwner;
-    const reviewsForProd = props.reviewsForProd;
-    const category = props.category;
-    const usersForReviews = props.usersForReviews;
-    const reviewsForOwner = props.reviewsForOwner;
+import Entity from 'redux-saga/models/Entity';
+import productEntity from 'redux-saga/models/ProductEntity';
+import saga from 'redux-saga/decorators/saga';
+import React from 'react';
+interface MyProps {
+    identity, product, userOwner, reviewsForProd, category, usersForReviews, reviewsForOwner
+}
 
-    return (
-        <Layout props={identity}>
-            <Link href={"/"} >
-                <a className="fixed z-10"><span className="px-3 py-2 bg-indigo-300 rounded-xl mx-3 hover:bg-indigo-200">Back</span></a>
-            </Link>
-            {
-                product ?
-                    <article>
+@saga(productEntity)
+class Product extends React.Component<MyProps> {
+    render() {
+        const { identity, product, userOwner, reviewsForProd, category, usersForReviews, reviewsForOwner } = this.props;
+        return (
+            <Layout props={identity}>
+                <Link href={"/"} >
+                    <a className="fixed z-10"><span className="px-3 py-2 bg-indigo-300 rounded-xl mx-3 hover:bg-indigo-200">Back</span></a>
+                </Link>
+                {
+                    product ?
+                        <article>
 
-                        <h1 className="text-gray-900 text-2xl px-3 mt-3">{product.get('prodTitle')}</h1>
-                        <div className="flex shadow-md relative flex-col">
-                            <div className="pt-5">
-                                <img src={product.get('prodImg')} className="inset-0 w-full" />
-                            </div>
-                            <p className="text-2xl px-3 mt-3">Description:</p>
-                            <p className="px-3 mt-1">
-                                {product.get('prodDesc')}
-                            </p>
-                            <p className="text-2xl px-3 mt-3">Characteristics:</p>
+                            <h1 className="text-gray-900 text-2xl px-3 mt-3">{product.get('prodTitle')}</h1>
+                            <div className="flex shadow-md relative flex-col">
+                                <div className="pt-5">
+                                    <img src={product.get('prodImg')} className="inset-0 w-full" />
+                                </div>
+                                <p className="text-2xl px-3 mt-3">Description:</p>
+                                <p className="px-3 mt-1">
+                                    {product.get('prodDesc')}
+                                </p>
+                                <p className="text-2xl px-3 mt-3">Characteristics:</p>
 
-                            <div className="mt-1">
-                                <table className="table-fixed w-full ">
-                                    <thead >
-                                        <tr className="bg-gray-200">
-                                            <th className="w-1/2"></th>
-                                            <th className="w-1/2"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody className="">
-                                        <tr className="px-3 text-center">
-                                            <td className="px-3">Category</td>
-                                            <td className="px-3">{category.get('catName')}</td>
+                                <div className="mt-1">
+                                    <table className="table-fixed w-full ">
+                                        <thead >
+                                            <tr className="bg-gray-200">
+                                                <th className="w-1/2"></th>
+                                                <th className="w-1/2"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="">
+                                            <tr className="px-3 text-center">
+                                                <td className="px-3">Category</td>
+                                                <td className="px-3">{category.get('catName')}</td>
 
-                                        </tr>
-                                        <tr className="bg-gray-300 text-center ">
-                                            <td className="py-1 px-3">Price</td>
-                                            <td className=" py-1px-3">$&nbsp;{product.get('prodPrice')}</td>
-                                        </tr>
-                                        <tr className="text-center">
-                                            <td className="py-1 px-3">Year</td>
-                                            <td className="py-1px-3">{product.get('prodYear')}</td>
-                                        </tr>
-                                        <tr className="bg-gray-300 text-center">
-                                            <td className="py-1">Rating</td>
-                                            <td className="py-1">{product.get('rating')}</td>
-                                        </tr>
-                                        <tr className="text-center">
-                                            <td className="py-1">Reviews</td>
-                                            <td className="py-1">{reviewsForProd?.size}</td>
-                                        </tr>
-                                        {
-                                            userOwner ?
-                                                <tr className="bg-gray-300">
-                                                    <td className="px-3 py-1 text-center">Seller</td>
-                                                    <td className="px-3 py-2 flex flex-col items-center">
-                                                        <img src={userOwner.get('userImg')} alt="" className="rounded w-10 h-10" />
-                                                        <div>
-                                                            {userOwner.get('userFirstName')}&nbsp;{userOwner.get('userLastName')}
-                                                        </div>
-
-                                                    </td>
-                                                </tr> :
-                                                <></>
-                                        }
-
-                                    </tbody>
-                                </table>
-
-                            </div>
-
-                            {
-                                reviewsForProd?.size === 0 ? '' :
-                                    (
-                                        <div>
-                                            <p className="text-2xl px-3 mt-3">Reviews for {product.get('prodTitle')}:</p>
+                                            </tr>
+                                            <tr className="bg-gray-300 text-center ">
+                                                <td className="py-1 px-3">Price</td>
+                                                <td className=" py-1px-3">$&nbsp;{product.get('prodPrice')}</td>
+                                            </tr>
+                                            <tr className="text-center">
+                                                <td className="py-1 px-3">Year</td>
+                                                <td className="py-1px-3">{product.get('prodYear')}</td>
+                                            </tr>
+                                            <tr className="bg-gray-300 text-center">
+                                                <td className="py-1">Rating</td>
+                                                <td className="py-1">{product.get('rating')}</td>
+                                            </tr>
+                                            <tr className="text-center">
+                                                <td className="py-1">Reviews</td>
+                                                <td className="py-1">{reviewsForProd?.size}</td>
+                                            </tr>
                                             {
-                                                reviewsForProd && reviewsForProd.valueSeq().map((r) => {
-                                                    return (
-                                                        <ReviewCard key={r.get('revId')} review={r} users={usersForReviews} />
-                                                    );
-                                                })
-                                            }
-                                        </div>
-                                    )
-                            }
+                                                userOwner ?
+                                                    <tr className="bg-gray-300">
+                                                        <td className="px-3 py-1 text-center">Seller</td>
+                                                        <td className="px-3 py-2 flex flex-col items-center">
+                                                            <img src={userOwner.get('userImg')} alt="" className="rounded w-10 h-10" />
+                                                            <div>
+                                                                {userOwner.get('userFirstName')}&nbsp;{userOwner.get('userLastName')}
+                                                            </div>
 
-                            {/* {
-                                reviewsForOwner.size === 0 ? '' :
-                                    (
-                                        <div>
-                                            <p className="text-2xl px-3 mt-3">Reviews for {userOwner.get('userFirstName')}&nbsp;{userOwner.get('userLastName')}:</p>
-                                            {
-                                                reviewsForOwner && reviewsForOwner.valueSeq().map((r) => {
-                                                    return (
-                                                        <ReviewCard key={r.get('revId')} review={r} users={usersForReviews} />
-                                                    );
-                                                })
+                                                        </td>
+                                                    </tr> :
+                                                    <></>
                                             }
-                                        </div>
-                                    )
-                            } */}
+
+                                        </tbody>
+                                    </table>
+
+                                </div>
+
+                                {
+                                    reviewsForProd?.size === 0 ? '' :
+                                        (
+                                            <div>
+                                                <p className="text-2xl px-3 mt-3">Reviews for {product.get('prodTitle')}:</p>
+                                                {
+                                                    reviewsForProd && reviewsForProd.valueSeq().map((r) => {
+                                                        return (
+                                                            <ReviewCard key={r.get('revId')} review={r} users={usersForReviews} />
+                                                        );
+                                                    })
+                                                }
+                                            </div>
+                                        )
+                                }
+
+                                {/* {
+                                    reviewsForOwner.size === 0 ? '' :
+                                        (
+                                            <div>
+                                                <p className="text-2xl px-3 mt-3">Reviews for {userOwner.get('userFirstName')}&nbsp;{userOwner.get('userLastName')}:</p>
+                                                {
+                                                    reviewsForOwner && reviewsForOwner.valueSeq().map((r) => {
+                                                        return (
+                                                            <ReviewCard key={r.get('revId')} review={r} users={usersForReviews} />
+                                                        );
+                                                    })
+                                                }
+                                            </div>
+                                        )
+                                } */}
+                            </div>
+                        </article>
+                        :
+                        <div className="my-10 flex justify-center text-red-500 font-bold">
+                            <h1>There is no such product...</h1>
                         </div>
-                    </article>
-                    :
-                    <div className="my-10 flex justify-center text-red-500 font-bold">
-                        <h1>There is no such product...</h1>
-                    </div>
-            }
-        </Layout>
-    )
+                }
+            </Layout>
+        )
+    }
 }
 
 // @ts-ignore
 Product.getInitialProps = wrapper.getInitialAppProps(store => (ctx: any) => {
-    const action = productEntity.getActions("ProductEntity").sagaGetProductById.action;
+    const action = Entity.getActions()["ProductEntity"].sagaGetProductById.decoratorFunction;
     store.dispatch(action({ id: ctx.query.id }));
     return {
         prodId: ctx.query.id
