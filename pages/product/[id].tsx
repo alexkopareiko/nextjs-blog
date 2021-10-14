@@ -132,7 +132,7 @@ class Product extends React.Component<MyProps> {
 
 // @ts-ignore
 Product.getInitialProps = wrapper.getInitialAppProps(store => (ctx: any) => {
-    const action = Entity.getActions()["ProductEntity"].sagaGetProductById.decoratorFunction;
+    const action = productEntity.getOneAction('sagaGetProductById');
     store.dispatch(action({ id: ctx.query.id }));
     return {
         prodId: ctx.query.id

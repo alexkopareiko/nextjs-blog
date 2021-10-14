@@ -46,7 +46,7 @@ class Index extends React.Component<MyProps> {
 
 // @ts-ignore
 Index.getInitialProps = wrapper.getInitialAppProps(store => () => {
-  const action = Entity.getActions()['ProductEntity'].sagaGetAllProducts.decoratorFunction;
+  const action = productEntity.getOneAction('sagaGetAllProducts');
   store.dispatch(action());
 });
 

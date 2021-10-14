@@ -21,7 +21,6 @@ export default class Entity {
     this.xSave = this.xSave.bind(this);
 
     Entity.addAction = Entity.addAction.bind(this);
-    Entity.getActions = Entity.getActions.bind(this);
 
     //this.initAction();
   }
@@ -32,24 +31,6 @@ export default class Entity {
   public getEntityName() {
     return this.entityName;
   }
-
-  private initAction() {
-    const propertyNames = Object.getOwnPropertyNames(this.constructor.prototype);
-    const sagas = propertyNames.filter(e => e.startsWith('saga'));
-
-    const obj = {};
-    sagas.forEach(e => {
-      this[e] = this[e].bind(this);
-      obj[e] = {
-        'action': function (data = {}) {
-          return action(e, data);
-        },
-        'saga': this[e]
-      };
-    });
-    Entity.actions[this.className] = obj;
-  }
-
 
   private xFetch = (endpoint: string, method: HTTP_METHOD, data = {}, token?: string) => {
     let fullUrl = commons.baseUrl + '/api' + endpoint;
@@ -86,12 +67,8 @@ export default class Entity {
     Entity.actions.push(saga);
   }
 
-  public static getActions() {
-    return Entity.actions;
-  }
-
-  public getOneAction(action, data) { //need to finish
-    return Entity.actions;
+  public getOneAction(action) {
+    return Entity.actions[this.className][action].decoratorFunction;
   }
 
   public * actionRequest(endpoint?: string, method?: HTTP_METHOD, data?: any, token?: string) {

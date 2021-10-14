@@ -8,9 +8,9 @@ import Entity from 'redux-saga/models/Entity';
 import { all, call } from 'redux-saga/effects';
 
 export const rootWatcher = function* root() {
-  const actions = Entity.getActions();
-  
+  const actions = Entity.actions;
+
   yield all(Object.values(actions).map(
-    entity => all(Object.values(entity).map((saga: any) => call(saga.saga)))
+    entity => all(Object.values(entity).map((saga: any) => saga.saga ? call(saga.saga) : ''))
   ));
 }
