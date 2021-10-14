@@ -5,7 +5,7 @@ import saga from "redux-saga/decorators/saga";
 import identityEntity from "../redux-saga/models/IdentityEntity";
 
 interface MyProps {
-    login,
+    login: Function,
 }
 
 @saga(identityEntity)
