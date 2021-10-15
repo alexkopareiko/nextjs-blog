@@ -3,6 +3,7 @@ import "../styles/global.css";
 import React from 'react'
 import wrapper  from '../redux-saga/store/store';
 import { END } from 'redux-saga';
+import { setUserInfo } from 'redux-saga/models/IdentityEntity';
 
 
 
@@ -11,6 +12,11 @@ import { END } from 'redux-saga';
 }
 
 App.getInitialProps = wrapper.getInitialAppProps(store => async ({ Component, ctx }) => {
+  if(ctx.req && ctx.req.hasOwnProperty('identity')){
+    const identity = JSON.parse(JSON.stringify(ctx.req['identity']));
+    store.dispatch(setUserInfo(identity, identity['userToken']))
+  }
+  
 
   //   1. Wait for all page actions to dispatch
   const pageProps = {

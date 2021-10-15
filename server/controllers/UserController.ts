@@ -58,29 +58,6 @@ export default class UserController extends BaseContext {
             });
     };
 
-    @route('/by_token') // Find a single UserModel with token
-    @GET()
-    getUserByToken(req, res) {
-        const { UserSeviceCustom, JwtStrategy } = this.di;
-        const token = JwtStrategy.getJwtFromRequest(req);
-        return UserSeviceCustom.getUserByToken(token)
-            .then(data => {
-                const answer = {
-                    data: data,
-                    message: "request successfull",
-                    error: false
-                }
-                res.send(answer);
-            })
-            .catch(err => {
-                const answer = {
-                    data: null,
-                    message: err,
-                    error: true
-                }
-                res.status(500).send(answer);
-            });
-    };
 
     @route('/by_prod_id/:id') // Find Users by product Id
     @GET()
@@ -108,7 +85,7 @@ export default class UserController extends BaseContext {
 
     @route('/register')
     @POST()
-    public register(req: Request, res: Response, next: NextFunction) {
+    register(req: Request, res: Response, next: NextFunction) {
         let { passportCustom } = this.di;
         return passportCustom.authenticate('local-signup', (errors, identity) => {
             if (identity) {
@@ -129,7 +106,7 @@ export default class UserController extends BaseContext {
 
     @POST()
     @route('/login')
-    public login(req: Request, res: Response, next: NextFunction) {
+    login(req: Request, res: Response, next: NextFunction) {
         const { passportCustom } = this.di;
         return passportCustom.authenticate('local-login', (errors: any, identity) => {
             if (errors) {
@@ -139,7 +116,6 @@ export default class UserController extends BaseContext {
                     error: errors
                 })
             } else if (identity) {
-
                 res.cookie('token', identity.token, { maxAge: 1000606024 });
                 return res
                     .json({
@@ -150,8 +126,79 @@ export default class UserController extends BaseContext {
 
             }
         })(req, res, next);
-
     }
+
+    @POST()
+    @route('/logout')
+    logout(req: Request, res: Response, next: NextFunction) {
+        const { passportCustom, UserSeviceCustom } = this.di;
+        return passportCustom.authenticate('local-login', async (errors: any, identity) => {
+            if (errors) {
+                return res.json({
+                    data: '',
+                    message: errors,
+                    error: true
+                })
+            } else if (identity) {
+                res.clearCookie("token");
+                const user = await UserSeviceCustom.getUserById(identity.userId)
+                if (user) {
+                    user.userToken = '';
+                    user.save();
+                    const answer = {
+                        data: '',
+                        message: "successfully logged out",
+                        error: false
+                    }
+                    res.send(answer);
+                }
+                else {
+                    const answer = {
+                        data: null,
+                        message: 'User not found',
+                        error: true
+                    }
+                    res.status(500).send(answer);
+                }
+            }
+        })(req, res, next);
+    }
+
+    // @GET()
+    // @route('/authorize')
+    // authorizeMe(req: Request, res: Response, next: NextFunction) {
+    //     const { passportCustom, UserSeviceCustom } = this.di;
+    //     passportCustom.authenticate('local-jwt', (err, identity) => {
+    //         const isLogged = identity && identity.userId;
+    //         if (isLogged) {
+    //             return UserSeviceCustom.getUserById(identity.userId)
+    //                 .then(data => {
+    //                     const answer = {
+    //                         data: data,
+    //                         message: "request successfull",
+    //                         error: false
+    //                     }
+    //                     res.send(answer);
+    //                 })
+    //                 .catch(err => {
+    //                     const answer = {
+    //                         data: null,
+    //                         message: err,
+    //                         error: true
+    //                     }
+    //                     res.status(500).send(answer);
+    //                 });
+    //         }
+    //         else {
+    //             const answer = {
+    //                 data: null,
+    //                 message: "Not logged in",
+    //                 error: true
+    //             }
+    //             res.status(500).send(answer);
+    //         }
+    //     })(req, res, next);
+    // }
 
 
     // DON'T MOVE THIS THING UP !!!

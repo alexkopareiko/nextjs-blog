@@ -11,8 +11,8 @@ import actionDec from '../decorators/action';
 
 export const SET_USER_INFO = 'SET_USER_INFO';
 export const LOGOUT = 'LOGOUT';
-const setUserInfo = (identity: IIdentity, token: string) => action(SET_USER_INFO, { identity, token });
-const logout = () => action(LOGOUT);
+export const setUserInfo = (identity: IIdentity, token?: string) => action(SET_USER_INFO, { identity, token });
+export const logout = () => action(LOGOUT);
 
 class IdentityEntity extends Entity {
     constructor() {

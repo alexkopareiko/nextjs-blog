@@ -9,8 +9,8 @@ const action = () => {
             entityItem[propertyKey] = {
                 decoratorFunction: (data) => a(propertyKey, data),
             };
+            Entity.actions[entityName] = entityItem;
         }
-        Entity.actions[entityName] = entityItem;
     };
 };
 

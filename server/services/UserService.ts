@@ -8,7 +8,7 @@ export default class UserService extends BaseContext {
     }
 
     public getUserById(id: number) {
-        const { UserModel } = this.di;
+        const { UserModel } = this.di;        
         if (isNaN(id)) return Promise.reject('Parameter is not a number!');
         return UserModel.findByPk(id)
     }
@@ -71,6 +71,4 @@ export default class UserService extends BaseContext {
                 // }
             })
     };
-
-
 }

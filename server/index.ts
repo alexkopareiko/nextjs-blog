@@ -6,6 +6,11 @@ import cookieParser from 'cookie-parser';
 import { loadControllers, scopePerRequest } from "awilix-express";
 import { PassportStatic } from 'passport';
 import container from "./container";
+import config from "../config";
+import cookieSession from 'cookie-session';
+import fileUpload from 'express-fileupload';
+import { IIdentity } from "../constants";
+
 
 const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });
@@ -20,12 +25,17 @@ const passport = container.resolve<PassportStatic>('passportCustom');
 
     const server = express();
 
+    server.use(bodyParser.json({ limit: '10mb' }));
+    server.use(bodyParser.urlencoded({ extended: true }));
+    server.use(cookieSession({
+      name: 'session',
+      keys: [config.jwtSecret],
+      maxAge: 312460601000,
+    }));
+    server.use(cookieParser())
     server.use(compression());
-    server.use(cookieParser());
-    server.use(bodyParser.json({ limit: '30mb' }));
-    server.use(bodyParser.urlencoded({ limit: '30mb', extended: false, parameterLimit: 50000 }));
-
-    server.use(passport.initialize())
+    server.use(passport.initialize());  
+    server.use(fileUpload({}));
     server.use(acl);
 
     server.use(scopePerRequest(container))
@@ -41,6 +51,12 @@ const passport = container.resolve<PassportStatic>('passportCustom');
       console.log('/login', req.params)
       // @ts-ignore
       return app.render(req, res, '/login')
+    })
+
+    server.get('/logout', (req: Request, res: Response) => {
+      console.log('/logout', req.params)
+      // @ts-ignore
+      return res.redirect('/api/user/logout');
     })
 
     server.all("*", (req: Request, res: Response) => {
@@ -65,7 +81,7 @@ const passport = container.resolve<PassportStatic>('passportCustom');
 const acl = (req: Request, res: Response, next: NextFunction) => {
   let useAcl = true
   const url = req.url
-
+  
   for (const item of IGNORS) {
     if (url.startsWith(item)) {
       useAcl = false
@@ -73,24 +89,24 @@ const acl = (req: Request, res: Response, next: NextFunction) => {
   }
 
   if (useAcl) {
-    const jwt = passport.authenticate('local-jwt', (err, identity) => {
-      const isLogged = identity && identity.userId;
-      // console.log("identity", identity)
-      // console.log("identity.userId", identity.userId)
+    const jwt = passport.authenticate('local-jwt', (err, identity: IIdentity) => {
+      const isLogged = identity && identity.userId ;
       if (!isLogged) {
         const isAPICall = req.path.toLowerCase().includes('api')
         if (isAPICall) {
-          return res.status(401).send({
-            data: null,
-            message: 'You are not authorized to open this page',
-            error: true,
-          })
-        } else {
-          //return res.redirect('/');
-          return handle(req, res);
+
+            return res.json({
+              data : null,
+              message: 'You are not authorized to open this page',
+              error: true,
+            })
+        }
+         else {
+            // return res.redirect('/');            
+            return handle(req, res);
         }
       }
-      //req.identity = identity;
+      req.identity = identity;
       next()
     });
     jwt(req, res, next);

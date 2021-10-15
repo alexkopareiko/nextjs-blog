@@ -24,7 +24,7 @@ export default class LoginStrategy extends BaseContext {
             passwordField: 'userPasswd',
             passReqToCallback: true,
             usernameField: 'userEmail',
-            session: false,
+            session: true,
 
         }, this.verifyRequestUser);
     }
@@ -58,7 +58,6 @@ export default class LoginStrategy extends BaseContext {
         const token = jwt.sign(payload, config.jwtSecret);
         user.userToken = token;
         user.save();
-
         //const identity = user.initSession(req);
         return done(null, { payload, token });
     }
