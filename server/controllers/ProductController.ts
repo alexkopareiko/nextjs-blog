@@ -1,4 +1,5 @@
 import { route, GET } from 'awilix-express' // or `awilix-router-core`
+import httpStatus from '../../http-status';
 import BaseContext from '../BaseContext'
 
 @route('/api/product')
@@ -10,20 +11,10 @@ export default class ProductModelController extends BaseContext {
         const { ProductService } = this.di;
         return ProductService.getAllProducts()
             .then(data => {
-                const answer = {
-                    data: data,
-                    message: "request successfull",
-                    error: false
-                }
-                res.status(200).send(answer);
+                res.answer(data);
             })
             .catch(err => {
-                const answer = {
-                    data: null,
-                    message: err,
-                    error: true
-                }
-                return res.status(500).send(answer);
+                res.answer(null, 'Could not get product list', httpStatus.BAD_REQUEST);
             });
     }
 
@@ -33,73 +24,28 @@ export default class ProductModelController extends BaseContext {
         const { ProductModel } = this.di;
         return ProductModel.findAll()
             .then(data => {
-                const answer = {
-                    data: data,
-                    message: "request successfull",
-                    error: false
-                }
-                res.status(200).send(answer);
+                res.answer(data);
             })
             .catch(err => {
-                const answer = {
-                    data: null,
-                    message: err,
-                    error: true
-                }
-                res.status(500).send(answer);
+                res.answer(null, 'Could not get product list', httpStatus.BAD_REQUEST);
             });
     };
 
 
-    @route('/:id')
+    @route('/:id') //DON"T MOVE THIS THING UP !!!
     @GET()
     findOne(req, res) {
         const { ProductService } = this.di;
         const id = req.params.id;
         return ProductService.findOne(id)
             .then(data => {
-                const answer = {
-                    data: data,
-                    message: "request successfull",
-                    error: false
-                }
-                res.status(200).send(answer);
+                res.answer(data);
             })
             .catch(err => {
-                const answer = {
-                    data: null,
-                    message: err,
-                    error: true
-                }
-                res.status(500).send(answer);
+                res.answer(null, 'Could not get product', httpStatus.BAD_REQUEST);
             });
     };
 
-
-
-    // @route('/:id')     // Find a single ProductModel with an id
-    // @GET()
-    // findOne(req, res) {
-    //     const { ProductService } = this.di;
-    //     const id = req.params.id;
-    //     return ProductService.findOne(id)
-    //         .then(data => {
-    //             const answer = {
-    //                 data: data,
-    //                 message: "request successfull",
-    //                 error: false
-    //             }
-    //             res.status(200).send(answer);
-    //         })
-    //         .catch(err => {
-    //             const answer = {
-    //                 data: null,
-    //                 message: err,
-    //                 error: true
-    //             }
-    //             res.status(500).send(answer);
-    //         });
-    // };
-
+    
 }
 

@@ -1,6 +1,7 @@
 import { route, GET, POST } from 'awilix-express' // or `awilix-router-core`
 import BaseContext from '../BaseContext'
 import { NextFunction, Request, Response } from "express";
+import httpStatus from '../../http-status';
 
 
 
@@ -13,24 +14,13 @@ export default class UserController extends BaseContext {
         const { UserSeviceCustom } = this.di;
         return UserSeviceCustom.getAllUsers()
             .then(data => {
-                const answer = {
-                    data: data,
-                    message: "request successfull",
-                    error: false
-                }
-                res.send(answer);
+                res.answer(data);
             })
             .catch(err => {
-                const answer = {
-                    data: null,
-                    message: err,
-                    error: true
-                }
-                res.status(500).send(answer);
+                res.answer(null, 'Could not get list of users', httpStatus.BAD_REQUEST);
             });
 
     }
-
 
 
 
@@ -41,20 +31,10 @@ export default class UserController extends BaseContext {
         const email = req.params.email;
         return UserSeviceCustom.getUserByEmail(email)
             .then(data => {
-                const answer = {
-                    data: data,
-                    message: "request successfull",
-                    error: false
-                }
-                res.send(answer);
+                res.answer(data);
             })
             .catch(err => {
-                const answer = {
-                    data: null,
-                    message: err,
-                    error: true
-                }
-                res.status(500).send(answer);
+                res.answer(null, 'Could not get user by email', httpStatus.BAD_REQUEST);
             });
     };
 
@@ -66,20 +46,10 @@ export default class UserController extends BaseContext {
         const prodId = req.params.id;
         return UserSeviceCustom.getUsersByProductId(prodId)
             .then(data => {
-                const answer = {
-                    data: data,
-                    message: "request successfull",
-                    error: false
-                }
-                res.send(answer);
+                res.answer(data);
             })
             .catch(err => {
-                const answer = {
-                    data: null,
-                    message: err,
-                    error: true
-                }
-                res.status(500).send(answer);
+                res.answer(null, 'Could not get users by product id', httpStatus.BAD_REQUEST);
             });
     };
 
@@ -89,17 +59,9 @@ export default class UserController extends BaseContext {
         let { passportCustom } = this.di;
         return passportCustom.authenticate('local-signup', (errors, identity) => {
             if (identity) {
-                return res.json({
-                    identity,
-                    message: 'Registration completed successfully!!! You can now log in.',
-                    error: false
-                })
+                return res.answer(identity, 'Registration completed successfully! You can now log in.');
             } else {
-                return res.status(301).json({
-                    identity: null,
-                    message: 'Could not process register',
-                    error: errors
-                })
+                return res.answer(null, 'Could not register', httpStatus.BAD_REQUEST);
             }
         })(req, res, next);
     }
@@ -110,20 +72,11 @@ export default class UserController extends BaseContext {
         const { passportCustom } = this.di;
         return passportCustom.authenticate('local-login', (errors: any, identity) => {
             if (errors) {
-                return res.json({
-                    identity: null,
-                    message: 'Could not process validations',
-                    error: errors
-                })
+                return res.answer(null, 'Could not process validations', httpStatus.BAD_REQUEST);
+
             } else if (identity) {
                 res.cookie('token', identity.token, { maxAge: 1000606024 });
-                return res
-                    .json({
-                        identity,
-                        message: 'You have successfully logged in!',
-                        error: false
-                    })
-
+                return res.answer(identity, 'You have successfully logged in!');
             }
         })(req, res, next);
     }
@@ -134,31 +87,19 @@ export default class UserController extends BaseContext {
         const { passportCustom, UserSeviceCustom } = this.di;
         return passportCustom.authenticate('local-login', async (errors: any, identity) => {
             if (errors) {
-                return res.json({
-                    data: '',
-                    message: errors,
-                    error: true
-                })
+                return res.answer(null, 'Could not authorized', httpStatus.UNAUTHORIZED);
+
             } else if (identity) {
                 res.clearCookie("token");
                 const user = await UserSeviceCustom.getUserById(identity.userId)
                 if (user) {
                     user.userToken = '';
                     user.save();
-                    const answer = {
-                        data: '',
-                        message: "successfully logged out",
-                        error: false
-                    }
-                    res.send(answer);
+                    return res.answer(null, 'successfully logged out');
                 }
                 else {
-                    const answer = {
-                        data: null,
-                        message: 'User not found',
-                        error: true
-                    }
-                    res.status(500).send(answer);
+                    return res.answer(null, 'User not found', httpStatus.BAD_REQUEST);
+
                 }
             }
         })(req, res, next);
@@ -178,14 +119,11 @@ export default class UserController extends BaseContext {
                     error: false
                 }
                 res.send(answer);
+                return res.answer(data);
+
             })
             .catch(err => {
-                const answer = {
-                    data: null,
-                    message: err,
-                    error: true
-                }
-                res.status(500).send(answer);
+                return res.answer(null, 'User not found', httpStatus.BAD_REQUEST);
             });
     };
 

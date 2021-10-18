@@ -21,9 +21,9 @@ class IdentityEntity extends Entity {
     @actionDec()
     public * sagaLogin(data) {
         if (validator.isEmail(data.userEmail) && data.userPasswd !== '') {
-            const result = yield call(this.xSave, '/user/login', data);
+            const result = yield call(this.xSave, '/user/login', data);            
             if (result.success === true && result.response.error === false) {
-                yield put(setUserInfo(result.response.identity.payload, result.response.identity.token))
+                yield put(setUserInfo(result.response.data.payload, result.response.data.token))
                 yield call(Router.push, '/');
             }
         }

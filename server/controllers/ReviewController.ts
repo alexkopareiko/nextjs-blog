@@ -1,4 +1,6 @@
 import { route, GET } from 'awilix-express' // or `awilix-router-core`
+
+import httpStatus from '../../http-status';
 import BaseContext from '../BaseContext'
 
 @route('/api/review')
@@ -10,20 +12,10 @@ export default class ReviewController extends BaseContext {
         const { ReviewService } = this.di;
         return ReviewService.getAllReviews()
             .then(data => {
-                const answer = {
-                    data: data,
-                    message: "reviews are found successfully",
-                    error: false
-                }
-                res.send(answer);
+                res.answer(data);
             })
             .catch(err => {
-                const answer = {
-                    data: null,
-                    message: err,
-                    error: true
-                }
-                res.status(500).send(answer);
+                res.answer(null, 'Could not get review list', httpStatus.BAD_REQUEST);
             });
     }
 
@@ -34,20 +26,10 @@ export default class ReviewController extends BaseContext {
         const id = req.params.id;
         return ReviewService.getReviewById(id)
             .then(data => {
-                const answer = {
-                    data: data,
-                    message: "request successfull",
-                    error: false
-                }
-                res.send(answer);
+                res.answer(data);
             })
             .catch(err => {
-                const answer = {
-                    data: null,
-                    message: err,
-                    error: true
-                }
-                res.status(500).send(answer);
+                res.answer(null, 'Could not get review by id', httpStatus.BAD_REQUEST);
             });
     };
 
@@ -60,20 +42,10 @@ export default class ReviewController extends BaseContext {
         const { ReviewService } = this.di;
         return ReviewService.findReviewsByProductId(id)
             .then(data => {
-                const answer = {
-                    data: data,
-                    message: "request successfull",
-                    error: false
-                }
-                res.send(answer);
+                res.answer(data);
             })
             .catch(err => {
-                const answer = {
-                    data: null,
-                    message: err,
-                    error: true
-                }
-                res.status(500).send(answer);
+                res.answer(null, 'Could not get reviews by product id', httpStatus.BAD_REQUEST);
             });
     };
 
@@ -84,20 +56,10 @@ export default class ReviewController extends BaseContext {
         const { ReviewService } = this.di;
         return ReviewService.findUserReviewsByProductId(id)
             .then(data => {
-                const answer = {
-                    data: data,
-                    message: "request successfull",
-                    error: false
-                }
-                res.send(answer);
+                res.answer(data);
             })
             .catch(err => {
-                const answer = {
-                    data: null,
-                    message: err,
-                    error: true
-                }
-                res.status(500).send(answer);
+                res.answer(null, 'Could not get reviews for owner by product id', httpStatus.BAD_REQUEST);
             });
     };
 

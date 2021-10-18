@@ -1,6 +1,7 @@
 import { route, GET } from 'awilix-express' // or `awilix-router-core`
 import BaseContext from '../BaseContext'
 import { Request, Response } from "express";
+import httpStatus from '../../http-status';
 
 @route('/api/category')
 export default class CategoryController extends BaseContext {
@@ -11,20 +12,10 @@ export default class CategoryController extends BaseContext {
         const { CategoryService } = this.di;
         return CategoryService.getAllCategories()
             .then(data => {
-                const answer = {
-                    data: data,
-                    message: "request successfull",
-                    error: false
-                }
-                res.send(answer);
+                res.answer(data);
             })
             .catch(err => {
-                const answer = {
-                    data: null,
-                    message: err,
-                    error: true
-                }
-                res.status(500).send(answer);
+                res.answer(null, 'Could not get category list', httpStatus.BAD_REQUEST);
             });
 
     }
@@ -38,20 +29,10 @@ export default class CategoryController extends BaseContext {
         const id = req.params.id;
         return CategoryService.getCategoryById(id)
             .then(data => {
-                const answer = {
-                    data: data,
-                    message: "request successfull",
-                    error: false
-                }
-                res.send(answer);
+                res.answer(data);
             })
             .catch(err => {
-                const answer = {
-                    data: null,
-                    message: err,
-                    error: true
-                }
-                res.status(500).send(answer);
+                res.answer(null, 'Could not get category', httpStatus.BAD_REQUEST);
             });
     };
 

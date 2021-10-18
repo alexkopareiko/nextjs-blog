@@ -5,15 +5,17 @@ import compression from 'compression';
 import cookieParser from 'cookie-parser';
 import { loadControllers, scopePerRequest } from "awilix-express";
 import { PassportStatic } from 'passport';
-import container from "./container";
-import config from "../config";
 import cookieSession from 'cookie-session';
 import fileUpload from 'express-fileupload';
+
+import container from "./container";
+import config from "../config";
 import { IIdentity } from "../constants";
+import httpStatus from '../http-status'
 
 
 const dev = process.env.NODE_ENV !== "production";
-export const app = next({ dev });
+const app = next({ dev });
 const handle = app.getRequestHandler();
 const port = process.env.PORT || 3000;
 
@@ -34,18 +36,14 @@ const passport = container.resolve<PassportStatic>('passportCustom');
     }));
     server.use(cookieParser())
     server.use(compression());
-    server.use(passport.initialize());  
+    server.use(passport.initialize());
     server.use(fileUpload({}));
+
+    server.use(answers);
     server.use(acl);
 
     server.use(scopePerRequest(container))
     server.use(loadControllers('./controllers/*.ts', { cwd: __dirname }))
-
-    // server.get('/product/:id', (req: Request, res: Response) => {
-    //   console.log('/product/:id', req.params)
-    //   // @ts-ignore
-    //   return app.render(req, res, '/product/[id]', { id: req.params.id })
-    // })
 
     server.get('/login', (req: Request, res: Response) => {
       console.log('/login', req.params)
@@ -81,7 +79,7 @@ const passport = container.resolve<PassportStatic>('passportCustom');
 const acl = (req: Request, res: Response, next: NextFunction) => {
   let useAcl = true
   const url = req.url
-  
+
   for (const item of IGNORS) {
     if (url.startsWith(item)) {
       useAcl = false
@@ -90,20 +88,21 @@ const acl = (req: Request, res: Response, next: NextFunction) => {
 
   if (useAcl) {
     const jwt = passport.authenticate('local-jwt', (err, identity: IIdentity) => {
-      const isLogged = identity && identity.userId ;
+      const isLogged = identity && identity.userId;
       if (!isLogged) {
         const isAPICall = req.path.toLowerCase().includes('api')
         if (isAPICall) {
 
-            return res.json({
-              data : null,
-              message: 'You are not authorized to open this page',
-              error: true,
-            })
+          return res.json({
+            data: null,
+            message: 'You are not authorized to open this page',
+            error: true,
+          })
+          // res.answer(null,'You are not authorized to open this page', httpStatus.UNAUTHORIZED);
         }
-         else {
-            // return res.redirect('/');            
-            return handle(req, res);
+        else {
+          // return res.redirect('/');            
+          return handle(req, res);
         }
       }
       req.identity = identity;
@@ -111,8 +110,27 @@ const acl = (req: Request, res: Response, next: NextFunction) => {
     });
     jwt(req, res, next);
   } else {
-    next()
+    next();
   }
+}
+
+const answers = (req: Request, res: Response, next: NextFunction) => {
+  res.answer = (
+    data: any,
+    message: any = null,
+    status: number = httpStatus.OK,
+  ) => {
+    return res.status(status).send({
+      data,
+      message,
+      error: status !== 200 ? true : false,
+    });
+  };
+
+  res.print = (path: string, param: any = {}) => {
+    return app.render(req, res, path, param)
+  }
+  next();
 }
 
 export const IGNORS = [
