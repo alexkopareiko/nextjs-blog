@@ -164,43 +164,6 @@ export default class UserController extends BaseContext {
         })(req, res, next);
     }
 
-    // @GET()
-    // @route('/authorize')
-    // authorizeMe(req: Request, res: Response, next: NextFunction) {
-    //     const { passportCustom, UserSeviceCustom } = this.di;
-    //     passportCustom.authenticate('local-jwt', (err, identity) => {
-    //         const isLogged = identity && identity.userId;
-    //         if (isLogged) {
-    //             return UserSeviceCustom.getUserById(identity.userId)
-    //                 .then(data => {
-    //                     const answer = {
-    //                         data: data,
-    //                         message: "request successfull",
-    //                         error: false
-    //                     }
-    //                     res.send(answer);
-    //                 })
-    //                 .catch(err => {
-    //                     const answer = {
-    //                         data: null,
-    //                         message: err,
-    //                         error: true
-    //                     }
-    //                     res.status(500).send(answer);
-    //                 });
-    //         }
-    //         else {
-    //             const answer = {
-    //                 data: null,
-    //                 message: "Not logged in",
-    //                 error: true
-    //             }
-    //             res.status(500).send(answer);
-    //         }
-    //     })(req, res, next);
-    // }
-
-
     // DON'T MOVE THIS THING UP !!!
     @route('/:id') // Find a single UserModel with an id
     @GET()

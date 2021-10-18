@@ -13,7 +13,7 @@ import { IIdentity } from "../constants";
 
 
 const dev = process.env.NODE_ENV !== "production";
-const app = next({ dev });
+export const app = next({ dev });
 const handle = app.getRequestHandler();
 const port = process.env.PORT || 3000;
 
@@ -41,11 +41,11 @@ const passport = container.resolve<PassportStatic>('passportCustom');
     server.use(scopePerRequest(container))
     server.use(loadControllers('./controllers/*.ts', { cwd: __dirname }))
 
-    server.get('/product/:id', (req: Request, res: Response) => {
-      console.log('/product/:id', req.params)
-      // @ts-ignore
-      return app.render(req, res, '/product/[id]', { id: req.params.id })
-    })
+    // server.get('/product/:id', (req: Request, res: Response) => {
+    //   console.log('/product/:id', req.params)
+    //   // @ts-ignore
+    //   return app.render(req, res, '/product/[id]', { id: req.params.id })
+    // })
 
     server.get('/login', (req: Request, res: Response) => {
       console.log('/login', req.params)
@@ -53,11 +53,11 @@ const passport = container.resolve<PassportStatic>('passportCustom');
       return app.render(req, res, '/login')
     })
 
-    server.get('/logout', (req: Request, res: Response) => {
-      console.log('/logout', req.params)
-      // @ts-ignore
-      return res.redirect('/api/user/logout');
-    })
+    // server.get('/logout', (req: Request, res: Response) => {
+    //   console.log('/logout', req.params)
+    //   // @ts-ignore
+    //   return res.redirect('/api/user/logout');
+    // })
 
     server.all("*", (req: Request, res: Response) => {
       return handle(req, res);
