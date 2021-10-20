@@ -45,12 +45,12 @@ class Index extends React.Component<MyProps> {
 
 
 // @ts-ignore
-Index.getInitialProps = wrapper.getInitialAppProps(store => () => {
+Index.getInitialProps = wrapper.getInitialAppProps(store => async ({ Component, ctx }) => { 
   const action = productEntity.getOneAction('sagaGetAllProducts');
   store.dispatch(action());
 });
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, props) => {
   const { entities } = state;
 
   return {

@@ -25,7 +25,7 @@ const passport = container.resolve<PassportStatic>('passportCustom');
   try {
     await app.prepare();
 
-    const server = express();
+    const server = express()
 
     server.use(bodyParser.json({ limit: '10mb' }));
     server.use(bodyParser.urlencoded({ extended: true }));
@@ -36,17 +36,16 @@ const passport = container.resolve<PassportStatic>('passportCustom');
     }));
     server.use(cookieParser())
     server.use(compression());
-    server.use(passport.initialize());
+    server.use(passport.initialize());  
     server.use(fileUpload({}));
-
-    server.use(answers);
+    server.use(answers)
     server.use(acl);
 
-    server.use(scopePerRequest(container))
-    server.use(loadControllers('./controllers/*.ts', { cwd: __dirname }))
+    server.use(scopePerRequest(container));
+    const files = 'controllers/**/*.ts';
+    server.use(loadControllers(files, { cwd: __dirname }));
 
     server.get('/login', (req: Request, res: Response) => {
-      console.log('/login', req.params)
       // @ts-ignore
       return app.render(req, res, '/login')
     })
@@ -81,7 +80,7 @@ const acl = (req: Request, res: Response, next: NextFunction) => {
   const url = req.url
 
   for (const item of IGNORS) {
-    if (url.startsWith(item)) {
+    if (url.startsWith(item) || url === '/') {
       useAcl = false
     }
   }
@@ -127,8 +126,9 @@ const answers = (req: Request, res: Response, next: NextFunction) => {
     });
   };
 
-  res.print = (path: string, param: any = {}) => {
-    return app.render(req, res, path, param)
+  res.print = (path: string, param: any = {}, ssrData: any = {}) => {
+    req.ssrData = ssrData;
+    return app.render(req, res, path, param);
   }
   next();
 }
@@ -146,4 +146,5 @@ export const IGNORS = [
   '/api/user',
   '/api/product',
   '/api/review',
+  '/product/',
 ];

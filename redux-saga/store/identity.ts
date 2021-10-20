@@ -1,5 +1,5 @@
+import { LOGOUT, SET_USER_INFO } from 'redux-saga/models/IdentityEntity';
 import { commons, IIdentity } from '../../constants';
-import { LOGOUT, SET_USER_INFO } from '../../redux-saga/models/IdentityEntity';
 
 const initialState: IIdentity = {
     userId: -1,

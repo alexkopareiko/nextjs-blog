@@ -6,7 +6,7 @@ import { rootWatcher } from '../saga/index'
 import identity from './identity'
 import { serialize, deserialize } from 'json-immutable';
 
-import { SET_ALL_DATA_SCHEMA } from './actions';
+import { SET_ALL_DATA_SCHEMA, SET_ALL_SSRDATA } from './actions';
 
 
 const bindMiddleware = (middleware) => {
@@ -44,9 +44,23 @@ function entities(state: any = initialEntities, action: any) {
 
 }
 
+function ssrData(state: any = {}, action: any) {
+    switch (action.type) {
+        case SET_ALL_SSRDATA: {
+            return {
+                // ...state,
+                ...action.data,
+            }
+        }
+        default:
+            return state
+    }
+}
+
 const appReducer = combineReducers({
     identity,
     entities,
+    ssrData
 })
 
 let isHydrated = false;

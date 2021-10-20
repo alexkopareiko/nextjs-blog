@@ -1,7 +1,7 @@
-import { call, put, take } from 'redux-saga/effects';
+import { call, put, select, take } from 'redux-saga/effects';
 import { normalize, schema } from "normalizr";
 import { HTTP_METHOD } from "../../constants";
-import { action, setAllDataAC } from '../store/actions';
+import { action, setAllDataAC, setSSRInfo } from '../store/actions';
 import { commons } from '../../constants';
 import { camelizeKeys } from 'humps';
 
@@ -72,13 +72,21 @@ export default class Entity {
   }
 
   public * actionRequest(endpoint?: string, method?: HTTP_METHOD, data?: any, token?: string) {
-    const result = yield call(this.xFetch, endpoint, method, data, token)
-    const schema = (Array.isArray(result.response.data) ? [this.schema] : this.schema)
-    if (result.success === true && result.response.error === false && this.schema ) {
-      const normalizedData = normalize(camelizeKeys(result.response.data), schema);
+    let ssrData = yield select((state) => state.ssrData);
+    let dataNew = {};
+    if (ssrData) {
+      dataNew = Object.values(ssrData);
+      yield put(setSSRInfo({}));
+    } else {
+      const result = yield call(this.xFetch, endpoint, method, data, token);
+      if (result.success === true && result.response.error === false) { dataNew = result.response.data; }
+      else { return result; }
+    }
+    const schema = (Array.isArray(dataNew) ? [this.schema] : this.schema)
+    if (this.schema) {
+      const normalizedData = normalize(camelizeKeys(dataNew), schema);
       return yield put(setAllDataAC(this.getEntityName(), normalizedData))
     }
-    return result;
   }
 
   public xSave(point: string, data: any = {}, token?: string) {
