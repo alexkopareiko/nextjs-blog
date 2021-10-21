@@ -5,7 +5,6 @@ import Layout from '../components/layout'
 import wrapper from '../redux-saga/store/store'
 import Link from 'next/link'
 import PropertyCard from "../components/propertyCard";
-import Entity from 'redux-saga/models/Entity';
 import productEntity from 'redux-saga/models/ProductEntity';
 import saga from '../redux-saga/decorators/saga'
 
@@ -17,6 +16,7 @@ interface MyProps {
 @saga(productEntity)
 class Index extends React.Component<MyProps> {
   render() {
+    
     const { products, identity } = this.props;
     return (
       <Layout props={identity}>
@@ -45,20 +45,28 @@ class Index extends React.Component<MyProps> {
 
 
 // @ts-ignore
-Index.getInitialProps = wrapper.getInitialAppProps(store => async ({ Component, ctx }) => { 
+Index.getInitialProps = wrapper.getInitialAppProps(store => () => { 
   const action = productEntity.getOneAction('sagaGetAllProducts');
   store.dispatch(action());
 });
 
 const mapStateToProps = (state, props) => {
   const { entities } = state;
-
+  
   return {
     products: entities.get('products'),
     identity: state.identity,
   }
 }
+const mapDispatchToProps = (dispatch) => {
+  // const action = productEntity.getOneAction('sagaGetAllProducts');
+  // dispatch(action());
+  return {
+      
+  }
+};
 
-export default connect(mapStateToProps)(Index)
+
+export default connect(mapStateToProps, mapDispatchToProps)(Index)
 
 
