@@ -15,6 +15,20 @@ interface MyProps {
 
 @saga(productEntity)
 class Index extends React.Component<MyProps> {
+
+  constructor(props) {
+    super(props)
+    this.state = {}
+  }
+
+  // @ts-ignore
+  private static getInitialProps = wrapper.getInitialAppProps(store => () => {
+    console.log('action sagaGetAllProducts --- !!!!');
+    const action = productEntity.getOneAction('sagaGetAllProducts');
+    store.dispatch(action());
+  });
+
+
   render() {
     
     const { products, identity } = this.props;
@@ -44,11 +58,7 @@ class Index extends React.Component<MyProps> {
 }
 
 
-// @ts-ignore
-Index.getInitialProps = wrapper.getInitialAppProps(store => () => { 
-  const action = productEntity.getOneAction('sagaGetAllProducts');
-  store.dispatch(action());
-});
+
 
 const mapStateToProps = (state, props) => {
   const { entities } = state;

@@ -18,7 +18,7 @@ class ProductEntity extends Entity {
     }
 
     @action()
-    public * sagaGetAllProducts(data) {
+    public * sagaGetAllProducts() {
         yield call(this.xRead, '/product/list');
     }
 

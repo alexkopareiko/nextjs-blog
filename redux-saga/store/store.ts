@@ -90,10 +90,11 @@ function rootReducer(state, action) {
 
 
 
-export const makeStore = (ctx) => {
+export const makeStore = () => {
     const sagaMiddleware = createSagaMiddleware()
     const store: any = createStore(rootReducer, bindMiddleware([sagaMiddleware]))
     store.sagaTask = sagaMiddleware.run(rootWatcher)
+    store.runTriggerSaga = () => sagaMiddleware.run(rootWatcher)
     return store
 }
 

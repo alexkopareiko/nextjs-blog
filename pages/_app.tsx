@@ -13,9 +13,8 @@ function App({ Component, pageProps }) {
 }
 
 App.getInitialProps = wrapper.getInitialAppProps(store => async ({ Component, ctx }) => {
-
   if (ctx.req && ctx.req.hasOwnProperty('ssrData')) {
-    const ssrData = JSON.parse(JSON.stringify(ctx.req['ssrData']));
+    const ssrData = ctx.req['ssrData'];
     store.dispatch(setSSRInfo(ssrData));
   }
 
@@ -24,7 +23,7 @@ App.getInitialProps = wrapper.getInitialAppProps(store => async ({ Component, ct
     store.dispatch(setUserInfo(identity, identity['userToken']))
   }
 
-
+  (store).runTriggerSaga()
   //   1. Wait for all page actions to dispatch
   const pageProps = {
     ...(Component.getInitialProps ? await Component.getInitialProps(ctx) : {}),

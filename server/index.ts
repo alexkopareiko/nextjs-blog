@@ -98,10 +98,6 @@ const acl = (req: Request, res: Response, next: NextFunction) => {
         })
         // res.answer(null,'You are not authorized to open this page', httpStatus.UNAUTHORIZED);
       }
-      else {
-        // return res.redirect('/');            
-        return handle(req, res);
-      }
     }
     next()
   });
@@ -138,8 +134,8 @@ export const IGNORS = [
   '/manifest.json',
   '/styles.chunk.css.map',
   '/__nextjs',
-  // '/api/user',
-  // '/api/product',
-  // '/api/review',
+   '/api/user/login',
+   '/api/product',
+   '/api/review',
   '/product/',
 ];

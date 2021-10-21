@@ -92,7 +92,7 @@ export default class Entity {
   public *normalize(dataNew) {
     const schema = (Array.isArray(dataNew) ? [this.schema] : this.schema)
     if (this.schema) {
-      const normalizedData = normalize(camelizeKeys(dataNew), schema);
+      const normalizedData = normalize(camelizeKeys(JSON.parse(JSON.stringify(dataNew))), schema);
       return yield put(setAllDataAC(this.getEntityName(), normalizedData))
     }
   }
