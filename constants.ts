@@ -48,6 +48,7 @@ export enum HTTP_METHOD {
 
 export enum ENTITIES {
     PRODUCTS = 'products',
+    PRODUCT = 'product',
     REVIEWS = 'reviews',
     USERS = 'users',
     CATEGORIES = 'categories',

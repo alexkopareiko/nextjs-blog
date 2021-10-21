@@ -141,10 +141,15 @@ Product.getInitialProps = wrapper.getInitialAppProps(store => (ctx: any) => {
 
 const mapStateToProps = (state, props) => {
     const { entities } = state;
-    const product = entities.get('products')?.filter((item: any) => item.get('prodId') == props.prodId).valueSeq().first();
-    const userOwner = entities.get('users')?.filter((item: any) => item.get('userId') == product.get('userId')).valueSeq().first();
-    const reviewsForProd = entities.get('reviews')?.filter((item: any) => item.get('prodId') == props.prodId);
-    const category = entities.get('categories')?.filter((item: any) => item.get('catId') == product.get('catId')).valueSeq().first();
+    const { prodId} = props;
+    const product = entities.get('products')?.find((i: any) => i.get('prodId') == prodId);
+    const userOwner = entities.get('users')?.find((i: any) => i.get('userId') == product.get('userId'));
+    const reviewsForProd = entities.get('reviews')?.filter((item: any) => item.get('prodId') == prodId);
+    const category = entities.get('categories')?.find((i: any) => i.get('catId') == product.get('catId'));
+    
+    // const product = entities.get('products')?.filter((item: any) => item.get('prodId') == prodId).valueSeq().first();
+    // const userOwner = entities.get('users')?.filter((item: any) => item.get('userId') == product.get('userId')).valueSeq().first();
+    // const category = entities.get('categories')?.filter((item: any) => item.get('catId') == product.get('catId')).valueSeq().first();
     const findUsersById = (userId) => { return entities.get('users').find(u => u.get('userId') === userId) };
     const usersForReviews = [];
     reviewsForProd?.map(r => usersForReviews.push(findUsersById(r.get('prodUserId'))));

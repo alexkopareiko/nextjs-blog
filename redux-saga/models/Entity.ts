@@ -1,3 +1,4 @@
+import { LOGOUT } from './IdentityEntity';
 import { call, put, select, take } from 'redux-saga/effects';
 import { normalize, schema } from "normalizr";
 import { HTTP_METHOD } from "../../constants";
@@ -19,6 +20,7 @@ export default class Entity {
     this.actionRequest = this.actionRequest.bind(this);
     this.xRead = this.xRead.bind(this);
     this.xSave = this.xSave.bind(this);
+    this.normalize = this.normalize.bind(this);
 
     Entity.addAction = Entity.addAction.bind(this);
 
@@ -73,15 +75,22 @@ export default class Entity {
 
   public * actionRequest(endpoint?: string, method?: HTTP_METHOD, data?: any, token?: string) {
     let ssrData = yield select((state) => state.ssrData);
-    let dataNew = {};
-    if (ssrData) {
-      dataNew = Object.values(ssrData);
+    if (ssrData && Object.keys(ssrData).length === 0) {
+      for (const [key, value] of Object.entries(ssrData)) {
+        yield call(this.normalize, value);
+      }
       yield put(setSSRInfo({}));
     } else {
+      console.log("test++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
       const result = yield call(this.xFetch, endpoint, method, data, token);
-      if (result.success === true && result.response.error === false) { dataNew = result.response.data; }
+      if (result.success === true && result.response.error === false) { 
+        yield call(this.normalize, result.response.data); 
+      }
       else { return result; }
     }
+  }
+
+  public *normalize(dataNew) {
     const schema = (Array.isArray(dataNew) ? [this.schema] : this.schema)
     if (this.schema) {
       const normalizedData = normalize(camelizeKeys(dataNew), schema);

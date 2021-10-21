@@ -126,9 +126,9 @@ const answers = (req: Request, res: Response, next: NextFunction) => {
     });
   };
 
-  res.print = (path: string, param: any = {}, ssrData: any = {}) => {
-    req.ssrData = ssrData;
-    return app.render(req, res, path, param);
+  res.print = (path: string, ssrData: any = {}) => {
+    req.ssrData= ssrData;
+    return app.render(req, res, path, req.params);
   }
   next();
 }
