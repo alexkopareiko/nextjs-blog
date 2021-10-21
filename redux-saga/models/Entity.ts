@@ -75,15 +75,14 @@ export default class Entity {
 
   public * actionRequest(endpoint?: string, method?: HTTP_METHOD, data?: any, token?: string) {
     let ssrData = yield select((state) => state.ssrData);
-    if (ssrData && Object.keys(ssrData).length === 0) {
+    if (ssrData && Object.keys(ssrData).length !== 0) {
       for (const [key, value] of Object.entries(ssrData)) {
         yield call(this.normalize, value);
       }
       yield put(setSSRInfo({}));
     } else {
-      console.log("test++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
       const result = yield call(this.xFetch, endpoint, method, data, token);
-      if (result.success === true && result.response.error === false) { 
+      if (result.success === true && result.response.error === false && this.schema) { 
         yield call(this.normalize, result.response.data); 
       }
       else { return result; }

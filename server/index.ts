@@ -85,32 +85,27 @@ const acl = (req: Request, res: Response, next: NextFunction) => {
     }
   }
 
-  if (useAcl) {
-    const jwt = passport.authenticate('local-jwt', (err, identity: IIdentity) => {
-      const isLogged = identity && identity.userId;
-      if (!isLogged) {
-        const isAPICall = req.path.toLowerCase().includes('api')
-        if (isAPICall) {
-
-          return res.json({
-            data: null,
-            message: 'You are not authorized to open this page',
-            error: true,
-          })
-          // res.answer(null,'You are not authorized to open this page', httpStatus.UNAUTHORIZED);
-        }
-        else {
-          // return res.redirect('/');            
-          return handle(req, res);
-        }
+  const jwt = passport.authenticate('local-jwt', (err, identity: IIdentity) => {
+    req.identity = identity;
+    const isLogged = identity && identity.userId;
+    if (!isLogged && useAcl) {
+      const isAPICall = req.path.toLowerCase().includes('api')
+      if (isAPICall) {
+        return res.json({
+          data: null,
+          message: 'You are not authorized to open this page',
+          error: true,
+        })
+        // res.answer(null,'You are not authorized to open this page', httpStatus.UNAUTHORIZED);
       }
-      req.identity = identity;
-      next()
-    });
-    jwt(req, res, next);
-  } else {
-    next();
-  }
+      else {
+        // return res.redirect('/');            
+        return handle(req, res);
+      }
+    }
+    next()
+  });
+  jwt(req, res, next);
 }
 
 const answers = (req: Request, res: Response, next: NextFunction) => {
@@ -143,8 +138,8 @@ export const IGNORS = [
   '/manifest.json',
   '/styles.chunk.css.map',
   '/__nextjs',
-  '/api/user',
-  '/api/product',
-  '/api/review',
+  // '/api/user',
+  // '/api/product',
+  // '/api/review',
   '/product/',
 ];
