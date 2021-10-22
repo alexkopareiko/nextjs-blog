@@ -7,10 +7,9 @@ export default class UserService extends BaseContext {
         return UserModel.findAll({})
     }
 
-    public getUserById(id: number) {
-        const { UserModel } = this.di;        
-        if (isNaN(id)) return Promise.reject('Parameter is not a number!');
-        return UserModel.findByPk(id)
+    public async getUserById(id: number) {
+        const { UserModel } = this.di;    
+        return await UserModel.findByPk(id)
     }
 
     public getUserByEmail(email: string) {

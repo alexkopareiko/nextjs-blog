@@ -81,14 +81,13 @@ export default class UserController extends BaseContext {
         })(req, res, next);
     }
 
-    @POST()
+    @GET()
     @route('/logout')
     logout(req: Request, res: Response, next: NextFunction) {
         const { passportCustom, UserSeviceCustom } = this.di;
-        return passportCustom.authenticate('local-login', async (errors: any, identity) => {
+        passportCustom.authenticate('local-jwt', async (errors: any, identity) => {
             if (errors) {
                 return res.answer(null, 'Could not authorized', httpStatus.UNAUTHORIZED);
-
             } else if (identity) {
                 res.clearCookie("token");
                 const user = await UserSeviceCustom.getUserById(identity.userId)
@@ -106,26 +105,20 @@ export default class UserController extends BaseContext {
     }
 
     // DON'T MOVE THIS THING UP !!!
-    @route('/:id') // Find a single UserModel with an id
-    @GET()
-    findOne(req, res) {
-        const { UserSeviceCustom } = this.di;
-        const id = req.params.id;
-        return UserSeviceCustom.getUserById(id)
-            .then(data => {
-                const answer = {
-                    data: data,
-                    message: "request successfull",
-                    error: false
-                }
-                res.send(answer);
-                return res.answer(data);
+    // @route('/:id') // Find a single UserModel with an id
+    // @GET()
+    // findOne(req, res) {
+    //     const { UserSeviceCustom } = this.di;
+    //     const id = req.params.id;
+    //     return UserSeviceCustom.getUserById(id)
+    //         .then(data => {
+    //             return res.answer(data);
 
-            })
-            .catch(err => {
-                return res.answer(null, 'User not found', httpStatus.BAD_REQUEST);
-            });
-    };
+    //         })
+    //         .catch(err => {
+    //             return res.answer(null, 'User not found', httpStatus.BAD_REQUEST);
+    //         });
+    // };
 
 }
 

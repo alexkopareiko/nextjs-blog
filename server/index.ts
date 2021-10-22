@@ -78,30 +78,36 @@ const passport = container.resolve<PassportStatic>('passportCustom');
 const acl = (req: Request, res: Response, next: NextFunction) => {
   let useAcl = true
   const url = req.url
-
   for (const item of IGNORS) {
-    if (url.startsWith(item) || url === '/') {
+    if (url.startsWith(item)) {
       useAcl = false
     }
   }
 
-  const jwt = passport.authenticate('local-jwt', (err, identity: IIdentity) => {
-    req.identity = identity;
-    const isLogged = identity && identity.userId;
-    if (!isLogged && useAcl) {
-      const isAPICall = req.path.toLowerCase().includes('api')
-      if (isAPICall) {
-        return res.json({
-          data: null,
-          message: 'You are not authorized to open this page',
-          error: true,
-        })
-        // res.answer(null,'You are not authorized to open this page', httpStatus.UNAUTHORIZED);
+  if (useAcl) {
+    const jwt = passport.authenticate('local-jwt', (err, identity: IIdentity) => {
+      const isLogged = identity && identity.userId ;
+      if (!isLogged) {
+        const isAPICall = req.path.toLowerCase().includes('api')
+        if (isAPICall) {
+            return res.json({
+              data : null,
+              message: 'You are not authorized to open this page',
+              error: true,
+            })
+        }
+        //  else {
+        //     // return res.redirect('/');            
+        //     return handle(req, res);
+        // }
       }
-    }
+      req.identity = identity;
+      next()
+    });
+    jwt(req, res, next);
+  } else {
     next()
-  });
-  jwt(req, res, next);
+  }
 }
 
 const answers = (req: Request, res: Response, next: NextFunction) => {

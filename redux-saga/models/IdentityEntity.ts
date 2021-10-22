@@ -31,7 +31,12 @@ class IdentityEntity extends Entity {
 
     @actionDec()
     public * sagaLogout() {
-        yield put(logout())
+        const result = yield call(this.xRead, '/user/logout');    
+            if (result.success === true && result.response.error === false) {
+                yield put(logout())
+                yield call(Router.push, '/');
+                yield call(Router.reload);
+            }
     }
 }
 
