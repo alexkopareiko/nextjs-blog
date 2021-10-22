@@ -2,6 +2,8 @@ import { applyMiddleware, combineReducers, createStore } from 'redux'
 import createSagaMiddleware from 'redux-saga'
 import { createWrapper, HYDRATE } from 'next-redux-wrapper'
 import { fromJS, Map } from 'immutable';
+import { reducer as reduxFormReducer } from 'redux-form'
+
 import { rootWatcher } from '../saga/index'
 import identity from './identity'
 import { serialize, deserialize } from 'json-immutable';
@@ -57,10 +59,13 @@ function ssrData(state: any = {}, action: any) {
     }
 }
 
+
+
 const appReducer = combineReducers({
     identity,
     entities,
-    ssrData
+    ssrData,
+    form: reduxFormReducer,
 })
 
 let isHydrated = false;

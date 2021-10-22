@@ -78,6 +78,7 @@ const passport = container.resolve<PassportStatic>('passportCustom');
 const acl = (req: Request, res: Response, next: NextFunction) => {
   let useAcl = true
   const url = req.url
+  
   for (const item of IGNORS) {
     if (url.startsWith(item)) {
       useAcl = false

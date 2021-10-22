@@ -60,3 +60,9 @@ export const commons = {
 };
 
 
+export const USERROLES = {
+    CUSTOMER: 'customer',
+    ADMIN: 'admin',
+    SELLER: 'seller',
+    GUEST: 'guest',
+};

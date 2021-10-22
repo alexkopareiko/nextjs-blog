@@ -117,8 +117,10 @@ class Header extends React.Component<MyProps, MyState> {
                 {
                   !NOT_AUTHORIZED ?
                     <>
-                      <span className="mt-3 block text-gray-400 hover:text-white sm:text-gray-800 sm:px-4 sm:mt-0 sm:py-2 sm:hover:bg-indigo-500" onClick={this.logout}>Logout</span>
-                      {/* <a href="/" className="block text-gray-400 hover:text-white sm:text-gray-800 sm:px-4 sm:mt-0 sm:py-2 sm:hover:bg-indigo-500">Account settings</a> */}
+                      <Link href={"/product/addnew"} >
+                        <a className="mt-3 block text-gray-400 hover:text-white sm:text-gray-800 sm:px-4 sm:mt-0 sm:py-2 sm:hover:bg-indigo-500">New Product</a>
+                      </Link>
+                      <span className="mt-3 block text-gray-400 hover:text-white sm:text-gray-800 sm:px-4 sm:mt-0 sm:py-2 sm:hover:bg-indigo-500 cursor-pointer" onClick={this.logout}>Logout</span>
                     </>
                     : <>
                       <Link href={"/login"} >

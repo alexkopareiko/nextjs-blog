@@ -3,8 +3,27 @@ import { Request, Response } from "express";
 import BaseContext from '../BaseContext';
 
 import { ENTITIES } from '../../constants';
+import httpStatus from '../../http-status';
+import { USERROLES } from './../../constants';
 @route('')
 export default class RenderController extends BaseContext {
+
+    @route('/product/addnew')
+    @GET()
+    productAddNewPage(req: Request, res: Response) {
+        const { passportCustom, UserSeviceCustom } = this.di;
+        passportCustom.authenticate('local-jwt', async (errors: any, identity) => {
+            if (errors) {
+                return res.answer(null, 'Could not authorized', httpStatus.UNAUTHORIZED);
+            } else if (identity) {
+                const user = await UserSeviceCustom.getUserById(identity.userId)
+                if (user && [user.userRole === USERROLES.SELLER || user.userRole === USERROLES.ADMIN]) {
+                    res.print('/product/addnew');
+                }
+            }
+            return res.print('/404');
+        })(req, res);
+    }
 
     @route('/product/:id')
     @GET()
