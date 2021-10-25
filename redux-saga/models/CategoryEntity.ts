@@ -1,27 +1,23 @@
-import { call, take } from "redux-saga/effects"
-import { action } from "../store/actions"
-import { ENTITIES } from "../../constants";
+import { call } from "redux-saga/effects"
+
 import Entity from "./Entity";
+import { ENTITIES } from "../../constants";
+import action from '../decorators/action';
+
 class CategoryEntity extends Entity {
     constructor() {
         super(ENTITIES.CATEGORIES, {}, { idAttribute: 'catId' });
 
     }
-    
+
+    @action()
     public * sagaGetAllCategories() {
-        while (true) {
-            yield take('sagaGetAllCategories');
             yield call(this.xRead, '/category/list');
-        }
     }
-    
-    public * sagaGetCategoryById() {
-        while (true) {
-            const data = yield take('sagaGetCategoryById');
-            const id = data.id;
-            yield call(this.xRead, '/category/' + id);
-            
-        }
+
+    @action()
+    public * sagaGetCategoryById(data) {
+            yield call(this.xRead, '/category/' + data.id);
     }
 }
 

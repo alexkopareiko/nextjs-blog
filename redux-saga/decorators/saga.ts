@@ -2,7 +2,16 @@ import { take, fork } from "redux-saga/effects";
 import Entity from "../models/Entity";
 
 
-const saga = (entity: Entity = null) => (constructor: Function = null) => {
+const saga = (entities: Entity | Entity[]  = null) => (constructor: Function = null) => {
+    if (Array.isArray(entities)) {
+        entities.forEach(entity => {
+            decorExt(entity);
+        })
+    }
+    else { decorExt(entities); }
+}
+
+function decorExt(entity: Entity) {
     const entityName = entity.constructor.name;
     if (entityName in Entity.actions) {
         const methods = Entity.actions[entityName];

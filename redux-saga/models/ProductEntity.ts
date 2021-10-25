@@ -1,4 +1,5 @@
-import { call, take } from "redux-saga/effects"
+import { call } from "redux-saga/effects"
+
 import { ENTITIES } from "../../constants";
 import Entity from "./Entity"
 import reviewEntity from "./ReviewEntity"
@@ -19,12 +20,17 @@ class ProductEntity extends Entity {
 
     @action()
     public * sagaGetAllProducts() {
-        yield call(this.xRead, '/product/list');
+        yield call(this.xRead, '/product/list'); 
     }
 
     @action()
     public * sagaGetProductById(data) {
         yield call(this.xRead, '/product/' + data.id);
+    }
+
+    @action()
+    public * sagaSaveProduct(data) {
+        yield call(this.xSave, '/product/save/' + data.id);
     }
 }
 

@@ -18,7 +18,16 @@ export default class RenderController extends BaseContext {
             } else if (identity) {
                 const user = await UserSeviceCustom.getUserById(identity.userId)
                 if (user && [user.userRole === USERROLES.SELLER || user.userRole === USERROLES.ADMIN]) {
-                    res.print('/product/addnew');
+                    const { CategoryService } = this.di;
+                    const ssrData = {};
+                    return CategoryService.getAllCategories()
+                        .then(data => {
+                            ssrData[ENTITIES.CATEGORIES] = data;
+                            res.print('/product/addnew', ssrData);
+                        })
+                        .catch(err => {
+                            return res.print('/404');
+                        });
                 }
             }
             return res.print('/404');
